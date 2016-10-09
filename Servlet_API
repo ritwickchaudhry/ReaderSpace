@@ -8,3 +8,4 @@ Login.java
         info -  "incomplete" -> Either of user ID or password is missing
                 "wrong password" -> User exists but password is incorrect
                 "no user" -> User ID doesn't exist
+                "internal error" -> Some internal error in connection/SQL
