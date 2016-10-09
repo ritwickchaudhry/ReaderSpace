@@ -12,11 +12,27 @@ drop table IF EXISTS Reader;
 drop table IF EXISTS Author;
 drop table IF EXISTS Contact_Number;
 
-create table author
+create table Author
 (
 	Author_ID 	varchar(20),
 	Name 		varchar(50),
-	Profile_Picture 	
-)
+	Profile_Picture_name 	text,
+	Profile_Picture_img 	bytea,
+	Description				text,
+	primary key (Author_ID) 	
+);
 
-Machau nova
+create table Reader
+(
+	Reader_ID	varchar(50),
+	Name 		varchar(50),
+	Date_Of_Birth			DATE,
+	City 		varchar(50),
+	Email 		varchar(320),
+	Profile_Picture_name 	text,
+	Profile_Picture_img 	bytea,
+	Introduction 			text,
+	Gender					varchar(10),
+	Password 				varchar(320),
+	primary key (Reader_ID)
+);
