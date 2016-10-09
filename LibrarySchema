@@ -1,16 +1,16 @@
-drop table IF EXISTS Genre;
-drop table IF EXISTS Book;
-drop table IF EXISTS Review;
-drop table IF EXISTS Already_Read;
-drop table IF EXISTS Published_By;
-drop table IF EXISTS Reading;
-drop table IF EXISTS Book_Reader;
-drop table IF EXISTS Publisher;
-drop table IF EXISTS Authored_By;
-drop table IF EXISTS Follow;
-drop table IF EXISTS Reader;
-drop table IF EXISTS Author;
-drop table IF EXISTS Contact_Number;
+drop table   Genre;
+drop table   Review;
+drop table   Already_Read;
+drop table   Published_By;
+drop table   Reading;
+drop table   Book_Reader;
+drop table   Publisher;
+drop table   Authored_By;
+drop table   Follow;
+drop table   Author;
+drop table   Contact_Number;
+drop table   Reader;
+drop table   Book;
 
 create table Author
 (
@@ -35,4 +35,106 @@ create table Reader
 	Gender					varchar(10),
 	Password 				varchar(320),
 	primary key (Reader_ID)
+);
+
+create table Book
+(
+	Book_ID		varchar(50),
+	Name 		varchar(50),
+	Description 	text,
+	Author 			varchar(320),
+	Number_Of_Pages	int,
+	Cover_Pic_name	text,
+	Cover_Pic_img	bytea,
+	primary key (Book_ID)
+);
+
+create table Publisher
+(
+	Publisher_ID	varchar(50),
+	Name 			varchar(50),
+	Location		varchar(320),
+	primary key (Publisher_ID)
+);
+
+create table Contact_Number
+(
+	Reader_ID 		varchar(50),
+	Contact_Number 	varchar(20),
+	foreign key (Reader_ID) references Reader(Reader_ID) on delete cascade,
+	primary key (Reader_ID, Contact_Number)
+);
+
+create table Authored_By
+(
+	Book_ID 		varchar(50),
+	Author_ID  		varchar(20),
+	foreign key (Book_ID) references Book(Book_ID) on delete cascade,
+	foreign key (Author_ID) references Author(Author_ID) on delete cascade,
+	primary key (Book_ID, Author_ID)
+);
+
+create table Follow
+(
+	Follower	varchar(50),
+	Followee	varchar(50),
+	foreign key (Follower) references Reader(Reader_ID) on delete cascade,
+	foreign key (Followee) references Reader(Reader_ID) on delete cascade,
+	primary key (Follower, Followee)
+);
+
+create table Book_Reader
+(
+	Book_ID  varchar(50),
+	Reader_ID 	varchar(50),
+	foreign key (Book_ID) references Book(Book_ID) on delete cascade,
+	foreign key (Reader_ID) references Reader(Reader_ID) on delete cascade,
+	primary key (Book_ID, Reader_ID)
+);
+
+create table Published_By
+(
+	Book_ID varchar(50),
+	Publisher_ID varchar(50),
+	foreign key (Book_ID) references Book(Book_ID) on delete cascade,
+	foreign key (Publisher_ID) references Publisher(Publisher_ID) on delete cascade,
+	primary key (Book_ID, Publisher_ID)
+);
+
+create table Reading
+(
+	Book_ID 	varchar(50),
+	Reader_ID 	varchar(50),
+	Page_Number int,
+	foreign key (Book_ID) references Book(Book_ID) on delete cascade,
+	foreign key (Reader_ID) references Reader(Reader_ID) on delete cascade,
+	primary key (Book_ID, Reader_ID)
+);
+
+create table Already_Read
+(
+	Book_ID 	varchar(50),
+	Reader_ID 	varchar(50),
+	foreign key (Book_ID) references Book(Book_ID) on delete cascade,
+	foreign key (Reader_ID) references Reader(Reader_ID) on delete cascade,
+	primary key (Book_ID, Reader_ID)
+);
+
+create table Review
+(
+	Book_ID 	varchar(50),
+	Reader_ID 	varchar(50),
+	comments 	text,
+	Rating 		int,
+	foreign key (Book_ID) references Book(Book_ID) on delete cascade,
+	foreign key (Reader_ID) references Reader(Reader_ID) on delete cascade,
+	primary key (Book_ID, Reader_ID)
+);
+
+create table Genre
+(
+	Book_ID 	varchar(50),
+	Genre 		varchar(50),
+	foreign key (Book_ID) references Book(Book_ID) on delete cascade,
+	primary key (Book_ID, Genre)
 );
