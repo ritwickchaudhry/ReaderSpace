@@ -1,0 +1,14 @@
+drop table IF EXISTS Genre;
+drop table IF EXISTS Book;
+drop table IF EXISTS Review;
+drop table IF EXISTS Already_Read;
+drop table IF EXISTS Published_By;
+drop table IF EXISTS Reading;
+drop table IF EXISTS Book_Reader;
+drop table IF EXISTS Publisher;
+drop table IF EXISTS Authored_By;
+drop table IF EXISTS Follow;
+drop table IF EXISTS Reader;
+drop table IF EXISTS Author;
+drop table IF EXISTS Contact_Number;
+
