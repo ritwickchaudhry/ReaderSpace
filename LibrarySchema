@@ -12,3 +12,10 @@ drop table IF EXISTS Reader;
 drop table IF EXISTS Author;
 drop table IF EXISTS Contact_Number;
 
+create table author
+(
+	Author_ID 	varchar(20),
+	Name 		varchar(50),
+	Profile_Picture 	
+)
+
