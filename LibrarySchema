@@ -12,3 +12,4 @@ drop table IF EXISTS Reader;
 drop table IF EXISTS Author;
 drop table IF EXISTS Contact_Number;
 
+Machau nova
