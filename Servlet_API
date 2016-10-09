@@ -5,5 +5,6 @@ Login.java
     Method - GET
     Return Object - (JSON Object)
         status - true (User authenicated), false (Not authenticated)
-        message - Error message if any
-    
+        info -  "incomplete" -> Either of user ID or password is missing
+                "wrong password" -> User exists but password is incorrect
+                "no user" -> User ID doesn't exist
