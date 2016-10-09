@@ -1,0 +1,9 @@
+Login.java
+    
+    -- Check if user is authenicated to enter
+    Parameters - id, password
+    Method - GET
+    Return Object - (JSON Object)
+        status - true (User authenicated), false (Not authenticated)
+        message - Error message if any
+    
