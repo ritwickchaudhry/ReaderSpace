@@ -1,0 +1,11 @@
+Login.java
+    
+    -- Check if user is authenicated to enter
+    Parameters - id, password
+    Method - GET
+    Return Object - (JSON Object)
+        status - true (User authenicated), false (Not authenticated)
+        info -  "incomplete" -> Either of user ID or password is missing
+                "wrong password" -> User exists but password is incorrect
+                "no user" -> User ID doesn't exist
+                "internal error" -> Some internal error in connection/SQL

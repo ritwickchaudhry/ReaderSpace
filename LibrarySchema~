@@ -74,6 +74,8 @@ create table Authored_By
 	primary key (Book_ID, Author_ID)
 );
 
+<<<<<<< HEAD
+=======
 create table Follow
 (
 	Follower	varchar(50),
@@ -138,3 +140,4 @@ create table Genre
 	foreign key (Book_ID) references Book(Book_ID) on delete cascade,
 	primary key (Book_ID, Genre)
 );
+>>>>>>> cd95f95380cb122f883212fb8403fc4a69bb8c6f
