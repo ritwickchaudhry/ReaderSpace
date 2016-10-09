@@ -15,6 +15,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /**
  * Servlet implementation class Login
  */
@@ -40,15 +43,28 @@ public class Login extends HttpServlet {
 		String connString = ServletInfo.connString;
 		String username = ServletInfo.userName;
 		String password = ServletInfo.passWord;
+		String user_id;
+		String user_password;
+		JSONObject returnObject = new JSONObject();
 		
 		// Get input from the request
-		String user_id = request.getParameter("id");
-		String user_password = request.getParameter("password");
+		user_id = request.getParameter("id");
+		user_password = request.getParameter("password");
+		
+		// Set up output stream and type
+		response.setContentType("application/json");
 		PrintWriter out = response.getWriter();
 		
 		// Initial check for incomplete information
 		if (user_id == null || user_password == null) {
-			out.println("Username or Password is missing.");
+			
+			try {
+				returnObject.put("status", false);
+				returnObject.put("info","incomplete");
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+			
 		}
 		else {
 			
@@ -60,33 +76,63 @@ public class Login extends HttpServlet {
 			{
 				// Local variables
 				int num_results = 0;
+				String saved_password = "";
 				
 				
 				// Make query to check password
-				String query = "select * from password where ID = ? and password = ?";
+				String query = "select password from reader "
+						+ "where reader_id = ?";
 				PreparedStatement pstmt = conn.prepareStatement(query);
 				pstmt.setString(1, user_id);
-				pstmt.setString(2, user_password);
 				
 				// Checking Result Set
+				// Extract the password. ASSUMING UNIQUE USER_ID
 				ResultSet result = pstmt.executeQuery();
 				while(result.next()){
+					saved_password = result.getString("password");
 					num_results++;
 				}
+				
+				// If no results returned, then no such user exists
 				if(num_results == 0){
-					out.println(false);
+					returnObject.put("status", false);
+					returnObject.put("info","no user");
 				}
+				// Now check for password
 				else {
-					HttpSession session = request.getSession(true);
-					session.setAttribute("id", user_id);
-					out.println(true);
+					
+					// Wrong password					
+					if (user_password != saved_password) {
+						returnObject.put("status", false);
+						returnObject.put("info","wrong password");
+					}
+					else {
+						returnObject.put("status", true);
+						returnObject.put("info","");
+						HttpSession session = request.getSession(true);
+						session.setAttribute("id", user_id);
+					}
+					
 				}
 				
 			}
 			catch (Exception sqle) {
 				System.out.println("Exception :" +sqle);
+				try {
+					returnObject.put("status", false);
+					returnObject.put("info","internal error");
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
 			}
+			
 		}
+		
+		// Flush out with the json object
+		out.print(returnObject);
+		out.flush();
 		out.close();
 		
 	}
@@ -96,7 +142,7 @@ public class Login extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		doGet(request, response);
+		// doGet(request, response);
 	}
 
 }
