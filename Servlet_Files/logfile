@@ -1,0 +1,9 @@
+LOG:  database system was interrupted; last known up at 2016-10-09 23:49:54 IST
+LOG:  database system was not properly shut down; automatic recovery in progress
+LOG:  invalid record length at 0/2045118
+LOG:  redo is not required
+LOG:  MultiXact member wraparound protections are now enabled
+LOG:  autovacuum launcher started
+LOG:  database system is ready to accept connections
+ERROR:  column "12345" does not exist at character 28
+STATEMENT:  insert into reader values ("12345",null,null,null,null,null,null,null,null,"12345");

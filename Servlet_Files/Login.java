@@ -53,6 +53,10 @@ public class Login extends HttpServlet {
 		
 		// Set up output stream and type
 		response.setContentType("application/json");
+		response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
+        response.setHeader("Access-Control-Max-Age", "3600");
+        response.setHeader("Access-Control-Allow-Headers", "x-requested-with");
 		PrintWriter out = response.getWriter();
 		
 		// Initial check for incomplete information
@@ -102,7 +106,7 @@ public class Login extends HttpServlet {
 				else {
 					
 					// Wrong password					
-					if (user_password != saved_password) {
+					if (!user_password.equals(saved_password)) {
 						returnObject.put("status", false);
 						returnObject.put("info","wrong password");
 					}
