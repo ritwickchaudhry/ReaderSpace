@@ -82,7 +82,17 @@
               }
               else
               {
-                console.log(sessionStorage.getItem('id'));
+                var image = new Image();
+                image.src= ("images/".concat(sessionStorage.getItem('id'))).concat(".png");
+                // console.log(image.width);
+                image.onload = function(){
+                   document.getElementById("image_id").src=image.src;
+                }
+                image.onerror = function()
+                {
+                   document.getElementById("image_id").src="images/user.jpg";
+                }
+                // console.log(sessionStorage.getItem('id'));
 
                 $.get("http://10.130.10.7:8080/DBProject/GetAllSearch", {id : sessionStorage.getItem('id')},function(data,status) {
 
@@ -157,7 +167,7 @@
     </header>
     <div class="demo-drawer mdl-layout__drawer mdl-color--blue-grey-900 mdl-color-text--blue-grey-50">
       <header class="demo-drawer-header">
-        <img src="images/user.jpg" class="demo-avatar">
+        <img id="image_id" class="demo-avatar" src="images/user.jpg">
         <div class="demo-avatar-dropdown">
           <span>hello@example.com</span>
           <div class="mdl-layout-spacer"></div>
