@@ -62,23 +62,51 @@
     <script src='https://code.jquery.com/jquery-1.12.4.js'></script>
     <script src='https://code.jquery.com/ui/1.12.0/jquery-ui.js'></script>
     <script>
-        $(document).ready(function(){
-            // $("#getlogin").click(function(){
-            //     console.log("name");
-            //     var x = $("#username").val();
-            //     var y = $("#password").val();
-            //     $.get("http://10.130.10.7:8080/DBProject/Login",{ id : x, password : y}, function(data, status){
-            //         console.log(data["status"]);
-            //         if (data["status"] == true) {
-            //             window.location.href = "../dashboard/index.html";
-            //         }
-            //         else{
-            //             alert("Wrong password or username");
-            //             window.location.href = "index.html";
-            //         }
-            //     });
-            // });
-            console.log("assssss");
+    function handle(ele) {
+              // console.log("sfnasdknaskl");
+              if(event.keyCode == 13) {
+                 event.preventDefault();
+                  alert(ele.value);        
+              }
+          }
+        $(document).ready(function(){    
+            $.get("http://10.130.10.7:8080/DBProject/GetAllSearch", {id:sessionStorage.getItem('id')},function(data,status) {
+            
+              // console.log('Entered GetAllCourse');
+              var src = new Array();
+              
+              $.each(data,function(index,element){
+                
+                var temp = element["course_id"] + ",";
+                temp += element["sec_id"] + ",";
+                temp += element["title"] + ",";
+                temp += element["Department"] + ",";
+                temp += element["credits"];
+                
+                var obj = {label:element['title'],value: temp};
+                src.push(obj);
+              
+              });
+              
+              $("#tags").autocomplete({
+                source: src
+              });
+              
+            });
+            $("#logout").click(function(){
+
+                 $.get("http://10.130.10.7:8080/DBProject/Logout", function(data, status){
+                    console.log(data["status"]);
+                    if (data["status"] == true) {
+                        // window.location.href = "../dashboard/index.html";
+                        window.location.href = "../LoginRegistrationForm/index.html";
+                    }
+                    else{
+                        alert("Cannot logout");
+                        window.location.href = "index.html";
+                    }
+                });
+          });
         });
     </script>
   </head>
@@ -93,7 +121,9 @@
               <i class="material-icons">search</i>
             </label>
             <div class="mdl-textfield__expandable-holder">
-              <input class="mdl-textfield__input" type="text" id="search">
+            <!-- <form action="#"> -->
+              <input class="mdl-textfield__input" type="text" id="search" onkeydown="handle(this)">
+              <!-- </form> -->
               <label class="mdl-textfield__label" for="search">Enter your query...</label>
             </div>
           </div>
@@ -104,6 +134,7 @@
             <li class="mdl-menu__item">About</li>
             <li class="mdl-menu__item">Contact</li>
             <li class="mdl-menu__item">Legal information</li>
+            <li class="mdl-menu__item" id="logout">Logout</li>
           </ul>
         </div>
       </header>
