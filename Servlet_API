@@ -13,11 +13,12 @@ Login.java
 Signup.java
 
     -- Check if user entered username exists, if not creates entry
-    Parameters - id, password, email, name
+    Parameters - id, password_a, email, password_b
     Method - POST
     Return Object - (JSON Object)
         status - true (User entry created), false (Not created due to some error)
         info -  "incomplete" -> Either of required parameters is missing
                 "internal error" -> Some internal error in connection/SQL
                 "user exists" -> User ID exists. Need to use other user id
+		"no match" -> Passwords don't match
                 

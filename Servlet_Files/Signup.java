@@ -47,13 +47,15 @@ public class Signup extends HttpServlet {
 		// Local variables
 		String user_id;
 		String email;
-		String pass;
+		String passA;
+		String passB;
 		JSONObject returnObject = new JSONObject();
 		
 		// Getting user entered details
 		user_id = request.getParameter("id");
 		email = request.getParameter("email");
-		pass = request.getParameter("password");
+		passA = request.getParameter("password_a");
+		passB = request.getParameter("password_b");
 		
 		// Set up output stream and type
 		response.setContentType("application/json");
@@ -63,11 +65,20 @@ public class Signup extends HttpServlet {
         response.setHeader("Access-Control-Allow-Headers", "x-requested-with");
 		PrintWriter out = response.getWriter();
 		
-		if (user_id == null || name == null || email == null || pass == null) {
+		if (user_id == null || passB == null || email == null || passA == null) {
 			
 			try {
 				returnObject.put("status", false);
 				returnObject.put("info","incomplete");
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}
+		else if (!passA.equals(passB)) {
+			
+			try {
+				returnObject.put("status", false);
+				returnObject.put("info","no match");
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
@@ -100,7 +111,7 @@ public class Signup extends HttpServlet {
 				if (num_results == 0) {
 					returnObject.put("status", true);
 					returnObject.put("info","");
-					putEntry(user_id,email,pass);
+					putEntry(user_id,email,passA);
 				}
 				// Some person exists with same user id. Can't create.
 				else {
