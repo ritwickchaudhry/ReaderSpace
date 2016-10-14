@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<!--[if lt IE 7 ]> <html lang="en" class="no-js ie6 lt8"> <![endif]-->
+<!--[if IE 7 ]>    <html lang="en" class="no-js ie7 lt8"> <![endif]-->
+<!--[if IE 8 ]>    <html lang="en" class="no-js ie8 lt8"> <![endif]-->
+<!--[if IE 9 ]>    <html lang="en" class="no-js ie9"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html lang="en" class="no-js"> <!--<![endif]-->
+<head>
+    <meta charset="UTF-8" />
+    <!-- <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">  -->
+    <title>Login and Registration Form with HTML5 and CSS3</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <meta name="description" content="Edit Details" />
+    <meta name="keywords" content="html5, css3, form, switch, animation, :target, pseudo-class" />
+    <meta name="author" content="Codrops" />
+    <link rel="shortcut icon" href="../favicon.ico"> 
+    <link rel="stylesheet" type="text/css" href="css/demo.css" />
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <link rel="stylesheet" type="text/css" href="css/animate-custom.css" />
+    <script src='https://code.jquery.com/jquery-1.12.4.js'></script>
+    <script src='https://code.jquery.com/ui/1.12.0/jquery-ui.js'></script>
+    <script>
+        $(document).ready(function(){
+            $("#getlogin").click(function(){
+                console.log("name");
+                var x = $("#username").val();
+                var y = $("#password").val();
+                sessionStorage.setItem('id',x);
+                $.get("http://10.130.10.52:8080/DBProject/Login",{ id : x, password : y}, function(data, status){
+                    console.log(data["status"]);
+                    if (data["status"] == true) {
+                        window.location.href = "../dashboard/edit-details.html";
+                    }
+                    else{
+                        alert("Wrong password or username");
+                        window.location.href = "edit-details.html";
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="container">
+
+        <header>
+
+        </header>
+        <section>				
+            <div id="container_demo" >
+                <!-- hidden anchor to stop jump http://www.css3create.com/Astuce-Empecher-le-scroll-avec-l-utilisation-de-target#wrap4  -->
+                <!-- <a class="hiddenanchor" id="toregister"></a> -->
+                <!-- <a class="hiddenanchor" id="tologin"></a> -->
+                <div id="wrapper">
+                    <div id="login" class="animate form">
+                        <form  autocomplete="on"> 
+                            <h1>Edit Details</h1> 
+                            <p> 
+                                <label for="name" class="name" data-icon="u" >Name</label>
+                                <input id="name" name="name" required="required" type="text" placeholder="xyz"/>
+                            </p>
+                            <p> 
+                                <label for="gender" class="gender" data-icon="i"> Gender</label>
+                                <select id="gender" name="gender" list="sexList">
+                                  <option value="Male">Male</option>
+                                  <option value="Female">Female</option>
+                                  <option value="None of above">None of above</option>
+                                </select>
+                            </p>
+                            <p> 
+                                <label for="dob" class="dob" data-icon="n"> Date of Birth </label>
+                                <input id="dob" name="dob" type="date"/> 
+                            </p>
+                            <p> 
+                                <label for="city" class="city" data-icon="c"> City of Residence </label>
+                                <input id="city" name="city" type="text" placeholder="eg. Mumbai"/> 
+                            </p>
+                            <p> 
+                                <label for="intro" class="intro" data-icon="i"> Say a few lines about yourself</label>
+                                <input id="intro" name="intro" type="text" placeholder="eg. I am a book-lover"/> 
+                            </p>
+                           <p class="login button"> 
+                            <input type="submit" value="Save"  id = "getlogin"/> 
+                        </p>
+                       <!--  <p class="change_link">
+                           Not a member yet ?
+                           <a href="#toregister" class="to_register">Join us</a>
+                       </p> -->
+                   </form>
+               </div>
+       </div>
+   </div>  
+</section>
+</div>
+</body>
+</html>
