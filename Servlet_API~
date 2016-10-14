@@ -14,7 +14,7 @@ Signup.java
 
     -- Check if user entered username exists, if not creates entry
     Parameters - id, password, email, name
-    Method - POST
+    Method - GET
     Return Object - (JSON Object)
         status - true (User entry created), false (Not created due to some error)
         info -  "incomplete" -> Either of required parameters is missing

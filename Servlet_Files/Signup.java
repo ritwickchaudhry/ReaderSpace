@@ -46,14 +46,12 @@ public class Signup extends HttpServlet {
 		
 		// Local variables
 		String user_id;
-		String name;
 		String email;
 		String pass;
 		JSONObject returnObject = new JSONObject();
 		
 		// Getting user entered details
 		user_id = request.getParameter("id");
-		name = request.getParameter("name");
 		email = request.getParameter("email");
 		pass = request.getParameter("password");
 		
@@ -102,7 +100,7 @@ public class Signup extends HttpServlet {
 				if (num_results == 0) {
 					returnObject.put("status", true);
 					returnObject.put("info","");
-					putEntry(user_id,name,email,pass);
+					putEntry(user_id,email,pass);
 				}
 				// Some person exists with same user id. Can't create.
 				else {
@@ -133,7 +131,7 @@ public class Signup extends HttpServlet {
 		
 	}
 
-	private void putEntry(String user_id, String name, String email, String pass) {
+	private void putEntry(String user_id, String email, String pass) {
 		// TODO Auto-generated method stub
 		
 		// Getting the connection details
@@ -149,7 +147,7 @@ public class Signup extends HttpServlet {
 			)
 		{
 			// Create query string
-			String query = "insert into reader values (?,?,\"\",\"\",?,\"\",\"\",\"\",\"\",?);";
+			String query = "insert into reader values (?,NULL,NULL,NULL,?,NULL,NULL,NULL,NULL,?);";
 			PreparedStatement pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, user_id);
 			pstmt.setString(2, name);

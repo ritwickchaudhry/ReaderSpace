@@ -94,7 +94,7 @@
                 }
                 // console.log(sessionStorage.getItem('id'));
 
-                $.get("http://10.130.10.52:8080/DBProject/GetAllSearch", {id : sessionStorage.getItem('id')},function(data,status) {
+                $.get("http://10.130.10.7:8080/DBProject/GetAllSearch", {id : sessionStorage.getItem('id')},function(data,status) {
 
                   console.log('Entered GetAllCourse');
                   var src = new Array();
