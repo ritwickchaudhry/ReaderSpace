@@ -87,7 +87,7 @@ public class EditDetails extends HttpServlet {
 //		      String datestr="06/27/2007";
 		      DateFormat formatter; 
 		      
-		      formatter = new SimpleDateFormat("yyyy-mm-dd");
+		      formatter = new SimpleDateFormat("yyyy-MM-dd");
 		      date2 = (Date)formatter.parse(date); 
 		      
 		    } 
