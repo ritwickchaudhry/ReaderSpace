@@ -20,19 +20,25 @@
     <script src='https://code.jquery.com/ui/1.12.0/jquery-ui.js'></script>
     <script>
         $(document).ready(function(){
-            $("#getlogin").click(function(){
+            $("#getsave").click(function(){
                 console.log("name");
-                var x = $("#username").val();
-                var y = $("#password").val();
-                sessionStorage.setItem('id',x);
-                $.get("http://10.130.10.52:8080/DBProject/Login",{ id : x, password : y}, function(data, status){
+                var x = $("#name").val();
+                var y = $("#gender").val();
+                var z = $("#dob").val();
+                var a = $("#city").val();
+                var b = $("#intro").val();
+                var c = sessionStorage.getItem('id');
+                console.log(c);
+                console.log(z);
+                $.get("http://10.130.10.52:8080/DBProject/EditDetails",{ id : c, name : x, gender : y, date_of_birth : z, city : a, introduction : b}, function(data, status){
                     console.log(data["status"]);
                     if (data["status"] == true) {
-                        window.location.href = "../dashboard/edit-details.html";
+                        alert("Updates Successfully");
+                        // window.location.href = "../dashboard/index.html";
                     }
                     else{
-                        alert("Wrong password or username");
-                        window.location.href = "edit-details.html";
+                        alert("Internal Error");
+                        // window.location.href = "edit-details.html";
                     }
                 });
             });
@@ -52,7 +58,7 @@
                 <!-- <a class="hiddenanchor" id="tologin"></a> -->
                 <div id="wrapper">
                     <div id="login" class="animate form">
-                        <form  autocomplete="on"> 
+                        <!-- <form  autocomplete="on">  -->
                             <h1>Edit Details</h1> 
                             <p> 
                                 <label for="name" class="name" data-icon="u" >Name</label>
@@ -79,13 +85,13 @@
                                 <input id="intro" name="intro" type="text" placeholder="eg. I am a book-lover"/> 
                             </p>
                            <p class="login button"> 
-                            <input type="submit" value="Save"  id = "getlogin"/> 
+                            <input type="submit" value="Save"  id = "getsave"/> 
                         </p>
                        <!--  <p class="change_link">
                            Not a member yet ?
                            <a href="#toregister" class="to_register">Join us</a>
                        </p> -->
-                   </form>
+                   <!-- </form> -->
                </div>
        </div>
    </div>  

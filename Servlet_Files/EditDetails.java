@@ -3,10 +3,12 @@
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
-import java.sql.Date;
+//import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import java.util.Date;
 
 /**
  * Servlet implementation class EditDetails
@@ -54,10 +57,12 @@ public class EditDetails extends HttpServlet {
 		
 		name = request.getParameter("name");
 		date = request.getParameter("date_of_birth");
+		System.out.println(date);
 		city = request.getParameter("city");
 		introduction = request.getParameter("introduction");
 		gender = request.getParameter("gender");
 		id = request.getParameter("id");
+		System.out.println(id+"sadasd");
 		
 		// Set up output stream and type
 		response.setContentType("application/json");
@@ -73,13 +78,29 @@ public class EditDetails extends HttpServlet {
 				Statement stmt = conn.createStatement();
 			)
 		{
-			String query = "update reader set name=?,date_of_birth=?,city=?,introduction=?,gender=? where id=?";
+			String query = "update reader set name=?,date_of_birth=?,city=?,introduction=?,gender=? where reader_id=?";
 			PreparedStatement pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, name);
-			pstmt.setString(2, date);
+			Date date2 = null; 
+			try 
+		    {  
+//		      String datestr="06/27/2007";
+		      DateFormat formatter; 
+		      
+		      formatter = new SimpleDateFormat("yyyy-mm-dd");
+		      date2 = (Date)formatter.parse(date); 
+		      
+		    } 
+		    catch (Exception e)
+		    {
+		    	System.out.println(e.getMessage());
+		    }
+			pstmt.setDate(2, new java.sql.Date(date2.getTime()));
+			System.out.println(new java.sql.Date(date2.getTime()));
 			pstmt.setString(3, city);
 			pstmt.setString(4, introduction);
 			pstmt.setString(5, gender);
+			pstmt.setString(6,id);
 			pstmt.executeUpdate();
 			returnObject.put("status", true);
 			returnObject.put("info","Updated Successfully");
