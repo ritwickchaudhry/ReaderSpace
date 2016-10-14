@@ -36,6 +36,36 @@
                     }
                 });
             });
+
+            $("#postsignup").click(function(){
+              console.log("Entered signup");
+              var a = $("#usernamesignup").val();
+              var b = $("#emailsignup").val();
+              var c = $("#passwordsignup").val();
+              var d = $("#passwordsignup_confirm").val();
+              $.get("http://10.130.10.52:8080/DBProject/Signup",{ id : a, email : b, password_a : c, password_b : d}, function(data, status){
+                console.log(data["info"]);
+                if(data["status"] == false ){
+                  if (data["info"] == "no match"){
+                    alert("password entered wrong");
+                  }
+                  else if (data["info"] == "incomplete"){
+                    alert("Enter all details");
+                  }
+                  else if(data["info"] == "user exists"){
+                    alert("Username exists");
+                  }
+                  else{
+                    alert("internal error");
+                  }
+                }
+                else{
+                  alert("Done successfully");
+                }
+              });
+            });
+
+
         });
     </script>
 </head>
@@ -77,7 +107,7 @@
                </div>
 
                <div id="register" class="animate form">
-                <form  action="mysuperscript.php" autocomplete="on"> 
+                <!-- <form>  -->
                     <h1> Sign up </h1> 
                     <p> 
                         <label for="usernamesignup" class="uname" data-icon="u">Your username</label>
@@ -96,13 +126,13 @@
                         <input id="passwordsignup_confirm" name="passwordsignup_confirm" required="required" type="password" placeholder="eg. X8df!90EO"/>
                     </p>
                     <p class="signin button"> 
-                       <input type="submit" value="Sign up"/> 
+                       <input type="submit" value="Sign up" id="postsignup"/> 
                    </p>
                    <p class="change_link">  
                        Already a member ?
                        <a href="#tologin" class="to_register"> Go and log in </a>
                    </p>
-               </form>
+               <!-- </form> -->
            </div>
 
        </div>

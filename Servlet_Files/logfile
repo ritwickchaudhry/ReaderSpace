@@ -7,3 +7,7 @@ LOG:  autovacuum launcher started
 LOG:  database system is ready to accept connections
 ERROR:  column "12345" does not exist at character 28
 STATEMENT:  insert into reader values ("12345",null,null,null,null,null,null,null,null,"12345");
+LOG:  autovacuum launcher shutting down
+LOG:  received smart shutdown request
+LOG:  shutting down
+LOG:  database system is shut down

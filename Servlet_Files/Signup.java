@@ -95,7 +95,7 @@ public class Signup extends HttpServlet {
 				int num_results = 0;
 				
 				// Make query to check password
-				String query = "select count(*) from reader "
+				String query = "select * from reader "
 						+ "where reader_id = ?;";
 				PreparedStatement pstmt = conn.prepareStatement(query);
 				pstmt.setString(1, user_id);
@@ -161,9 +161,8 @@ public class Signup extends HttpServlet {
 			String query = "insert into reader values (?,NULL,NULL,NULL,?,NULL,NULL,NULL,NULL,?);";
 			PreparedStatement pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, user_id);
-			pstmt.setString(2, name);
-			pstmt.setString(3, email);
-			pstmt.setString(4, pass);
+			pstmt.setString(2, email);
+			pstmt.setString(3, pass);
 			
 			// Update the database
 			pstmt.executeUpdate();

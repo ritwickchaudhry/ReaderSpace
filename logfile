@@ -1,0 +1,147 @@
+LOG:  database system was shut down at 2016-10-13 07:25:41 IST
+LOG:  MultiXact member wraparound protections are now enabled
+LOG:  autovacuum launcher started
+LOG:  database system is ready to accept connections
+ERROR:  type "mediumblob" does not exist at character 120
+STATEMENT:  create table Author
+	(
+		Author_ID 	varchar(20),
+		Name 		varchar(50),
+		Profile_Picture_name 	text,
+		Profile_Picture_img 	mediumblob,
+		Description				text,
+		primary key (Author_ID) 	
+	);
+ERROR:  type "mediumblob" does not exist at character 186
+STATEMENT:  create table Reader
+	(
+		Reader_ID	varchar(50),
+		Name 		varchar(50),
+		Date_Of_Birth			DATE,
+		City 		varchar(50),
+		Email 		varchar(320),
+		Profile_Picture_name 	text,
+		Profile_Picture_img 	mediumblob,
+		Introduction 			text,
+		Gender					varchar(10),
+		Password 				varchar(320),
+		primary key (Reader_ID)
+	);
+ERROR:  type "mediumblob" does not exist at character 169
+STATEMENT:  create table Book
+	(
+		Book_ID		varchar(50),
+		Name 		varchar(50),
+		Description 	text,
+		Author 			varchar(320),
+		Number_Of_Pages	int,
+		Cover_Pic_name	text,
+		Cover_Pic_img	mediumblob,
+		primary key (Book_ID)
+	);
+ERROR:  relation "reader" does not exist
+STATEMENT:  create table Contact_Number
+	(
+		Reader_ID 		varchar(50),
+		Contact_Number 	varchar(20),
+		foreign key (Reader_ID) references Reader(Reader_ID) on delete cascade,
+		primary key (Reader_ID, Contact_Number)
+	);
+ERROR:  relation "book" does not exist
+STATEMENT:  create table Authored_By
+	(
+		Book_ID 		varchar(50),
+		Author_ID  		varchar(20),
+		foreign key (Book_ID) references Book(Book_ID) on delete cascade,
+		foreign key (Author_ID) references Author(Author_ID) on delete cascade,
+		primary key (Book_ID, Author_ID)
+	);
+ERROR:  relation "reader" does not exist
+STATEMENT:  create table Follow
+	(
+		Follower	varchar(50),
+		Followee	varchar(50),
+		foreign key (Follower) references Reader(Reader_ID) on delete cascade,
+		foreign key (Followee) references Reader(Reader_ID) on delete cascade,
+		primary key (Follower, Followee)
+	);
+ERROR:  relation "book" does not exist
+STATEMENT:  create table Book_Reader
+	(
+		Book_ID  varchar(50),
+		Reader_ID 	varchar(50),
+		foreign key (Book_ID) references Book(Book_ID) on delete cascade,
+		foreign key (Reader_ID) references Reader(Reader_ID) on delete cascade,
+		primary key (Book_ID, Reader_ID)
+	);
+ERROR:  relation "book" does not exist
+STATEMENT:  create table Published_By
+	(
+		Book_ID varchar(50),
+		Publisher_ID varchar(50),
+		foreign key (Book_ID) references Book(Book_ID) on delete cascade,
+		foreign key (Publisher_ID) references Publisher(Publisher_ID) on delete cascade,
+		primary key (Book_ID, Publisher_ID)
+	);
+ERROR:  relation "book" does not exist
+STATEMENT:  create table Reading
+	(
+		Book_ID 	varchar(50),
+		Reader_ID 	varchar(50),
+		Page_Number int,
+		foreign key (Book_ID) references Book(Book_ID) on delete cascade,
+		foreign key (Reader_ID) references Reader(Reader_ID) on delete cascade,
+		primary key (Book_ID, Reader_ID)
+	);
+ERROR:  relation "book" does not exist
+STATEMENT:  create table Already_Read
+	(
+		Book_ID 	varchar(50),
+		Reader_ID 	varchar(50),
+		foreign key (Book_ID) references Book(Book_ID) on delete cascade,
+		foreign key (Reader_ID) references Reader(Reader_ID) on delete cascade,
+		primary key (Book_ID, Reader_ID)
+	);
+ERROR:  relation "book" does not exist
+STATEMENT:  create table Review
+	(
+		Book_ID 	varchar(50),
+		Reader_ID 	varchar(50),
+		comments 	text,
+		Rating 		int,
+		foreign key (Book_ID) references Book(Book_ID) on delete cascade,
+		foreign key (Reader_ID) references Reader(Reader_ID) on delete cascade,
+		primary key (Book_ID, Reader_ID)
+	);
+ERROR:  relation "book" does not exist
+STATEMENT:  create table Genre
+	(
+		Book_ID 	varchar(50),
+		Genre 		varchar(50),
+		foreign key (Book_ID) references Book(Book_ID) on delete cascade,
+		primary key (Book_ID, Genre)
+	);
+ERROR:  table "genre" does not exist
+STATEMENT:  drop table   Genre;
+ERROR:  table "review" does not exist
+STATEMENT:  drop table   Review;
+ERROR:  table "already_read" does not exist
+STATEMENT:  drop table   Already_Read;
+ERROR:  table "published_by" does not exist
+STATEMENT:  drop table   Published_By;
+ERROR:  table "reading" does not exist
+STATEMENT:  drop table   Reading;
+ERROR:  table "book_reader" does not exist
+STATEMENT:  drop table   Book_Reader;
+ERROR:  table "authored_by" does not exist
+STATEMENT:  drop table   Authored_By;
+ERROR:  table "follow" does not exist
+STATEMENT:  drop table   Follow;
+ERROR:  table "author" does not exist
+STATEMENT:  drop table   Author;
+ERROR:  table "contact_number" does not exist
+STATEMENT:  drop table   Contact_Number;
+ERROR:  table "reader" does not exist
+STATEMENT:  drop table   Reader;
+ERROR:  table "book" does not exist
+STATEMENT:  drop table   Book;
