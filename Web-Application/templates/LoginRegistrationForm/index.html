@@ -43,7 +43,7 @@
               var b = $("#emailsignup").val();
               var c = $("#passwordsignup").val();
               var d = $("#passwordsignup_confirm").val();
-              $.get("http://10.130.10.52:8080/DBProject/Signup",{ id : a, email : b, password_a : c, password_b : d}, function(data, status){
+              $.post("http://10.130.10.52:8080/DBProject/Signup",{ id : a, email : b, password_a : c, password_b : d}, function(data, status){
                 console.log(data["info"]);
                 if(data["status"] == false ){
                   if (data["info"] == "no match"){
