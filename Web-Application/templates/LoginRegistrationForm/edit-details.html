@@ -19,7 +19,43 @@
     <script src='https://code.jquery.com/jquery-1.12.4.js'></script>
     <script src='https://code.jquery.com/ui/1.12.0/jquery-ui.js'></script>
     <script>
+
         $(document).ready(function(){
+
+            var totalContacts = 1;
+
+            $("#addcontact").click(function(){
+
+                console.log("Hey");
+                // e.preventDefault();
+                var addTo = "#contact" + totalContacts;
+                var addRemove = "#contact" + (totalContacts);
+                totalContacts += 1;
+                var newIn = '<p id="contact' + totalContacts + '"><label for="contact" class="contact" data-icon="c"> Contact Number </label><input name="contact' + totalContacts + '" type="number" placeholder="eg. +91-9450123"/></p>';
+                var newInput = $(newIn);
+                var removeBtn = '<p style="padding-left:10pt" id="removeText' + (totalContacts-1) + '"><button class="removecontact" id = "remove' + (totalContacts-1) + '" type = "button">-</button> Remove this contact</p>'
+                var removeButton = $(removeBtn)
+
+                $(addTo).after(newInput);
+                $(addRemove).after(removeButton);
+
+                $('#contact' + totalContacts).attr('data-source',$(addTo).attr('data-source'));
+                $('#contactCount').val(totalContacts);
+
+                    $('.removecontact').click(function(){
+
+                        // e.preventDefault();
+                        var fieldNum = this.id.charAt(this.id.length-1);
+                        var fieldID = "#contact" + fieldNum;
+                        var fieldText = "#removeText" + fieldNum;
+                        $(this).remove();
+                        $(fieldID).remove();
+                        $(fieldText).remove();
+
+                    });
+
+            });
+
             $("#getsave").click(function(){
                 console.log("name");
                 var x = $("#name").val();
@@ -42,7 +78,11 @@
                     }
                 });
             });
+
+            
+
         });
+
     </script>
 </head>
 <body>
@@ -83,6 +123,16 @@
                             <p> 
                                 <label for="intro" class="intro" data-icon="i"> Say a few lines about yourself</label>
                                 <input id="intro" name="intro" type="text" placeholder="eg. I am a book-lover"/> 
+                            </p>
+                            <p>
+                                <input type="hidden" name="contactCount" value="1" />
+                                <p id ="contact1">
+                                    <label for="contact1" class="contact" data-icon="c"> Contact Number </label>
+                                    <input name="contact1" type="number" placeholder="eg. +91-9450123"/>
+                                </p>
+                                <p style="padding-left:10pt">
+                                    <button id="addcontact" type="button">+</button> Add another contact number
+                                </p>
                             </p>
                            <p class="login button"> 
                             <input type="submit" value="Save"  id = "getsave"/> 
