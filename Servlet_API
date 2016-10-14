@@ -21,4 +21,12 @@ Signup.java
                 "internal error" -> Some internal error in connection/SQL
                 "user exists" -> User ID exists. Need to use other user id
 		"no match" -> Passwords don't match
+
+Logout.java
+
+    -- Servlet for logging out .
+
+EditDetails.java
+
+    --For now post the details for update
                 

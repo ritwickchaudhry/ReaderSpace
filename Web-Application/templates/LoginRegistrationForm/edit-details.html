@@ -66,11 +66,11 @@
                 var c = sessionStorage.getItem('id');
                 console.log(c);
                 console.log(z);
-                $.get("http://10.130.10.52:8080/DBProject/EditDetails",{ id : c, name : x, gender : y, date_of_birth : z, city : a, introduction : b}, function(data, status){
+                $.post("http://10.130.10.52:8080/DBProject/EditDetails",{ id : c, name : x, gender : y, date_of_birth : z, city : a, introduction : b}, function(data, status){
                     console.log(data["status"]);
                     if (data["status"] == true) {
                         alert("Updates Successfully");
-                        // window.location.href = "../dashboard/index.html";
+                        window.location.href = "../dashboard/index.html";
                     }
                     else{
                         alert("Internal Error");
