@@ -83,15 +83,27 @@
               else
               {
                 var image = new Image();
-                image.src= ("images/".concat(sessionStorage.getItem('id'))).concat(".png");
+                var x1 = sessionStorage.getItem('id');
+                var x2 = "http://10.130.10.49:8080/DBProject/UploadPhoto?id="+x1;
+                document.getElementById("image_id").src=x2;
+                console.log( document.getElementById("image_id").src);
+                // if(document.getElementById("image_id").length>0)
+                // {
+                //   ;
+                // }
+                // else
+                // {
+                //   document.getElementById("image_id").src="images/user.jpg";
+                // }
+                // image.src= ("images/".concat(sessionStorage.getItem('id'))).concat(".png");
                 // console.log(image.width);
-                image.onload = function(){
-                   document.getElementById("image_id").src=image.src;
-                }
-                image.onerror = function()
-                {
-                   document.getElementById("image_id").src="images/user.jpg";
-                }
+                // image.onload = function(){
+                //    document.getElementById("image_id").src=image.src;
+                // }
+                // image.onerror = function()
+                // {
+                //    document.getElementById("image_id").src="images/user.jpg";
+                // }
                 // console.log(sessionStorage.getItem('id'));
 
                 $.get("http://10.130.10.49:8080/DBProject/GetAllSearch", {id : sessionStorage.getItem('id')},function(data,status) {
@@ -135,7 +147,7 @@
                 // });
                 $('#upload_photo').click(function(){
                     // console.log($('#photo').val());
-                    window.location = "upload.jsp";
+                    window.location.href = "upload.html";
                 });
               
               }
