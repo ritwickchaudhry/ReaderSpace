@@ -40,16 +40,6 @@ public class EditDetails extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		
-		
-	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		// doGet(request, response);
 		// Getting the connection details
 		String connString = ServletInfo.connString;
 		String username = ServletInfo.userName;
@@ -64,6 +54,7 @@ public class EditDetails extends HttpServlet {
 		String city;
 		String introduction;
 		String gender;
+		String contact;
 		
 		name = request.getParameter("name");
 		date = request.getParameter("date_of_birth");
@@ -72,6 +63,7 @@ public class EditDetails extends HttpServlet {
 		introduction = request.getParameter("introduction");
 		gender = request.getParameter("gender");
 		id = request.getParameter("id");
+		contact = request.getParameter("contact");
 		System.out.println(id+"sadasd");
 		
 		// Set up output stream and type
@@ -91,7 +83,7 @@ public class EditDetails extends HttpServlet {
 			String query = "update reader set name=?,date_of_birth=?,city=?,introduction=?,gender=? where reader_id=?";
 			PreparedStatement pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, name);
-			Date date2 = null; 
+			Date date2 = null;
 			try 
 		    {  
 //		      String datestr="06/27/2007";
@@ -112,6 +104,23 @@ public class EditDetails extends HttpServlet {
 			pstmt.setString(5, gender);
 			pstmt.setString(6,id);
 			pstmt.executeUpdate();
+			String conns = "";
+			for(int i = 0;i < contact.length(); i++){
+				
+				if(contact.charAt(i) == ','){
+					String query1 = "insert into contact_number values (?,?)";
+					pstmt = conn.prepareStatement(query1);
+					pstmt.setString(1, id);
+					pstmt.setString(2, conns);
+					pstmt.executeUpdate();
+					conns = "";
+				}
+				else{
+					conns+=contact.charAt(i);
+				}
+				
+				
+			}
 			returnObject.put("status", true);
 			returnObject.put("info","Updated Successfully");
 		}
@@ -130,6 +139,15 @@ public class EditDetails extends HttpServlet {
 		out.print(returnObject);
 		out.flush();
 		out.close();
+		
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		doGet(request, response);
 	}
 
 }
