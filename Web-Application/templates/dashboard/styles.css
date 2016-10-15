@@ -125,13 +125,13 @@ html, body {
   max-width: 1080px;
 }
 
-.demo-charts {
+/*.demo-charts {
   -webkit-box-align: center;
   -webkit-align-items: center;
       -ms-flex-align: center;
           align-items: center;
-}
-.demo-chart:nth-child(1) {
+}*/
+/*.demo-chart:nth-child(1) {
   color: #ACEC00;
 }
 .demo-chart:nth-child(2) {
@@ -142,7 +142,7 @@ html, body {
 }
 .demo-chart:nth-child(4) {
   color: #EF3C79;
-}
+}*/
 .demo-graphs {
   padding: 16px 32px;
   display: -webkit-box;
@@ -170,12 +170,12 @@ _:-ms-input-placeholder, :root .demo-graph {
   max-height: 300px;
 }
 /* TODO end */
-.demo-graph:nth-child(1) {
+/*.demo-graph:nth-child(1) {
   color: #00b9d8;
 }
 .demo-graph:nth-child(2) {
   color: #d9006e;
-}
+}*/
 
 .demo-cards {
   -webkit-box-align: start;
@@ -239,3 +239,91 @@ _:-ms-input-placeholder, :root .demo-graph {
       -ms-flex-align: center;
           align-items: center;
 }
+
+.demo-graphs .mdl-card__actions {
+  height: 64px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  box-sizing: border-box;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.demo-graphs .mdl-card__actions a {
+  color: #00BCD4;
+  text-decoration: none;
+  float: middle;
+}
+
+
+
+/*User defined*/
+
+.profile-pic {
+  padding-left: 20px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  padding-right: 20px;
+  float: left; 
+}
+
+.cover-details {
+  padding-left: 20px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  padding-right: 20px;
+  margin-left: 240px;
+}
+
+#cover-name {
+  font-size:40px;
+  font-family: 'sans-serif';
+}
+
+#cover-intro {
+  font-size:20px;
+  font-family: 'Roboto';
+  align:'center';
+}
+
+.booklist-suggest {
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+.booklist-suggest h4 {
+  font-size: 32px;
+}
+
+.booklist-suggest h5, h6 {
+  text-align:center;
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+
+.book-suggest {
+  padding-right: 10px;
+  padding-left: 10px;
+  text-align: center;
+}
+
+/*.rating {
+  text-align: center;
+  unicode-bidi: bidi-override;
+  direction: rtl;
+}
+
+.rating > span {
+  display: inline-block;
+  position: relative;
+  width: 1.1em;
+}
+.rating > span:hover:before,
+.rating > span:hover ~ span:before {
+   content: "\2605";
+   position: absolute;
+}*/
