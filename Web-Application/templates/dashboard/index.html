@@ -130,9 +130,14 @@
                       }
                     });
                });
+                // $('#image_id').click(function(){
+                //     $('input[type=file]').click();
+                // });
                 $('#upload_photo').click(function(){
-                    $('input[type=file]').click();
+                    // console.log($('#photo').val());
+                    window.location = "upload.jsp";
                 });
+              
               }
             });
 </script>
@@ -197,7 +202,7 @@
         <a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">people</i>Social</a>
         <div class="mdl-layout-spacer"></div>
         <a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">help_outline</i><span class="visuallyhidden">Help</span></a>
-      </nav><input type="file" style="visibility: hidden;" />
+      </nav><!-- <input type="file" style="visibility: hidden;" name="photo" id="photo" /> -->
     </div>
     <main class="mdl-layout__content mdl-color--grey-100">
       <div class="mdl-grid demo-content">
