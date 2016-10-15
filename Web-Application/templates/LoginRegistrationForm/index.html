@@ -25,7 +25,7 @@
                 var x = $("#username").val();
                 var y = $("#password").val();
                 sessionStorage.setItem('id',x);
-                $.get("http://10.130.10.52:8080/DBProject/Login",{ id : x, password : y}, function(data, status){
+                $.get("http://10.130.10.49:8080/DBProject/Login",{ id : x, password : y}, function(data, status){
                     console.log(data["status"]);
                     if (data["status"] == true) {
                         window.location.href = "../dashboard/index.html";
@@ -43,7 +43,7 @@
               var b = $("#emailsignup").val();
               var c = $("#passwordsignup").val();
               var d = $("#passwordsignup_confirm").val();
-              $.post("http://10.130.10.52:8080/DBProject/Signup",{ id : a, email : b, password_a : c, password_b : d}, function(data, status){
+              $.post("http://10.130.10.49:8080/DBProject/Signup",{ id : a, email : b, password_a : c, password_b : d}, function(data, status){
                 console.log(data["info"]);
                 if(data["status"] == false ){
                   if (data["info"] == "no match"){
