@@ -22,6 +22,25 @@
 
         $(document).ready(function(){
 
+            // Load previous details
+            var id = sessionStorage.getItem('id');
+            $.get("http://10.130.10.49:8080/DBProject/EditDetails", function(data,status) {
+
+                console.log(data["status"]);
+                if (data["status"] == true) {
+                    $("#name").val() = data["name"];
+                    $("#gender").val() = data["gender"];
+                    $("#dob").val() = data["dob"];
+                    $("#city").val() = data["city"];
+                    $("#intro").val() = data["intro"];
+                }
+                else{
+                    alert("Internal Error in retrieving previous details.");
+                    // window.location.href = "edit-details.html";
+                }
+
+            });
+
             var totalContacts = 1;
 
             $("#addcontact").click(function(){
@@ -64,9 +83,20 @@
                 var a = $("#city").val();
                 var b = $("#intro").val();
                 var c = sessionStorage.getItem('id');
+                var contacts = "";
                 console.log(c);
                 console.log(z);
-                $.post("http://10.130.10.49:8080/DBProject/EditDetails",{ id : c, name : x, gender : y, date_of_birth : z, city : a, introduction : b}, function(data, status){
+                console.log(totalContacts);
+
+                for (i = 0; i < totalContacts; i++) {
+                    var str = $("#contact" + (i+1)).children("input").val();
+                    if (str != "" && str != null) {
+                        contacts += str + ',';
+                    }
+                }
+                console.log(contacts);
+
+                $.post("http://10.130.10.49:8080/DBProject/EditDetails",{ id : c, name : x, gender : y, date_of_birth : z, city : a, introduction : b, contact : contacts}, function(data, status){
                     console.log(data["status"]);
                     if (data["status"] == true) {
                         alert("Updates Successfully");

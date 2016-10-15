@@ -40,6 +40,107 @@ public class EditDetails extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		
+		// Getting the connection details
+		String connString = ServletInfo.connString;
+		String username = ServletInfo.userName;
+		String password = ServletInfo.passWord;
+		JSONObject returnObject = new JSONObject();
+
+		
+		//Local Variables
+		String id;
+		String name;
+		String date;
+		String city;
+		String introduction;
+		String gender;
+		String contact;
+		
+		// name = request.getParameter("name");
+		// date = request.getParameter("date_of_birth");
+		// System.out.println(date);
+		// city = request.getParameter("city");
+		// introduction = request.getParameter("introduction");
+		// gender = request.getParameter("gender");
+		id = request.getParameter("id");
+		// contact = request.getParameter("contact");
+		// System.out.println(id+"sadasd");
+		
+		// Set up output stream and type
+		response.setContentType("application/json");
+		response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
+        response.setHeader("Access-Control-Max-Age", "3600");
+        response.setHeader("Access-Control-Allow-Headers", "x-requested-with");
+		PrintWriter out = response.getWriter();
+		
+		try ( 
+				// Trying to connect
+				Connection conn = DriverManager.getConnection(connString,username,password);
+				Statement stmt = conn.createStatement();
+			)
+		{
+			String query = "select * from reader where reader_id = ?";
+			PreparedStatement pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, id);
+			ResultSet result = pstmt.executeQuery();
+
+			while (result.next()) {
+				returnObject.put("name",result.getString("Name"));
+				returnObject.put("gender",result.getString("Gender"));
+				returnObject.put("dob",result.getDate("Date_Of_Birth"));
+				returnObject.put("city",result.getString("City"));
+				returnObject.put("intro",result.getString("Introduction"));
+			}
+
+
+
+			// String conns = "";
+			// for(int i = 0;i < contact.length(); i++){
+				
+			// 	if(contact.charAt(i) == ','){
+			// 		String query1 = "insert into contact_number values (?,?)";
+			// 		pstmt = conn.prepareStatement(query1);
+			// 		pstmt.setString(1, id);
+			// 		pstmt.setString(2, conns);
+			// 		pstmt.executeUpdate();
+			// 		conns = "";
+			// 	}
+			// 	else{
+			// 		conns+=contact.charAt(i);
+			// 	}
+				
+				
+			// }
+			// returnObject.put("status", true);
+			// returnObject.put("info","Updated Successfully");
+		}
+		catch(Exception sqle){
+			
+			System.out.println("Exception :" +sqle);
+			try {
+				returnObject.put("status", false);
+				returnObject.put("info","internal error");
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		// Flush out with the json object
+		out.print(returnObject);
+		out.flush();
+		out.close();
+		
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		// doGet(request, response);
+
 		// Getting the connection details
 		String connString = ServletInfo.connString;
 		String username = ServletInfo.userName;
@@ -140,14 +241,6 @@ public class EditDetails extends HttpServlet {
 		out.flush();
 		out.close();
 		
-	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
 	}
 
 }
