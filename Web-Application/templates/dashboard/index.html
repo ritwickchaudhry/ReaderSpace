@@ -133,7 +133,7 @@
 							{
 								var image = new Image();
 								var x1 = sessionStorage.getItem('id');
-								var x2 = "http://10.130.10.49:8080/DBProject/UploadPhoto?id="+x1;
+								var x2 = "http://10.130.10.8:8080/DBProject/UploadPhoto?id="+x1;
 								// document.getElementById("image_id").src=x2;
 								// console.log( document.getElementById("image_id").src);
 								// if(document.getElementById("image_id").length>0)
@@ -157,7 +157,7 @@
 							 }
 								// console.log(sessionStorage.getItem('id'));
 
-								$.get("http://10.130.10.49:8080/DBProject/GetAllSearch", {id : sessionStorage.getItem('id')},function(data,status) {
+								$.get("http://10.130.10.8:8080/DBProject/GetAllSearch", {id : sessionStorage.getItem('id')},function(data,status) {
 
 									console.log('Entered GetAllCourse');
 									var src = new Array();
@@ -181,7 +181,7 @@
 								console.log("zsd,nzcfzjkl");
 								$("#logout").click(function(){
 
-								 $.get("http://10.130.10.49:8080/DBProject/Logout", function(data, status){
+								 $.get("http://10.130.10.8:8080/DBProject/Logout", function(data, status){
 									console.log(data["status"]);
 									if (data["status"] == true) {
 												// window.location.href = "../dashboard/index.html";
@@ -353,7 +353,7 @@
 							<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" style="position: fixed; left: -1000px; height: -1000px;">
 								<defs>
 									<mask id="piemask" maskContentUnits="objectBoundingBox">
-										<circle cx=0.5 cy=0.5 r=0.49 fill="white">
+										<circle cx=0.5 cy=0.5 r9.87 fill="white">
 											<circle cx=0.5 cy=0.5 r=0.40 fill="black">
 											</mask>
 											<g id="piechart">
@@ -409,7 +409,7 @@
 
     				<center>
        
-        <form method="post" action="http://10.130.10.49:8080/DBProject/UploadPhoto" enctype="multipart/form-data" id="form1">
+        <form method="post" action="http://10.130.10.8:8080/DBProject/UploadPhoto" enctype="multipart/form-data" id="form1">
             <table border="0">
                 <tr>
                     <td>Photo: </td>
