@@ -6,6 +6,7 @@ import java.sql.Connection;
 //import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.Statement;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -18,6 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.util.Date;
 
 /**
@@ -74,6 +76,7 @@ public class EditDetails extends HttpServlet {
         response.setHeader("Access-Control-Max-Age", "3600");
         response.setHeader("Access-Control-Allow-Headers", "x-requested-with");
 		PrintWriter out = response.getWriter();
+		System.out.println("yahoo1");
 		
 		try ( 
 				// Trying to connect
@@ -87,6 +90,8 @@ public class EditDetails extends HttpServlet {
 			ResultSet result = pstmt.executeQuery();
 
 			while (result.next()) {
+				System.out.println("yahoo1");
+				returnObject.put("status", true);
 				returnObject.put("name",result.getString("Name"));
 				returnObject.put("gender",result.getString("Gender"));
 				returnObject.put("dob",result.getDate("Date_Of_Birth"));

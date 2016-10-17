@@ -28,7 +28,7 @@
                 $.get("http://10.130.10.8:8080/DBProject/Login",{ id : x, password : y}, function(data, status){
                     console.log(data["status"]);
                     if (data["status"] == true) {
-                        window.location.href = "../dashboard/index.html";
+                        window.location.href = "../dashboard/Home.html";
                     }
                     else{
                         alert("Wrong password or username");
