@@ -24,15 +24,15 @@
 
             // Load previous details
             var id = sessionStorage.getItem('id');
-            $.get("http://10.130.10.8:8080/DBProject/EditDetails", function(data,status) {
+            $.get("http://10.130.10.8:8080/DBProject/EditDetails",{id : sessionStorage.getItem('id')}, function(data,status) {
 
-                console.log(data["status"]);
+                console.log(data);
                 if (data["status"] == true) {
-                    $("#name").val() = data["name"];
-                    $("#gender").val() = data["gender"];
-                    $("#dob").val() = data["dob"];
-                    $("#city").val() = data["city"];
-                    $("#intro").val() = data["intro"];
+                    document.getElementById("name").value = data["name"];
+                    document.getElementById("gender").value = data["gender"];
+                    document.getElementById("dob").value = data["dob"];
+                    document.getElementById("city").value = data["city"];
+                    document.getElementById("intro").value = data["intro"];
                 }
                 else{
                     alert("Internal Error in retrieving previous details.");
