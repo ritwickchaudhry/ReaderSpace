@@ -28,11 +28,16 @@
 
                 console.log(data);
                 if (data["status"] == true) {
-                    document.getElementById("name").value = data["name"];
-                    document.getElementById("gender").value = data["gender"];
-                    document.getElementById("dob").value = data["dob"];
-                    document.getElementById("city").value = data["city"];
-                    document.getElementById("intro").value = data["intro"];
+                    if(data["name"])
+                        document.getElementById("name").value = data["name"];
+                    if(data["gender"])
+                        document.getElementById("gender").value = data["gender"];
+                    if(data["dob"])
+                        document.getElementById("dob").value = data["dob"];
+                    if(data["city"])
+                        document.getElementById("city").value = data["city"];
+                    if(data["intro"])
+                        document.getElementById("intro").value = data["intro"];
                 }
                 else{
                     alert("Internal Error in retrieving previous details.");
