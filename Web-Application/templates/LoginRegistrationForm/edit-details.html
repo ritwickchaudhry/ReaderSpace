@@ -83,6 +83,10 @@
                 var a = $("#city").val();
                 var b = $("#intro").val();
                 var c = sessionStorage.getItem('id');
+                if(x == null || y == null || z == null || b==null || z == undefined){
+                    alert("Enter the required details");
+                    window.location.href = "edit-details.html";
+                }
                 var contacts = "";
                 console.log(c);
                 console.log(z);
