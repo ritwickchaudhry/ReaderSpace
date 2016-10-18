@@ -152,14 +152,14 @@
 
 			// Loading the image of the book
 
-			var bookID = 1;
+			var bookID = String(1);
 			var bookServletCall = "http://10.130.10.8:8080/DBProject/UploadBookPhoto?id="+bookID;
 			// var x = sessionStorage.getItem('id');
 			// document.getElementById("id").value = x1;
 			bookImage.src= bookServletCall;
 
 			bookImage.onload = function(){
-				document.getElementById("profile_pic").src=image_profile_pic.src;
+				document.getElementById("profile_pic").src=bookImage.src;
 			}
 			bookImage.onerror = function()
 			{
