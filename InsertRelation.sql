@@ -2,8 +2,10 @@ insert into reader values('navneetagarwal','navneet','1995-10-27','Kolkata','nav
 insert into reader values('tanmayparekh','tanmay','1997-10-04','Ranchi','tparekh97@gmail.com',null,null,'Fraud blah blah blah blah','Male','newuser');
 insert into reader values('ritwickchaudhry','ritwick','1995-10-13','Chandigarh','ritwickchaudhry@gmail.com',null,null,'Football blah blah blah blah','Male','newuser');
 insert into reader values('saurabhgarg','saurabh','1995-11-20','Ahmedabad','garg.saurabh.2014@gmail.com',null,null,'Work hard blah blah blah blah','Male','newuser');
--- insert into book values()
--- insert into author values('0', 'J. K. Rowling', null, null, 'Hi, I am J. K. Rowling');
+insert into book values('1','To Kill a Mockingbird','Compassionate, dramatic, and deeply moving, To Kill A Mockingbird takes readers to the roots of human behavior','Harper Lee',324,NULL,NULL);
+insert into book values('2','Harry Potter','The exciting tales of Harry Potter, the young wizard-in-training.','J. K. Rowling',4100,NULL,NULL);
+insert into book values('3','The Jungle Book','Autobiography of Mowgli, the Man-cub','Rudyard Kipling',277,NULL,NULL);
+insert into book values('4','The Lost Symbol','Famed Harvard symbologist Robert Langdon answers an unexpected summons','Dan Brown',509,NULL,NULL);
 insert into author values('1', 'J. K. Rowling', null, null, 'Hi, I am J. K. Rowling');
 insert into author values('2', 'Roald Dahl', null, null, 'Hi, I am Roald Dahl');
 insert into author values('3', 'Rudyard Kipling', null, null, 'Hi, I am Rudyard Kipling');
