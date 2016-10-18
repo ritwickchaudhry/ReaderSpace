@@ -328,9 +328,32 @@ _:-ms-input-placeholder, :root .demo-graph {
    position: absolute;
 }*/
 
-#friend-list_head {
+.friend-icon {
+  float:left;
+  height: 30px;
+  width: 30px;
+  font-size: 30px;
+  margin-top: 5px;
+  margin-left: 10px;
+}
+
+#follower-list_head {
   font-size:20px;
-  vertical-align: top;
-  padding-top: 0px;
   margin-top: 0px;
+  margin-bottom: 0px;
+  padding-left: 10px;
+  float: left;
+}
+
+.follower-list_name {
+  margin-bottom: 5px;
+}
+
+.follower-list_outer {
+  margin-top: 0px;
+  margin-left: 10px;
+}
+
+#follower_read-more {
+  float: bottom;
 }

@@ -33,6 +33,7 @@
 	<meta name="apple-mobile-web-app-title" content="Material Design Lite">
 	<link rel="apple-touch-icon-precomposed" href="images/ios-desktop.png">
 	<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<!-- <link rel="stylesheet" href="/resources/demos/style.css"> -->
 	
 	<!-- Tile icon for Win8 (144x144 + tile color) -->
@@ -336,7 +337,7 @@
 									<div class="demo-graphs mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--8-col">
 
 										<div class="book-suggest-heading">
-											<h4>Some suggested books:</h4>
+											<h4>Your recent books:</h4>
 										</div>
 
 										<div class="booklist-suggest mdl-grid">
@@ -393,64 +394,107 @@
 									<div class="demo-cards mdl-cell mdl-cell--4-col mdl-cell--8-col-tablet mdl-grid mdl-grid--no-spacing">
 
 										<!-- FIRST CARD -->
-										<div class="demo-updates mdl-card mdl-shadow--2dp mdl-cell mdl-cell--4-col mdl-cell--4-col-tablet mdl-cell--12-col-desktop">
+										<div class="demo-updates mdl-card mdl-color--light-blue-100 mdl-shadow--2dp mdl-cell mdl-cell--4-col mdl-cell--4-col-tablet mdl-cell--12-col-desktop">
 
-
-											<div class="mdl-card__title mdl-card--expand mdl-color--teal-300">
-												<h2 id="friend-list_head">Updates</h2>
+											<div class="follower-list_heading">
+												<i class="friend-icon glyphicon glyphicon-hand-right"></i>
+												<h2 id="follower-list_head">Followers:</h2>
 											</div>
-										<!-- <div class="mdl-card__supporting-text mdl-color-text--grey-600">
-											Non dolore elit adipisicing ea reprehenderit consectetur culpa.
-										</div> -->
-										<!-- <div class="mdl-card__actions mdl-card--border">
-											<a href="#" class="mdl-button mdl-js-button mdl-js-ripple-effect">Read More</a>
-										</div> -->
-									</div>
 
-									<!-- SEPARATOR -->
-									<div class="demo-separator mdl-cell--1-col"></div>
+											<div class="follower-list">
+												<ul class="follower-list_outer">
+													<li>
+														<p class="follower-list_name">Navneet Agarwal</p>
+													</li>
+													<li>
+														<p class="follower-list_name">Ritwick Chaudhry</p>
+													</li>
+													<li>
+														<p class="follower-list_name">Saurabh Garg</p>
+													</li>
+												</ul>
+											</div>
 
-									<!-- SECOND CARD -->
-									<div class="demo-options mdl-card mdl-color--deep-purple-500 mdl-shadow--2dp mdl-cell mdl-cell--4-col mdl-cell--3-col-tablet mdl-cell--12-col-desktop">
-										<div class="mdl-card__supporting-text mdl-color-text--blue-grey-50">
-											<h3>View options</h3>
-											<ul>
-												<li>
-													<label for="chkbox1" class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect">
-														<input type="checkbox" id="chkbox1" class="mdl-checkbox__input">
-														<span class="mdl-checkbox__label">Click per object</span>
-													</label>
-												</li>
-												<li>
-													<label for="chkbox2" class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect">
-														<input type="checkbox" id="chkbox2" class="mdl-checkbox__input">
-														<span class="mdl-checkbox__label">Views per object</span>
-													</label>
-												</li>
-												<li>
-													<label for="chkbox3" class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect">
-														<input type="checkbox" id="chkbox3" class="mdl-checkbox__input">
-														<span class="mdl-checkbox__label">Objects selected</span>
-													</label>
-												</li>
-												<li>
-													<label for="chkbox4" class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect">
-														<input type="checkbox" id="chkbox4" class="mdl-checkbox__input">
-														<span class="mdl-checkbox__label">Objects viewed</span>
-													</label>
-												</li>
-											</ul>
+											<div class="mdl-card__actions mdl-card--border" id="follower_read-more">
+												<a href="#" class="mdl-button mdl-js-button mdl-js-ripple-effect">View More</a>
+											</div>
+												<!-- <div class="mdl-card__title mdl-card--expand mdl-color--teal-300"> -->
+												<!-- </div> -->
+											<!-- <div class="mdl-card__supporting-text mdl-color-text--grey-600">
+												Non dolore elit adipisicing ea reprehenderit consectetur culpa.
+											</div> -->
+											<!-- <div class="mdl-card__actions mdl-card--border">
+												<a href="#" class="mdl-button mdl-js-button mdl-js-ripple-effect">Read More</a>
+											</div> -->
 										</div>
 
-										<div class="mdl-card__actions mdl-card--border">
-											<a href="#" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-color-text--blue-grey-50">Change location</a>
-											<div class="mdl-layout-spacer"></div>
-											<i class="material-icons">location_on</i>
+										<!-- SEPARATOR -->
+										<div class="demo-separator mdl-cell--1-col"></div>
+
+										<!-- SECOND CARD -->
+										<div class="demo-options mdl-card mdl-color--deep-purple-100 mdl-shadow--2dp mdl-cell mdl-cell--4-col mdl-cell--3-col-tablet mdl-cell--12-col-desktop">
+
+											<div class="follower-list_heading">
+												<i class="friend-icon glyphicon glyphicon-hand-left"></i>
+												<h2 id="follower-list_head">Followees:</h2>
+											</div>
+
+											<div class="follower-list">
+												<ul class="follower-list_outer">
+													<li>
+														<p class="follower-list_name">Navneet Agarwal</p>
+													</li>
+													<li>
+														<p class="follower-list_name">Ritwick Chaudhry</p>
+													</li>
+													<li>
+														<p class="follower-list_name">Saurabh Garg</p>
+													</li>
+												</ul>
+											</div>
+
+											<div class="mdl-card__actions mdl-card--border" id="follower_read-more">
+												<a href="#" class="mdl-button mdl-js-button mdl-js-ripple-effect">View More</a>
+											</div>
+											<!-- <div class="mdl-card__supporting-text mdl-color-text--blue-grey-50">
+												<h3>View options</h3>
+												<ul>
+													<li>
+														<label for="chkbox1" class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect">
+															<input type="checkbox" id="chkbox1" class="mdl-checkbox__input">
+															<span class="mdl-checkbox__label">Click per object</span>
+														</label>
+													</li>
+													<li>
+														<label for="chkbox2" class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect">
+															<input type="checkbox" id="chkbox2" class="mdl-checkbox__input">
+															<span class="mdl-checkbox__label">Views per object</span>
+														</label>
+													</li>
+													<li>
+														<label for="chkbox3" class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect">
+															<input type="checkbox" id="chkbox3" class="mdl-checkbox__input">
+															<span class="mdl-checkbox__label">Objects selected</span>
+														</label>
+													</li>
+													<li>
+														<label for="chkbox4" class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect">
+															<input type="checkbox" id="chkbox4" class="mdl-checkbox__input">
+															<span class="mdl-checkbox__label">Objects viewed</span>
+														</label>
+													</li>
+												</ul>
+											</div>
+
+											<div class="mdl-card__actions mdl-card--border">
+												<a href="#" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-color-text--blue-grey-50">Change location</a>
+												<div class="mdl-layout-spacer"></div>
+												<i class="material-icons">location_on</i>
+											</div>
+ -->
 										</div>
 
 									</div>
-
-								</div>
 
 
 							</div>
@@ -506,6 +550,7 @@
 														</svg>
 														<script src="../../material.min.js"></script>
 														<!-- The Modal -->
+														<iframe name="formSending"></iframe>
 														<div id="myModal" class="modal">
 
 															<!-- Modal content -->
@@ -515,20 +560,20 @@
 
 																<center>
 
-																	<form method="post" action="http://10.130.10.8:8080/DBProject/UploadPhoto" enctype="multipart/form-data" id="form1">
-																		<table border="0">
-																			<tr>
-																				<td>Photo: </td>
-																				<td><input type="file" name="photo1" size="50"/></td>
-																			</tr>
-																			<tr>
-																				<td colspan="2">
-																					<input type="submit" value="Save">
-																				</td> 
-																			</tr>
-																		</table>
-																		<input type="text" name="id" size="50" style="visibility: hidden;" id="id" onclick="comeback()" />
-																	</form>
+																	<form method="post" action="http://10.130.10.8:8080/DBProject/UploadPhoto" enctype="multipart/form-data" id="form1" target="formSending">
+													            <table border="0">
+													                <tr>
+													                    <td>Photo: </td>
+													                    <td><input type="file" name="photo1" size="50"/></td>
+													                </tr>
+													                <tr>
+													                    <td colspan="2">
+													                        <input type="submit" value="Save" id="savesubmit">
+													                    </td>	
+													                </tr>
+													            </table>
+													            <input type="text" name="id" size="50" style="visibility: hidden;" id="id" onclick="comeback()" />
+													        </form>
 																</center>
 
 
@@ -547,6 +592,9 @@
 	// Get the <span> element that closes the modal
 	var span = document.getElementsByClassName("close")[0];
 
+	// Get the button that saves the modal
+	var btn1 = document.getElementById("savesubmit");
+
 	// When the user clicks the button, open the modal
 	btn.onclick = function() {
 		modal.style.display = "block";
@@ -555,6 +603,14 @@
 	// When the user clicks on <span> (x), close the modal
 	span.onclick = function() {
 		modal.style.display = "none";
+	}
+
+	// When the user clicks save close the modal
+	btn1.onclick = function() {
+    modal.style.display = "none";
+    setTimeout(function(){
+    location.reload();
+		},1000);
 	}
 
 	// When the user clicks anywhere outside of the modal, close it
