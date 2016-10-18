@@ -163,8 +163,13 @@
 			temp += element["id"] + ",";
 			temp += element["name"];
 			
-			var obj = {label:element['name'],value: temp};
+			var temp3 = element["type"] + " : ";
+			temp3 += element["name"];
+			
+
+			var obj = {label:temp3,value: temp};
 			src.push(obj);
+			// src.push(temp);
 
 		});
 		console.log(src);
