@@ -218,7 +218,6 @@ _:-ms-input-placeholder, :root .demo-graph {
   border-color: rgba(255, 255, 255, 0.89);
 }
 .demo-options ul {
-  margin: 0;
   list-style-type: none;
 }
 .demo-options li {
@@ -290,6 +289,27 @@ _:-ms-input-placeholder, :root .demo-graph {
   align:'center';
 }
 
+.cover-follow-button {
+  float: right;
+  margin-right: 30px;
+}
+
+.book-suggest-heading {
+  padding-left: 10px;
+  padding-bottom: 1px;
+}
+
+.book-suggest-icon {
+  float: left;
+  font-size: 50px;
+}
+
+.book-suggest-heading h4 {
+  margin-top: 0px;
+  padding-top: 10px;
+  padding-left: 60px;
+}
+
 .booklist-suggest {
   padding-left: 0px;
   padding-right: 0px;
@@ -350,10 +370,24 @@ _:-ms-input-placeholder, :root .demo-graph {
 }
 
 .follower-list_outer {
-  margin-top: 0px;
+  margin-top: 5px;
   margin-left: 10px;
 }
 
-#follower_read-more {
-  float: bottom;
+#followee-list_head {
+  font-size:20px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  padding-left: 10px;
+  float: left;
 }
+
+.followee-list_outer {
+  margin-top: 5px;
+  margin-left: 10px;
+}
+
+.followee-list_name {
+  margin-bottom: 5px;
+}
+
