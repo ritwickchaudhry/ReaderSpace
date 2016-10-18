@@ -3,4 +3,4 @@ insert into reader values('tanmayparekh','tanmay','1997-10-04','Ranchi','tparekh
 insert into reader values('ritwickchaudhry','ritwick','1995-10-13','Chandigarh','ritwickchaudhry@gmail.com',null,null,'Football blah blah blah blah','Male','newuser');
 insert into reader values('saurabhgarg','saurabh','1995-11-20','Ahmedabad','garg.saurabh.2014@gmail.com',null,null,'Work hard blah blah blah blah','Male','newuser');
 -- insert into book values()
-insert into author values(0, "J. K. Rowling", null, null, "Hi, I am J. K. Rowling");
+insert into author values(0, 'J. K. Rowling', null, null, 'Hi, I am J. K. Rowling');
