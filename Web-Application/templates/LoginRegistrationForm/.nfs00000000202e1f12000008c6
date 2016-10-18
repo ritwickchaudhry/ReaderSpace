@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<!--[if lt IE 7 ]> <html lang="en" class="no-js ie6 lt8"> <![endif]-->
+<!--[if IE 7 ]>    <html lang="en" class="no-js ie7 lt8"> <![endif]-->
+<!--[if IE 8 ]>    <html lang="en" class="no-js ie8 lt8"> <![endif]-->
+<!--[if IE 9 ]>    <html lang="en" class="no-js ie9"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html lang="en" class="no-js"> <!--<![endif]-->
+<head>
+    <meta charset="UTF-8" />
+    <!-- <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">  -->
+    <title>Login and Registration Form with HTML5 and CSS3</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <meta name="description" content="Edit Details" />
+    <meta name="keywords" content="html5, css3, form, switch, animation, :target, pseudo-class" />
+    <meta name="author" content="Codrops" />
+    <link rel="shortcut icon" href="../favicon.ico"> 
+    <link rel="stylesheet" type="text/css" href="css/demo.css" />
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <link rel="stylesheet" type="text/css" href="css/animate-custom.css" />
+    <script src='https://code.jquery.com/jquery-1.12.4.js'></script>
+    <script src='https://code.jquery.com/ui/1.12.0/jquery-ui.js'></script>
+    <script>
+
+        $(document).ready(function(){
+
+            // Load previous details
+            var id = sessionStorage.getItem('id');
+            $.get("http://10.130.10.8:8080/DBProject/EditDetails",{id : sessionStorage.getItem('id')}, function(data,status) {
+
+                console.log(data);
+                if (data["status"] == true) {
+                    document.getElementById("name").value = data["name"];
+                    document.getElementById("gender").value = data["gender"];
+                    document.getElementById("dob").value = data["dob"];
+                    document.getElementById("city").value = data["city"];
+                    document.getElementById("intro").value = data["intro"];
+                }
+                else{
+                    alert("Internal Error in retrieving previous details.");
+                    // window.location.href = "edit-details.html";
+                }
+
+            });
+
+            var totalContacts = 1;
+
+            $("#addcontact").click(function(){
+
+                console.log("Hey");
+                // e.preventDefault();
+                var addTo = "#contact" + totalContacts;
+                var addRemove = "#contact" + (totalContacts);
+                totalContacts += 1;
+                var newIn = '<p id="contact' + totalContacts + '"><label for="contact" class="contact" data-icon="c"> Contact Number </label><input name="contact' + totalContacts + '" type="number" placeholder="eg. +91-9450123"/></p>';
+                var newInput = $(newIn);
+                var removeBtn = '<p style="padding-left:10pt" id="removeText' + (totalContacts-1) + '"><button class="removecontact" id = "remove' + (totalContacts-1) + '" type = "button">-</button> Remove this contact</p>'
+                var removeButton = $(removeBtn)
+
+                $(addTo).after(newInput);
+                $(addRemove).after(removeButton);
+
+                $('#contact' + totalContacts).attr('data-source',$(addTo).attr('data-source'));
+                $('#contactCount').val(totalContacts);
+
+                    $('.removecontact').click(function(){
+
+                        // e.preventDefault();
+                        var fieldNum = this.id.charAt(this.id.length-1);
+                        var fieldID = "#contact" + fieldNum;
+                        var fieldText = "#removeText" + fieldNum;
+                        $(this).remove();
+                        $(fieldID).remove();
+                        $(fieldText).remove();
+
+                    });
+
+            });
+
+            $("#getsave").click(function(){
+                console.log("name");
+                var x = $("#name").val();
+                var y = $("#gender").val();
+                var z = $("#dob").val();
+                var a = $("#city").val();
+                var b = $("#intro").val();
+                var c = sessionStorage.getItem('id');
+                if(x == null || y == null || z == null || b==null || z == undefined){
+                    alert("Enter the required details");
+                    window.location.href = "edit-details.html";
+                }
+                var contacts = "";
+                console.log(c);
+                console.log(z);
+                console.log(totalContacts);
+
+                for (i = 0; i < totalContacts; i++) {
+                    var str = $("#contact" + (i+1)).children("input").val();
+                    if (str != "" && str != null) {
+                        contacts += str + ',';
+                    }
+                }
+                console.log(contacts);
+
+                $.post("http://10.130.10.8:8080/DBProject/EditDetails",{ id : c, name : x, gender : y, date_of_birth : z, city : a, introduction : b, contact : contacts}, function(data, status){
+                    console.log(data["status"]);
+                    if (data["status"] == true) {
+                        alert("Updates Successfully");
+                        window.location.href = "../dashboard/Home.html";
+                    }
+                    else{
+                        alert("Internal Error");
+                        // window.location.href = "edit-details.html";
+                    }
+                });
+            });
+
+            
+
+        });
+
+    </script>
+</head>
+<body>
+    <div class="container">
+
+        <header>
+
+        </header>
+        <section>				
+            <div id="container_demo" >
+                <!-- hidden anchor to stop jump http://www.css3create.com/Astuce-Empecher-le-scroll-avec-l-utilisation-de-target#wrap4  -->
+                <!-- <a class="hiddenanchor" id="toregister"></a> -->
+                <!-- <a class="hiddenanchor" id="tologin"></a> -->
+                <div id="wrapper">
+                    <div id="login" class="animate form">
+                        <!-- <form  autocomplete="on">  -->
+                            <h1>Edit Details</h1> 
+                            <p> 
+                                <label for="name" class="name" data-icon="u" >Name</label>
+                                <input id="name" name="name" required="required" type="text" placeholder="xyz"/>
+                            </p>
+                            <p> 
+                                <label for="gender" class="gender" data-icon="i"> Gender</label>
+                                <select id="gender" name="gender" list="sexList">
+                                  <option value="Male">Male</option>
+                                  <option value="Female">Female</option>
+                                  <option value="None of above">None of above</option>
+                                </select>
+                            </p>
+                            <p> 
+                                <label for="dob" class="dob" data-icon="n"> Date of Birth </label>
+                                <input id="dob" name="dob" type="date"/> 
+                            </p>
+                            <p> 
+                                <label for="city" class="city" data-icon="c"> City of Residence </label>
+                                <input id="city" name="city" type="text" placeholder="eg. Mumbai"/> 
+                            </p>
+                            <p> 
+                                <label for="intro" class="intro" data-icon="i"> Say a few lines about yourself</label>
+                                <input id="intro" name="intro" type="text" placeholder="eg. I am a book-lover"/> 
+                            </p>
+                            <p>
+                                <input type="hidden" name="contactCount" value="1" />
+                                <p id ="contact1">
+                                    <label for="contact1" class="contact" data-icon="c"> Contact Number </label>
+                                    <input name="contact1" type="number" placeholder="eg. +91-9450123"/>
+                                </p>
+                                <p style="padding-left:10pt">
+                                    <button id="addcontact" type="button">+</button> Add another contact number
+                                </p>
+                            </p>
+                           <p class="login button"> 
+                            <input type="submit" value="Save"  id = "getsave"/> 
+                        </p>
+                       <!--  <p class="change_link">
+                           Not a member yet ?
+                           <a href="#toregister" class="to_register">Join us</a>
+                       </p> -->
+                   <!-- </form> -->
+               </div>
+       </div>
+   </div>  
+</section>
+</div>
+</body>
+</html>
