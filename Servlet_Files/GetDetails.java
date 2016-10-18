@@ -44,7 +44,8 @@ public class GetDetails extends HttpServlet {
 				String password = ServletInfo.passWord;
 				JSONObject jsonObj = new JSONObject();
 				
-				//Local Variables
+				//Local Variables				console.log('Entered GetDetails');
+
 				String id;
 				String type;
 				
@@ -103,7 +104,7 @@ public class GetDetails extends HttpServlet {
 							while(rs.next())
 							{
 								jsonObj.put("status",true);
-								josnObj.put("Name",rs.getString(1));
+								jsonObj.put("Name",rs.getString(1));
 								jsonObj.put("Description",rs.getString(2));
 								jsonObj.put("Author",rs.getString(3));
 								jsonObj.put("NumberOfPages",rs.getString(4));
@@ -111,7 +112,7 @@ public class GetDetails extends HttpServlet {
 							}
 							if(count > 1)
 							{
-								alert("Panic : Book_ID redundancy");
+								System.out.println("Panic : Book_ID redundancy");
 							}
 						}
 						else if(type.equals("author")){
