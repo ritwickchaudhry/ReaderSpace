@@ -163,7 +163,7 @@
 			}
 			bookImage.onerror = function()
 			{
-				document.getElementById("profile_pic").src="images/user.jpg";
+				document.getElementById("profile_pic").src="images/Book.gif";
 			}
 
 			$.get("http://10.130.10.8:8080/DBProject/GetAllSearch", {id : sessionStorage.getItem('id')},function(data,status) {
@@ -208,22 +208,25 @@
 
 			});
 
-			$.get("http://10.130.10.8:8080/DBProject/GetDetails", {id : sessionStorage.getItem('id'), type : "reader"},function(data,status) {
+			// Retrieve details
+
+			$.get("http://10.130.10.8:8080/DBProject/GetDetails", {id : bookID , type : "book"},function(data,status) {
 
 				console.log('Entered GetDetails');
-				var name;
-				var intro;
+				
+				var Name;
+				var Description;
 				
 				if (data["status"] == true) 
 				{
 
 					// Get info from servlet
-					name = data["name"];
-					intro = data["intro"];
+					Name = data["Name"];
+					Description = data["Description"];
 
 					// Update info in page
-					document.getElementById("cover-name").innerHTML = name;
-					document.getElementById("cover-intro").innerHTML = intro;
+					document.getElementById("cover-name").innerHTML = Name;
+					document.getElementById("cover-intro").innerHTML = Description;
 					
 				}
 				else 

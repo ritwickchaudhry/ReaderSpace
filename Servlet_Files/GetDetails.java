@@ -92,7 +92,27 @@ public class GetDetails extends HttpServlet {
 							}
 						}
 						else if(type.equals("book")){
-							
+							// ResultSet rs;
+							// String query;
+							// PreparedStatement p;
+							query = "SELECT Name, Description, Author, Number_Of_Pages from Book where Book_ID = ?";
+							pstmt = conn.prepareStatement(query);
+							pstmt.setString(1, id);
+							rs = pstmt.executeQuery();
+							int count=0;
+							while(rs.next())
+							{
+								jsonObj.put("status",true);
+								josnObj.put("Name",rs.getString(1));
+								jsonObj.put("Description",rs.getString(2));
+								jsonObj.put("Author",rs.getString(3));
+								jsonObj.put("NumberOfPages",rs.getString(4));
+								count++;
+							}
+							if(count > 1)
+							{
+								alert("Panic : Book_ID redundancy");
+							}
 						}
 						else if(type.equals("author")){
 							
