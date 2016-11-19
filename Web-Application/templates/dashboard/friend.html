@@ -106,8 +106,8 @@
 		// Called when follower/followee name is clicked
 		function openFriendPage(obj)
 		{
-			console.log(obj.innerHTML);
-			console.log(sessionStorage.getItem('id'));
+			// console.log(obj.innerHTML);
+			// console.log(sessionStorage.getItem('id'));
 
 			if (obj.innerHTML == sessionStorage.getItem('id')) {
 				// console.log("SDANsdlan");
@@ -119,6 +119,46 @@
 				window.location.href = "friend.html";
 			}
 			
+		}
+
+		// Update the follow button
+		function updateFollow(obj)
+		{
+			console.log(obj.innerHTML);
+
+			// Follow the person. INsert from schema
+			if ((obj.innerHTML).startsWith("follow")) {
+
+				$.post("http://10.130.10.35:8080/DBProject/FollowBit", {id : sessionStorage.getItem('id'), friend_id : sessionStorage.getItem('friend_id'), update : '1'}, function(data,status) {
+
+					if (data["status"] == true) {
+						obj.innerHTML = "unfollow";
+						location.reload();
+					}
+					else {
+						alert("Some internal error occured");
+					}
+					
+				});
+
+			}
+
+			// Unfollow the person. Delete from schema 
+			else {
+
+				$.post("http://10.130.10.35:8080/DBProject/FollowBit", {id : sessionStorage.getItem('id'), friend_id : sessionStorage.getItem('friend_id'), update : '0'}, function(data,status) {
+
+					if (data["status"] == true) {
+						obj.innerHTML = "follow";
+						location.reload();
+					}
+					else {
+						alert("Some internal error occured");
+					}
+
+				});
+
+			}
 		}
 
 		function comeback()
@@ -146,7 +186,7 @@
 			else
 			{
 
-				// Loading the images of friend and user
+				////////////// IMAGE LOADING //////////////
 
 				// User Image
 				var image = new Image();
@@ -179,6 +219,33 @@
 					document.getElementById("profile_pic").src="images/user.jpg";
 				}
 
+				////////////// FOLLOW BUTTON ///////////////////
+				$.get("http://10.130.10.35:8080/DBProject/FollowBit", {id : sessionStorage.getItem('id'), friend_id : sessionStorage.getItem('friend_id')}, function(data,status) {
+
+					console.log(data);
+
+					if (data["status"] == true) {
+
+						var follow_btn = document.getElementById('cover-follow');
+						
+						if (data["isfriend"] == "1") {
+							follow_btn.innerHTML = "unfollow";
+						}
+						else {
+							follow_btn.innerHTML = "follow";
+						}
+
+					}
+					else {
+						alert("Some internal error. Couldn't retrieve info");
+					}
+
+				});
+
+
+
+
+				////////////// SEARCH BAR AT TOP ///////////////
 				$.get("http://10.130.10.35:8080/DBProject/GetAllSearch", {id : sessionStorage.getItem('id')},function(data,status) {
 
 					console.log('Entered GetAllCourse');
@@ -357,8 +424,10 @@
 			}
 		});
 	</script>
-	
+
 </head>
+
+
 <body>
 
 	<div class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
@@ -441,8 +510,8 @@
 						<p id="cover-intro">Intro</p>
 					</div>
 
-					<div class="cover-follow" id="cover-follow">
-						<a href="#" class="cover-follow-button mdl-button mdl-js-button mdl-js-ripple-effect">Follow</a>
+					<div class="cover-follow">
+						<a class="cover-follow-button mdl-button mdl-js-button mdl-js-ripple-effect" id="cover-follow" onclick="updateFollow(this)">follow</a>
 					</div>
 
 				</div>
