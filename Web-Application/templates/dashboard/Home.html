@@ -102,6 +102,24 @@
 	<script src='https://code.jquery.com/jquery-1.12.4.js'></script>
 	<script src='https://code.jquery.com/ui/1.12.0/jquery-ui.js'></script>
 	<script>
+
+		// Called when follower/followee name is clicked
+		function openFriendPage(obj)
+		{
+			console.log(obj.innerHTML);
+
+			if (obj.innerHTML == sessionStorage.getItem('id')) {
+				window.location.href = "home.html";
+			}
+
+			sessionStorage.setItem('friend_id',obj.innerHTML);
+			// console.log(sessionStorage.getItem('friend_id'));
+
+			window.location.href = "friend.html";
+		}
+
+
+
 		function comeback()
 		{
 			form1 = document.getElementById('form1');
@@ -217,7 +235,7 @@
 		//    // window.open('upload.html','Upload Photo','menubar=0, toolbar=0,location=0, directories=0, status=0,crollbars=yes,width=650,height=500');
 		//  });
 
-		// // Loading name and intro
+		// Loading followers, followees, books, name and intro
 		jQuery.ajaxSetup({async:false});
 		$.get("http://10.130.10.35:8080/DBProject/GetDetails", {id : sessionStorage.getItem('id'), type : "reader"},function(data,status) {
 
@@ -251,7 +269,7 @@
 						f1 += 1;
 					}
 					
-					follower_list_items[f1].innerHTML = "<p class=\"follower-list_name\">" + follower_list[follower] +"</p>";
+					follower_list_items[f1].innerHTML = "<p class=\"follower-list_name\"><a onclick='openFriendPage(this);'>" + follower_list[follower] +"</a></p>";
 					f1 += 1;
 				}
 
@@ -265,7 +283,7 @@
 						f2 += 1;
 					}
 					
-					followee_list_items[f2].innerHTML = "<p class=\"followee-list_name\">" + followee_list[followee] +"</p>";
+					followee_list_items[f2].innerHTML = "<p class=\"followee-list_name\"><a onclick='openFriendPage(this);'>" + followee_list[followee] +"</a></p>";
 					f2 += 1;
 				}
 
@@ -299,7 +317,7 @@
 							}
 							image.onerror = function()
 							{
-								book_div.getElementsByTagName('img')[0].src="images/12345.png";
+								book_div.getElementsByTagName('img')[0].src="images/Book.gif";
 							}
 
 
@@ -411,9 +429,9 @@
 						<p id="cover-intro">Intro</p>
 					</div>
 
-					<div class="cover-follow">
+					<!-- <div class="cover-follow">
 						<a href="#" class="cover-follow-button mdl-button mdl-js-button mdl-js-ripple-effect">Follow</a>
-					</div>
+					</div> -->
 
 				</div>
 
@@ -431,32 +449,32 @@
 					<div class="booklist-suggest mdl-grid">
 
 						<div class="book-suggest mdl-cell mdl-cell-4-col" id="book-suggest1">
-							<img src="images/12345.png" width="100%">
-							<h5>Harry Potter</h5>
-							<h6>J.K. Rowling</h6>
+							<img src="images/Book.gif" width="100%">
+							<h5></h5>
+							<h6></h6>
 							<div class="rating">
-								<span>&#9733</span><span>&#9733</span><span>&#9733</span><span>&#9733</span><span>&#9734</span>
-								<p>4.3/5</p>
+								<!-- <span>&#9733</span><span>&#9733</span><span>&#9733</span><span>&#9733</span><span>&#9734</span>
+								<p>4.3/5</p> -->
 							</div>
 						</div>
 
 						<div class="book-suggest mdl-cell mdl-cell--4-col" id="book-suggest2">
-							<img src="images/12345.png" width="100%">  
-							<h5>Lord of the Rings</h5>
-							<h6>J. R. R. Tolkien</h6>
+							<img src="images/Book.gif" width="100%">  
+							<h5></h5>
+							<h6></h6>
 							<div class="rating">
-								<span>&#9733</span><span>&#9733</span><span>&#9733</span><span>&#9734</span><span>&#9734</span>
-								<p>3.2/5</p>
+								<!-- <span>&#9733</span><span>&#9733</span><span>&#9733</span><span>&#9734</span><span>&#9734</span>
+								<p>3.2/5</p> -->
 							</div>
 						</div>
 
 						<div class="book-suggest mdl-cell mdl-cell--4-col" id="book-suggest3">
-							<img src="images/12345.png" width="100%">  
-							<h5>Game of Thrones</h5>
-							<h6>G. R. R. Martin</h6>
+							<img src="images/Book.gif" width="100%">  
+							<h5></h5>
+							<h6></h6>
 							<div class="rating">
-								<span>&#9733</span><span>&#9733</span><span>&#9733</span><span>&#9733</span><span>&#9733</span>
-								<p>4.7/5</p>
+								<!-- <span>&#9733</span><span>&#9733</span><span>&#9733</span><span>&#9733</span><span>&#9733</span>
+								<p>4.7/5</p> -->
 							</div>
 						</div>
 

@@ -102,6 +102,25 @@
 	<script src='https://code.jquery.com/jquery-1.12.4.js'></script>
 	<script src='https://code.jquery.com/ui/1.12.0/jquery-ui.js'></script>
 	<script>
+
+		// Called when follower/followee name is clicked
+		function openFriendPage(obj)
+		{
+			console.log(obj.innerHTML);
+			console.log(sessionStorage.getItem('id'));
+
+			if (obj.innerHTML == sessionStorage.getItem('id')) {
+				// console.log("SDANsdlan");
+				window.location.href = "Home.html";
+			}
+			else {
+				sessionStorage.setItem('friend_id',obj.innerHTML);
+				// console.log(sessionStorage.getItem('friend_id'));
+				window.location.href = "friend.html";
+			}
+			
+		}
+
 		function comeback()
 		{
 			form1 = document.getElementById('form1');
@@ -111,124 +130,234 @@
 			form1.target='';
 		}
 		function handle(ele) {
-				// console.log("sfnasdknaskl");
-				if(event.keyCode == 13) {
-					event.preventDefault();
-					alert(ele.value);        
-				}
+			// console.log("sfnasdknaskl");
+			if(event.keyCode == 13) {
+				event.preventDefault();
+				alert(ele.value);        
 			}
-			$(document).ready(function(){  
+		}
+		$(document).ready(function(){  
 
-				if(sessionStorage.getItem('id')==null)
-				{
-		// console.log("zsd,nzcfzjkl");
-
-		alert("Session completed. Plz login again");
-		window.location.href = "../LoginRegistrationForm/index.html";
-	}
-	else
-	{
-
-		// Loading the images
-		var image = new Image();
-		var image_profile_pic = new Image();
-		var x1 = sessionStorage.getItem('id');
-		var x2 = "http://10.130.10.35:8080/DBProject/UploadPhoto?id="+x1;
-		var x = sessionStorage.getItem('id');
-		document.getElementById("id").value = x;
-		image.src= x2;
-		image_profile_pic.src=x2;
-		image.onload = function(){
-		 document.getElementById("image_id").src=image.src;
-	 }
-	 image.onerror = function()
-	 {
-		document.getElementById("image_id").src="images/user.jpg";
-	}
-	image_profile_pic.onload = function(){
-		document.getElementById("profile_pic").src=image_profile_pic.src;
-	}
-	image_profile_pic.onerror = function()
-	{
-		document.getElementById("profile_pic").src="images/user.jpg";
-	}
-
-	$.get("http://10.130.10.35:8080/DBProject/GetAllSearch", {id : sessionStorage.getItem('id')},function(data,status) {
-
-		console.log('Entered GetAllCourse');
-		var src = new Array();
-
-		$.each(data,function(index,element){
-
-			var temp = element["type"] + " : ";
-			temp += element["id"] + ",";
-			temp += element["name"];
-			
-			var temp3 = element["type"] + " : ";
-			temp3 += element["name"];
-			
-
-			var obj = {label:temp3,value: temp};
-			src.push(obj);
-			// src.push(temp);
-
-		});
-		console.log(src);
-		$("#search").autocomplete({
-			source: src
-		});
-
-	});
-	
-	$("#logout").click(function(){
-
-		$.get("http://10.130.10.35:8080/DBProject/Logout", function(data, status){
-			console.log(data["status"]);
-			if (data["status"] == true) {
+			if(sessionStorage.getItem('id')==null)
+			{
+				alert("Session completed. Plz login again");
 				window.location.href = "../LoginRegistrationForm/index.html";
 			}
-			else{
-				alert("Cannot logout");
-				window.location.href = "index.html";
-			}
-		});
+			else
+			{
 
-	});
-		// $('#image_id').click(function(){
-		//     $('input[type=file]').click();
-		// });
-		// $('#upload_photo').click(function(){
-		//    // console.log($('#photo').val());
-		//    window.location.href = "upload.html";
-		//    // window.open('upload.html','Upload Photo','menubar=0, toolbar=0,location=0, directories=0, status=0,crollbars=yes,width=650,height=500');
-		//  });
+				// Loading the images of friend and user
 
-		// // Loading name and intro
-		$.get("http://10.130.10.35:8080/DBProject/GetDetails", {id : sessionStorage.getItem('id'), type : "reader"},function(data,status) {
+				// User Image
+				var image = new Image();
+				var user_id = sessionStorage.getItem('id');
+				var user_pic_src = "http://10.130.10.35:8080/DBProject/UploadPhoto?id="+user_id;
+				image.src = user_pic_src;
+				image.onload = function()
+				{
+					document.getElementById("image_id").src=image.src;
+				}
+				image.onerror = function()
+				{
+					document.getElementById("image_id").src="images/user.jpg";
+				}
 
-			console.log('Entered GetDetails');
-			var name;
-			var intro;
-			
-			if (data["status"] == true) {
-
-				// Get info from servlet
-				name = data["name"];
-				intro = data["intro"];
-
-				// Update info in page
-				document.getElementById("cover-name").innerHTML = name;
-				document.getElementById("cover-intro").innerHTML = intro;
+				var x = sessionStorage.getItem('id');
+				document.getElementById("id").value = x;
 				
-			}
-			else {
-				alert("Can't retrieve details");
-			}
+				// Friend Image
+				var image_profile_pic = new Image();
+				var friend_id = sessionStorage.getItem('friend_id');
+				var friend_pic_src = "http://10.130.10.35:8080/DBProject/UploadPhoto?id="+friend_id;
+				image_profile_pic.src = friend_pic_src;
+				image_profile_pic.onload = function()
+				{
+					document.getElementById("profile_pic").src=image_profile_pic.src;
+				}
+				image_profile_pic.onerror = function()
+				{
+					document.getElementById("profile_pic").src="images/user.jpg";
+				}
 
+				$.get("http://10.130.10.35:8080/DBProject/GetAllSearch", {id : sessionStorage.getItem('id')},function(data,status) {
+
+					console.log('Entered GetAllCourse');
+					var src = new Array();
+
+					$.each(data,function(index,element){
+
+						var temp = element["type"] + " : ";
+						temp += element["id"] + ",";
+						temp += element["name"];
+
+						var temp3 = element["type"] + " : ";
+						temp3 += element["name"];
+
+
+						var obj = {label:temp3,value: temp};
+						src.push(obj);
+						// src.push(temp);
+
+					});
+					console.log(src);
+					$("#search").autocomplete({
+						source: src
+					});
+
+				});
+
+				$("#logout").click(function(){
+
+					$.get("http://10.130.10.35:8080/DBProject/Logout", function(data, status){
+						console.log(data["status"]);
+						if (data["status"] == true) {
+							window.location.href = "../LoginRegistrationForm/index.html";
+						}
+						else{
+							alert("Cannot logout");
+							window.location.href = "index.html";
+						}
+					});
+
+				});
+
+				$("#navlogout").click(function(){
+
+					$.get("http://10.130.10.35:8080/DBProject/Logout", function(data, status){
+						console.log(data["status"]);
+						if (data["status"] == true) {
+							window.location.href = "../LoginRegistrationForm/index.html";
+						}
+						else{
+							alert("Cannot logout");
+							window.location.href = "index.html";
+						}
+					});
+
+				});
+				
+				// $('#image_id').click(function(){
+				//     $('input[type=file]').click();
+				// });
+				// $('#upload_photo').click(function(){
+				//    // console.log($('#photo').val());
+				//    window.location.href = "upload.html";
+				//    // window.open('upload.html','Upload Photo','menubar=0, toolbar=0,location=0, directories=0, status=0,crollbars=yes,width=650,height=500');
+				//  });
+
+				// Loading followers, followees, books, name and intro
+				jQuery.ajaxSetup({async:false});
+				$.get("http://10.130.10.35:8080/DBProject/GetDetails", {id : sessionStorage.getItem('friend_id'), type : "reader"},function(data,status) {
+
+					console.log('Entered GetDetails');
+					
+					// Variables defined
+					var name;
+					var intro;
+					var follower_list;
+					var followee_list;
+
+					// DOM tree variables
+					var follower_list_display = document.getElementById('follower-list_outer');
+					var follower_list_items = follower_list_display.childNodes;
+					var followee_list_display = document.getElementById('followee-list_outer');
+					var followee_list_items = followee_list_display.childNodes;
+					
+					if (data["status"] == true) {
+
+						// Get info from servlet
+						name = data["name"];
+						intro = data["intro"];
+
+						// Extract followers and update
+						follower_list = data["follower"];
+						var f1 = 0;
+						for (var follower in follower_list) {
+							// console.log(follower_list[follower]);
+							
+							while (follower_list_items[f1].nodeType != 1) {
+								f1 += 1;
+							}
+							
+							follower_list_items[f1].innerHTML = "<p class=\"follower-list_name\"><a onclick='openFriendPage(this);'>" + follower_list[follower] +"</a></p>";
+							f1 += 1;
+						}
+
+						// Extract followees and update
+						followee_list = data["followee"];
+						var f2 = 0;
+						for (var followee in followee_list) {
+							// console.log(followee_list[followee]);
+							
+							while (followee_list_items[f2].nodeType != 1) {
+								f2 += 1;
+							}
+							
+							followee_list_items[f2].innerHTML = "<p class=\"followee-list_name\"><a onclick='openFriendPage(this);'>" + followee_list[followee] +"</a></p>";
+							f2 += 1;
+						}
+
+						// Extract reading books. (Servlet returns only book ids)
+						// Now, using book_id, get the details of the book
+						book_list = data["books"];
+						var b1 = 1;
+						for (var book_id in book_list) {
+							console.log(book_list[book_id]);
+
+							$.get("http://10.130.10.35:8080/DBProject/GetDetails", {id : book_list[book_id], type : "book"},function(data,status) {
+
+								// console.log(data);
+								if (data["status"] == true) {
+
+									var book_name = data["Name"];
+									var book_author = data["Author"];
+
+									var book_div_id = "book-suggest" + b1;
+									var book_div = document.getElementById(book_div_id);
+
+									book_div.getElementsByTagName('h5')[0].innerHTML = book_name;
+									book_div.getElementsByTagName('h6')[0].innerHTML = book_author;
+
+									// Loading the images
+									var image = new Image();
+									var pic_src = "http://10.130.10.35:8080/DBProject/UploadBookPhoto?id="+book_list[book_id];
+									image.src= pic_src;
+									image.onload = function(){
+										book_div.getElementsByTagName('img')[0].src=image.src;
+									}
+									image.onerror = function()
+									{
+										book_div.getElementsByTagName('img')[0].src="images/Book.gif";
+									}
+
+
+								}
+								else {
+									alert("Can't retrieve book details");
+								}
+
+
+								b1 += 1;
+
+							});
+
+						}
+
+						// Update remaining info in page
+						document.getElementById("cover-name").innerHTML = name;
+						document.getElementById("cover-intro").innerHTML = intro;
+						
+					}
+					else {
+						alert("Can't retrieve details");
+					}
+
+				});
+			
+			}
 		});
-	}
-});
-</script>
+	</script>
+	
 </head>
 <body>
 
@@ -277,17 +406,17 @@
 				</div>
 			</header>
 			<nav class="demo-navigation mdl-navigation mdl-color--blue-grey-800">
-				<a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">home</i>Home</a>
+				<a class="mdl-navigation__link" href="home.html"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">home</i>Home</a>
 				<a class="mdl-navigation__link" href="../LoginRegistrationForm/edit-details.html"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">edit</i>Edit your details</a>
 				<a class="mdl-navigation__link" id="upload_photo"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">edit</i>Upload Photo</a>
-				<a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">inbox</i>Inbox</a>
-				<a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">delete</i>Trash</a>
+				<a class="mdl-navigation__link" id="navlogout"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">inbox</i>Logout</a>
+				<!-- <a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">delete</i>Trash</a>
 				<a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">report</i>Spam</a>
 				<a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">forum</i>Forums</a>
 				<a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">flag</i>Updates</a>
 				<a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">local_offer</i>Promos</a>
 				<a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">shopping_cart</i>Purchases</a>
-				<a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">people</i>Social</a>
+				<a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">people</i>Social</a> -->
 				<div class="mdl-layout-spacer"></div>
 				<a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">help_outline</i><span class="visuallyhidden">Help</span></a>
 			</nav><!-- <input type="file" style="visibility: hidden;" /> -->
@@ -312,7 +441,7 @@
 						<p id="cover-intro">Intro</p>
 					</div>
 
-					<div class="cover-follow">
+					<div class="cover-follow" id="cover-follow">
 						<a href="#" class="cover-follow-button mdl-button mdl-js-button mdl-js-ripple-effect">Follow</a>
 					</div>
 
@@ -331,33 +460,33 @@
 					<!-- List of books -->
 					<div class="booklist-suggest mdl-grid">
 
-						<div class="book-suggest mdl-cell mdl-cell-4-col">
-							<img src="images/12345.png" width="100%">
-							<h5>Harry Potter</h5>
-							<h6>J.K. Rowling</h6>
+						<div class="book-suggest mdl-cell mdl-cell-4-col" id="book-suggest1">
+							<img src="images/Book.gif" width="100%">
+							<h5></h5>
+							<h6></h6>
 							<div class="rating">
-								<span>&#9733</span><span>&#9733</span><span>&#9733</span><span>&#9733</span><span>&#9734</span>
-								<p>4.3/5</p>
+								<!-- <span>&#9733</span><span>&#9733</span><span>&#9733</span><span>&#9733</span><span>&#9734</span>
+								<p>4.3/5</p> -->
 							</div>
 						</div>
 
-						<div class="book-suggest mdl-cell mdl-cell--4-col">
-							<img src="images/12345.png" width="100%">  
-							<h5>Lord of the Rings</h5>
-							<h6>J. R. R. Tolkien</h6>
+						<div class="book-suggest mdl-cell mdl-cell--4-col" id="book-suggest2">
+							<img src="images/Book.gif" width="100%">  
+							<h5></h5>
+							<h6></h6>
 							<div class="rating">
-								<span>&#9733</span><span>&#9733</span><span>&#9733</span><span>&#9734</span><span>&#9734</span>
-								<p>3.2/5</p>
+								<!-- <span>&#9733</span><span>&#9733</span><span>&#9733</span><span>&#9734</span><span>&#9734</span>
+								<p>3.2/5</p> -->
 							</div>
 						</div>
 
-						<div class="book-suggest mdl-cell mdl-cell--4-col">
-							<img src="images/12345.png" width="100%">  
-							<h5>Game of Thrones</h5>
-							<h6>G. R. R. Martin</h6>
+						<div class="book-suggest mdl-cell mdl-cell--4-col" id="book-suggest3">
+							<img src="images/Book.gif" width="100%">  
+							<h5></h5>
+							<h6></h6>
 							<div class="rating">
-								<span>&#9733</span><span>&#9733</span><span>&#9733</span><span>&#9733</span><span>&#9733</span>
-								<p>4.7/5</p>
+								<!-- <span>&#9733</span><span>&#9733</span><span>&#9733</span><span>&#9733</span><span>&#9733</span>
+								<p>4.7/5</p> -->
 							</div>
 						</div>
 
@@ -385,15 +514,15 @@
 
 						<!-- Follower list -->
 						<div class="follower-list">
-							<ul class="follower-list_outer">
+							<ul class="follower-list_outer" id="follower-list_outer">
 								<li>
-									<p class="follower-list_name">Navneet Agarwal</p>
+									<p class="follower-list_name"></p>
 								</li>
 								<li>
-									<p class="follower-list_name">Ritwick Chaudhry</p>
+									<p class="follower-list_name"></p>
 								</li>
 								<li>
-									<p class="follower-list_name">Saurabh Garg</p>
+									<p class="follower-list_name"></p>
 								</li>
 							</ul>
 						</div>
@@ -419,15 +548,15 @@
 
 						<!-- Followee list -->
 						<div class="followee-list">
-							<ul class="followee-list_outer">
+							<ul class="followee-list_outer" id="followee-list_outer">
 								<li>
-									<p class="followee-list_name">Navneet Agarwal</p>
+									<p class="followee-list_name"></p>
 								</li>
 								<li>
-									<p class="followee-list_name">Ritwick Chaudhry</p>
+									<p class="followee-list_name"></p>
 								</li>
 								<li>
-									<p class="followee-list_name">Saurabh Garg</p>
+									<p class="followee-list_name"></p>
 								</li>
 							</ul>
 						</div>
@@ -445,95 +574,95 @@
 
 		</main>
 	</div>
-					
 
 
 
 
 
 
-					<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" style="position: fixed; left: -1000px; height: -1000px;">
+
+	<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" style="position: fixed; left: -1000px; height: -1000px;">
+		<defs>
+			<mask id="piemask" maskContentUnits="objectBoundingBox">
+				<circle cx=0.5 cy=0.5 r=0.49 fill="white">
+					<circle cx=0.5 cy=0.5 r=0.40 fill="black">
+					</mask>
+					<g id="piechart">
+						<circle cx=0.5 cy=0.5 r=0.5>
+							<path d="M 0.5 0.5 0.5 0 A 0.5 0.5 0 0 1 0.95 0.28 z" stroke="none" fill="rgba(255, 255, 255, 0.75)">
+							</g>
+						</defs>
+					</svg>
+					<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 500 250" style="position: fixed; left: -1000px; height: -1000px;">
 						<defs>
-							<mask id="piemask" maskContentUnits="objectBoundingBox">
-								<circle cx=0.5 cy=0.5 r=0.49 fill="white">
-									<circle cx=0.5 cy=0.5 r=0.40 fill="black">
-									</mask>
-									<g id="piechart">
-										<circle cx=0.5 cy=0.5 r=0.5>
-											<path d="M 0.5 0.5 0.5 0 A 0.5 0.5 0 0 1 0.95 0.28 z" stroke="none" fill="rgba(255, 255, 255, 0.75)">
-											</g>
-										</defs>
-									</svg>
-									<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 500 250" style="position: fixed; left: -1000px; height: -1000px;">
-										<defs>
-											<g id="chart">
-												<g id="Gridlines">
-													<line fill="#888888" stroke="#888888" stroke-miterlimit="10" x1="0" y1="27.3" x2="468.3" y2="27.3">
-														<line fill="#888888" stroke="#888888" stroke-miterlimit="10" x1="0" y1="66.7" x2="468.3" y2="66.7">
-															<line fill="#888888" stroke="#888888" stroke-miterlimit="10" x1="0" y1="105.3" x2="468.3" y2="105.3">
-																<line fill="#888888" stroke="#888888" stroke-miterlimit="10" x1="0" y1="144.7" x2="468.3" y2="144.7">
-																	<line fill="#888888" stroke="#888888" stroke-miterlimit="10" x1="0" y1="184.3" x2="468.3" y2="184.3">
-																	</g>
-																	<g id="Numbers">
-																		<text transform="matrix(1 0 0 1 485 29.3333)" fill="#888888" font-family="'Roboto'" font-size="9">500</text>
-																		<text transform="matrix(1 0 0 1 485 69)" fill="#888888" font-family="'Roboto'" font-size="9">400</text>
-																		<text transform="matrix(1 0 0 1 485 109.3333)" fill="#888888" font-family="'Roboto'" font-size="9">300</text>
-																		<text transform="matrix(1 0 0 1 485 149)" fill="#888888" font-family="'Roboto'" font-size="9">200</text>
-																		<text transform="matrix(1 0 0 1 485 188.3333)" fill="#888888" font-family="'Roboto'" font-size="9">100</text>
-																		<text transform="matrix(1 0 0 1 0 249.0003)" fill="#888888" font-family="'Roboto'" font-size="9">1</text>
-																		<text transform="matrix(1 0 0 1 78 249.0003)" fill="#888888" font-family="'Roboto'" font-size="9">2</text>
-																		<text transform="matrix(1 0 0 1 154.6667 249.0003)" fill="#888888" font-family="'Roboto'" font-size="9">3</text>
-																		<text transform="matrix(1 0 0 1 232.1667 249.0003)" fill="#888888" font-family="'Roboto'" font-size="9">4</text>
-																		<text transform="matrix(1 0 0 1 309 249.0003)" fill="#888888" font-family="'Roboto'" font-size="9">5</text>
-																		<text transform="matrix(1 0 0 1 386.6667 249.0003)" fill="#888888" font-family="'Roboto'" font-size="9">6</text>
-																		<text transform="matrix(1 0 0 1 464.3333 249.0003)" fill="#888888" font-family="'Roboto'" font-size="9">7</text>
-																	</g>
-																	<g id="Layer_5">
-																		<polygon opacity="0.36" stroke-miterlimit="10" points="0,223.3 48,138.5 154.7,169 211,88.5
-																		294.5,80.5 380,165.2 437,75.5 469.5,223.3 	">
-																	</g>
-																	<g id="Layer_4">
-																		<polygon stroke-miterlimit="10" points="469.3,222.7 1,222.7 48.7,166.7 155.7,188.3 212,132.7
-																		296.7,128 380.7,184.3 436.7,125 	">
-																	</g>
-																</g>
-															</defs>
-														</svg>
-														<script src="../../material.min.js"></script>
-														<!-- The Modal -->
-														<iframe name="formSending"></iframe>
-														<div id="myModal" class="modal">
+							<g id="chart">
+								<g id="Gridlines">
+									<line fill="#888888" stroke="#888888" stroke-miterlimit="10" x1="0" y1="27.3" x2="468.3" y2="27.3">
+										<line fill="#888888" stroke="#888888" stroke-miterlimit="10" x1="0" y1="66.7" x2="468.3" y2="66.7">
+											<line fill="#888888" stroke="#888888" stroke-miterlimit="10" x1="0" y1="105.3" x2="468.3" y2="105.3">
+												<line fill="#888888" stroke="#888888" stroke-miterlimit="10" x1="0" y1="144.7" x2="468.3" y2="144.7">
+													<line fill="#888888" stroke="#888888" stroke-miterlimit="10" x1="0" y1="184.3" x2="468.3" y2="184.3">
+													</g>
+													<g id="Numbers">
+														<text transform="matrix(1 0 0 1 485 29.3333)" fill="#888888" font-family="'Roboto'" font-size="9">500</text>
+														<text transform="matrix(1 0 0 1 485 69)" fill="#888888" font-family="'Roboto'" font-size="9">400</text>
+														<text transform="matrix(1 0 0 1 485 109.3333)" fill="#888888" font-family="'Roboto'" font-size="9">300</text>
+														<text transform="matrix(1 0 0 1 485 149)" fill="#888888" font-family="'Roboto'" font-size="9">200</text>
+														<text transform="matrix(1 0 0 1 485 188.3333)" fill="#888888" font-family="'Roboto'" font-size="9">100</text>
+														<text transform="matrix(1 0 0 1 0 249.0003)" fill="#888888" font-family="'Roboto'" font-size="9">1</text>
+														<text transform="matrix(1 0 0 1 78 249.0003)" fill="#888888" font-family="'Roboto'" font-size="9">2</text>
+														<text transform="matrix(1 0 0 1 154.6667 249.0003)" fill="#888888" font-family="'Roboto'" font-size="9">3</text>
+														<text transform="matrix(1 0 0 1 232.1667 249.0003)" fill="#888888" font-family="'Roboto'" font-size="9">4</text>
+														<text transform="matrix(1 0 0 1 309 249.0003)" fill="#888888" font-family="'Roboto'" font-size="9">5</text>
+														<text transform="matrix(1 0 0 1 386.6667 249.0003)" fill="#888888" font-family="'Roboto'" font-size="9">6</text>
+														<text transform="matrix(1 0 0 1 464.3333 249.0003)" fill="#888888" font-family="'Roboto'" font-size="9">7</text>
+													</g>
+													<g id="Layer_5">
+														<polygon opacity="0.36" stroke-miterlimit="10" points="0,223.3 48,138.5 154.7,169 211,88.5
+														294.5,80.5 380,165.2 437,75.5 469.5,223.3 	">
+													</g>
+													<g id="Layer_4">
+														<polygon stroke-miterlimit="10" points="469.3,222.7 1,222.7 48.7,166.7 155.7,188.3 212,132.7
+														296.7,128 380.7,184.3 436.7,125 	">
+													</g>
+												</g>
+											</defs>
+										</svg>
+										<script src="../../material.min.js"></script>
+										<!-- The Modal -->
+										<iframe name="formSending"></iframe>
+										<div id="myModal" class="modal">
 
-															<!-- Modal content -->
-															<div class="modal-content">
-																<span class="close" id="m_close">×</span>
+											<!-- Modal content -->
+											<div class="modal-content">
+												<span class="close" id="m_close">×</span>
 
 
-																<center>
+												<center>
 
-																	<form method="post" action="http://10.130.10.35:8080/DBProject/UploadPhoto" enctype="multipart/form-data" id="form1" target="formSending">
-													            <table border="0">
-													                <tr>
-													                    <td>Photo: </td>
-													                    <td><input type="file" name="photo1" size="50"/></td>
-													                </tr>
-													                <tr>
-													                    <td colspan="2">
-													                        <input type="submit" value="Save" id="savesubmit">
-													                    </td>	
-													                </tr>
-													            </table>
-													            <input type="text" name="id" size="50" style="visibility: hidden;" id="id" onclick="comeback()" />
-													        </form>
-																</center>
+													<form method="post" action="http://10.130.10.35:8080/DBProject/UploadPhoto" enctype="multipart/form-data" id="form1" target="formSending">
+														<table border="0">
+															<tr>
+																<td>Photo: </td>
+																<td><input type="file" name="photo1" size="50"/></td>
+															</tr>
+															<tr>
+																<td colspan="2">
+																	<input type="submit" value="Save" id="savesubmit">
+																</td>	
+															</tr>
+														</table>
+														<input type="text" name="id" size="50" style="visibility: hidden;" id="id" onclick="comeback()" />
+													</form>
+												</center>
 
 
-															</div>
+											</div>
 
-														</div>
+										</div>
 
-														<!-- MODAL -->
-														<script>
+										<!-- MODAL -->
+										<script>
 			// Get the modal
 			var modal = document.getElementById('myModal');
 
@@ -558,9 +687,9 @@
 
 	// When the user clicks save close the modal
 	btn1.onclick = function() {
-    modal.style.display = "none";
-    setTimeout(function(){
-    location.reload();
+		modal.style.display = "none";
+		setTimeout(function(){
+			location.reload();
 		},1000);
 	}
 

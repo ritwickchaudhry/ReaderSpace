@@ -50,6 +50,9 @@ GetDetails.java
 		dob
 		city
 		intro
+		follower
+		followee
+		books
 
 	Book -
 		name
