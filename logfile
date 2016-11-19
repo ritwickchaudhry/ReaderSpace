@@ -162,3 +162,6 @@ DETAIL:  Key (book_id)=(tanmay) is not present in table "book".
 STATEMENT:  insert into reading values('tanmay','2');
 ERROR:  column "id" does not exist at character 26
 STATEMENT:  select * from book where id='3';
+ERROR:  column "bookid" does not exist at character 28
+HINT:  Perhaps you meant to reference the column "review.book_id".
+STATEMENT:  select * from review where bookID='4';

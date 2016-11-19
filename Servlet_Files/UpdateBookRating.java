@@ -8,6 +8,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.sql.Types;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
@@ -160,9 +161,9 @@ public class UpdateBookRating extends HttpServlet {
 
 		id = request.getParameter("id");
 		bookID = request.getParameter("bookID");
-		int rating = request.getParameter("rating");
+		rating = request.getParameter("rating");
 
-		System.out.println(id+" <- id, bookID -> " + bookID + "rating -> " + rating);
+		System.out.println(id+" <- id, bookID -> " + bookID + " rating -> " + rating);
 		
 		// Set up output stream and type
 		response.setContentType("application/json");
@@ -178,13 +179,20 @@ public class UpdateBookRating extends HttpServlet {
 				Statement stmt = conn.createStatement();
 			)
 		{
-			String query = "update review set rating=? where reader_id=? and book_id = ?";
+			String query = "delete from review where reader_id=? and book_id = ?";
 			PreparedStatement pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, id);
+			pstmt.setString(2, bookID);
+			pstmt.executeUpdate();
 			
-			pstmt.setInt(1, Integer.parseInt(rating));
+			query = "insert into review values(?, ?, ?, ?)";
+			pstmt = conn.prepareStatement(query);
+			
+			pstmt.setNull(3, Types.VARCHAR);
+			pstmt.setInt(4, Integer.parseInt(rating));
 			pstmt.setString(2, id);
-			pstmt.setString(3, bookID);
-			pstmt.executeQuery();
+			pstmt.setString(1, bookID);
+			pstmt.executeUpdate();
 			
 			returnObject.put("status", true);
 			returnObject.put("info","Updated Successfully");
