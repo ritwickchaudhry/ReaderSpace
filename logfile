@@ -160,3 +160,5 @@ STATEMENT:  insert into follow values('tanmay','ritwickchaudhry1');
 ERROR:  insert or update on table "reading" violates foreign key constraint "reading_book_id_fkey"
 DETAIL:  Key (book_id)=(tanmay) is not present in table "book".
 STATEMENT:  insert into reading values('tanmay','2');
+ERROR:  column "id" does not exist at character 26
+STATEMENT:  select * from book where id='3';
