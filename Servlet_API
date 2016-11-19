@@ -33,5 +33,28 @@ Logout.java
 EditDetails.java
 
     --For now post the details for update
+
+GetDetails.java
+
+ -- Returns the details asked. Can be about reader or book.
+    Parameters - id, type
+    Method - GET
+    Return Object - (JSON Object)
+	
+	status - true (if reader/book present) 
+	info - "internal error" -> Some problem internally. 
+
+	Reader -
+		name
+		gender
+		dob
+		city
+		intro
+
+	Book -
+		name
+		description
+		author
+		num. of pages
     
                 

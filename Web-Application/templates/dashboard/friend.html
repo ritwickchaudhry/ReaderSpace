@@ -194,20 +194,6 @@
 		});
 
 	});
-	$("#navlogout").click(function(){
-
-		$.get("http://10.130.10.35:8080/DBProject/Logout", function(data, status){
-			console.log(data["status"]);
-			if (data["status"] == true) {
-				window.location.href = "../LoginRegistrationForm/index.html";
-			}
-			else{
-				alert("Cannot logout");
-				window.location.href = "index.html";
-			}
-		});
-
-	});
 		// $('#image_id').click(function(){
 		//     $('input[type=file]').click();
 		// });
@@ -221,18 +207,8 @@
 		$.get("http://10.130.10.35:8080/DBProject/GetDetails", {id : sessionStorage.getItem('id'), type : "reader"},function(data,status) {
 
 			console.log('Entered GetDetails');
-			
-			// Variables defined
 			var name;
 			var intro;
-			var follower_list;
-			var followee_list;
-
-			// DOM tree variables
-			var follower_list_display = document.getElementById('follower-list_outer');
-			var follower_list_items = follower_list_display.childNodes;
-			var followee_list_display = document.getElementById('followee-list_outer');
-			var followee_list_items = followee_list_display.childNodes;
 			
 			if (data["status"] == true) {
 
@@ -240,36 +216,7 @@
 				name = data["name"];
 				intro = data["intro"];
 
-				// Extract followers and update
-				follower_list = data["follower"];
-				var f1 = 0;										// Num of followers
-				for (var follower in follower_list) {
-					console.log(follower_list[follower]);
-					
-					while (follower_list_items[f1].nodeType != 1) {
-						f1 += 1;
-					}
-					
-					follower_list_items[f1].innerHTML = "<p class=\"follower-list_name\">" + follower_list[follower] +"</p>";
-					f1 += 1;
-				}
-
-
-				// Extract followees and update
-				followee_list = data["followee"];
-				var f2 = 0;										// Num of followees
-				for (var followee in followee_list) {
-					console.log(followee_list[followee]);
-					
-					while (followee_list_items[f2].nodeType != 1) {
-						f2 += 1;
-					}
-					
-					followee_list_items[f2].innerHTML = "<p class=\"followee-list_name\">" + followee_list[followee] +"</p>";
-					f2 += 1;
-				}
-
-				// Update remaining info in page
+				// Update info in page
 				document.getElementById("cover-name").innerHTML = name;
 				document.getElementById("cover-intro").innerHTML = intro;
 				
@@ -333,14 +280,14 @@
 				<a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">home</i>Home</a>
 				<a class="mdl-navigation__link" href="../LoginRegistrationForm/edit-details.html"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">edit</i>Edit your details</a>
 				<a class="mdl-navigation__link" id="upload_photo"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">edit</i>Upload Photo</a>
-				<a class="mdl-navigation__link" id="navlogout"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">inbox</i>Logout</a>
-				<!-- <a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">delete</i>Trash</a>
+				<a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">inbox</i>Inbox</a>
+				<a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">delete</i>Trash</a>
 				<a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">report</i>Spam</a>
 				<a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">forum</i>Forums</a>
 				<a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">flag</i>Updates</a>
 				<a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">local_offer</i>Promos</a>
 				<a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">shopping_cart</i>Purchases</a>
-				<a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">people</i>Social</a> -->
+				<a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">people</i>Social</a>
 				<div class="mdl-layout-spacer"></div>
 				<a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">help_outline</i><span class="visuallyhidden">Help</span></a>
 			</nav><!-- <input type="file" style="visibility: hidden;" /> -->
@@ -438,15 +385,15 @@
 
 						<!-- Follower list -->
 						<div class="follower-list">
-							<ul class="follower-list_outer" id="follower-list_outer">
+							<ul class="follower-list_outer">
 								<li>
-									<p class="follower-list_name"></p>
+									<p class="follower-list_name">Navneet Agarwal</p>
 								</li>
 								<li>
-									<p class="follower-list_name"></p>
+									<p class="follower-list_name">Ritwick Chaudhry</p>
 								</li>
 								<li>
-									<p class="follower-list_name"></p>
+									<p class="follower-list_name">Saurabh Garg</p>
 								</li>
 							</ul>
 						</div>
@@ -472,15 +419,15 @@
 
 						<!-- Followee list -->
 						<div class="followee-list">
-							<ul class="followee-list_outer" id="followee-list_outer">
+							<ul class="followee-list_outer">
 								<li>
-									<p class="followee-list_name"></p>
+									<p class="followee-list_name">Navneet Agarwal</p>
 								</li>
 								<li>
-									<p class="followee-list_name"></p>
+									<p class="followee-list_name">Ritwick Chaudhry</p>
 								</li>
 								<li>
-									<p class="followee-list_name"></p>
+									<p class="followee-list_name">Saurabh Garg</p>
 								</li>
 							</ul>
 						</div>
