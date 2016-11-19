@@ -218,6 +218,7 @@
 		//  });
 
 		// // Loading name and intro
+		jQuery.ajaxSetup({async:false});
 		$.get("http://10.130.10.35:8080/DBProject/GetDetails", {id : sessionStorage.getItem('id'), type : "reader"},function(data,status) {
 
 			console.log('Entered GetDetails');
@@ -242,9 +243,9 @@
 
 				// Extract followers and update
 				follower_list = data["follower"];
-				var f1 = 0;										// Num of followers
+				var f1 = 0;
 				for (var follower in follower_list) {
-					console.log(follower_list[follower]);
+					// console.log(follower_list[follower]);
 					
 					while (follower_list_items[f1].nodeType != 1) {
 						f1 += 1;
@@ -254,12 +255,11 @@
 					f1 += 1;
 				}
 
-
 				// Extract followees and update
 				followee_list = data["followee"];
-				var f2 = 0;										// Num of followees
+				var f2 = 0;
 				for (var followee in followee_list) {
-					console.log(followee_list[followee]);
+					// console.log(followee_list[followee]);
 					
 					while (followee_list_items[f2].nodeType != 1) {
 						f2 += 1;
@@ -267,6 +267,52 @@
 					
 					followee_list_items[f2].innerHTML = "<p class=\"followee-list_name\">" + followee_list[followee] +"</p>";
 					f2 += 1;
+				}
+
+				// Extract reading books. (Servlet returns only book ids)
+				// Now, using book_id, get the details of the book
+				book_list = data["books"];
+				var b1 = 1;
+				for (var book_id in book_list) {
+					console.log(book_list[book_id]);
+
+					$.get("http://10.130.10.35:8080/DBProject/GetDetails", {id : book_list[book_id], type : "book"},function(data,status) {
+
+						// console.log(data);
+						if (data["status"] == true) {
+
+							var book_name = data["Name"];
+							var book_author = data["Author"];
+
+							var book_div_id = "book-suggest" + b1;
+							var book_div = document.getElementById(book_div_id);
+
+							book_div.getElementsByTagName('h5')[0].innerHTML = book_name;
+							book_div.getElementsByTagName('h6')[0].innerHTML = book_author;
+
+							// Loading the images
+							var image = new Image();
+							var pic_src = "http://10.130.10.35:8080/DBProject/UploadBookPhoto?id="+book_list[book_id];
+							image.src= pic_src;
+							image.onload = function(){
+								book_div.getElementsByTagName('img')[0].src=image.src;
+							}
+							image.onerror = function()
+							{
+								book_div.getElementsByTagName('img')[0].src="images/12345.png";
+							}
+
+
+						}
+						else {
+							alert("Can't retrieve book details");
+						}
+
+
+						b1 += 1;
+
+					});
+
 				}
 
 				// Update remaining info in page
@@ -384,7 +430,7 @@
 					<!-- List of books -->
 					<div class="booklist-suggest mdl-grid">
 
-						<div class="book-suggest mdl-cell mdl-cell-4-col">
+						<div class="book-suggest mdl-cell mdl-cell-4-col" id="book-suggest1">
 							<img src="images/12345.png" width="100%">
 							<h5>Harry Potter</h5>
 							<h6>J.K. Rowling</h6>
@@ -394,7 +440,7 @@
 							</div>
 						</div>
 
-						<div class="book-suggest mdl-cell mdl-cell--4-col">
+						<div class="book-suggest mdl-cell mdl-cell--4-col" id="book-suggest2">
 							<img src="images/12345.png" width="100%">  
 							<h5>Lord of the Rings</h5>
 							<h6>J. R. R. Tolkien</h6>
@@ -404,7 +450,7 @@
 							</div>
 						</div>
 
-						<div class="book-suggest mdl-cell mdl-cell--4-col">
+						<div class="book-suggest mdl-cell mdl-cell--4-col" id="book-suggest3">
 							<img src="images/12345.png" width="100%">  
 							<h5>Game of Thrones</h5>
 							<h6>G. R. R. Martin</h6>
