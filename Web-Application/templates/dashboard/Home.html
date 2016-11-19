@@ -133,7 +133,7 @@
 		var image = new Image();
 		var image_profile_pic = new Image();
 		var x1 = sessionStorage.getItem('id');
-		var x2 = "http://10.130.10.6:8080/DBProject/UploadPhoto?id="+x1;
+		var x2 = "http://10.130.10.35:8080/DBProject/UploadPhoto?id="+x1;
 		var x = sessionStorage.getItem('id');
 		document.getElementById("id").value = x;
 		image.src= x2;
@@ -153,7 +153,7 @@
 		document.getElementById("profile_pic").src="images/user.jpg";
 	}
 
-	$.get("http://10.130.10.6:8080/DBProject/GetAllSearch", {id : sessionStorage.getItem('id')},function(data,status) {
+	$.get("http://10.130.10.35:8080/DBProject/GetAllSearch", {id : sessionStorage.getItem('id')},function(data,status) {
 
 		console.log('Entered GetAllCourse');
 		var src = new Array();
@@ -182,7 +182,7 @@
 	
 	$("#logout").click(function(){
 
-		$.get("http://10.130.10.6:8080/DBProject/Logout", function(data, status){
+		$.get("http://10.130.10.35:8080/DBProject/Logout", function(data, status){
 			console.log(data["status"]);
 			if (data["status"] == true) {
 				window.location.href = "../LoginRegistrationForm/index.html";
@@ -204,7 +204,7 @@
 		//  });
 
 		// // Loading name and intro
-		$.get("http://10.130.10.6:8080/DBProject/GetDetails", {id : sessionStorage.getItem('id'), type : "reader"},function(data,status) {
+		$.get("http://10.130.10.35:8080/DBProject/GetDetails", {id : sessionStorage.getItem('id'), type : "reader"},function(data,status) {
 
 			console.log('Entered GetDetails');
 			var name;
@@ -511,7 +511,7 @@
 
 																<center>
 
-																	<form method="post" action="http://10.130.10.6:8080/DBProject/UploadPhoto" enctype="multipart/form-data" id="form1" target="formSending">
+																	<form method="post" action="http://10.130.10.35:8080/DBProject/UploadPhoto" enctype="multipart/form-data" id="form1" target="formSending">
 													            <table border="0">
 													                <tr>
 													                    <td>Photo: </td>

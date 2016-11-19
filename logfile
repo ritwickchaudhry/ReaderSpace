@@ -145,3 +145,12 @@ ERROR:  table "reader" does not exist
 STATEMENT:  drop table   Reader;
 ERROR:  table "book" does not exist
 STATEMENT:  drop table   Book;
+LOG:  database system was interrupted; last known up at 2016-11-18 12:49:15 IST
+LOG:  database system was not properly shut down; automatic recovery in progress
+LOG:  invalid record length at 0/4693D60
+LOG:  redo is not required
+LOG:  MultiXact member wraparound protections are now enabled
+LOG:  autovacuum launcher started
+LOG:  database system is ready to accept connections
+FATAL:  database "navneet" does not exist
+FATAL:  database "navneet" does not exist
