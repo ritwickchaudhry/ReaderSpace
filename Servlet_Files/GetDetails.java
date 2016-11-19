@@ -44,8 +44,7 @@ public class GetDetails extends HttpServlet {
 				String password = ServletInfo.passWord;
 				JSONObject jsonObj = new JSONObject();
 				
-				//Local Variables				console.log('Entered GetDetails');
-
+				//Local Variables
 				String id;
 				String type;
 				
@@ -91,6 +90,29 @@ public class GetDetails extends HttpServlet {
 								jsonObj.put("intro",rs.getString("Introduction"));
 //								returnObject.put(jsonObj);
 							}
+							
+							// Query to find the followers of this guy
+							query = "select follower from follow where followee=? limit 3";
+							pstmt = conn.prepareStatement(query);
+							pstmt.setString(1, id);
+							rs = pstmt.executeQuery();
+							JSONArray arr = new JSONArray();
+							while(rs.next()){
+								arr.put(rs.getString(1));
+							}
+							jsonObj.put("follower", arr);
+							
+							// Query to find the followees of this guy
+							
+							query = "select followee from follow where follower=? limit 3";
+							pstmt = conn.prepareStatement(query);
+							pstmt.setString(1, id);
+							rs = pstmt.executeQuery();
+							arr = new JSONArray();
+							while(rs.next()){
+								arr.put(rs.getString(1));
+							}
+							jsonObj.put("followee", arr);
 						}
 						else if(type.equals("book")){
 							// ResultSet rs;
@@ -98,6 +120,7 @@ public class GetDetails extends HttpServlet {
 							// PreparedStatement p;
 							query = "SELECT Name, Description, Author, Number_Of_Pages from Book where Book_ID = ?";
 							pstmt = conn.prepareStatement(query);
+							id = "3";
 							pstmt.setString(1, id);
 							rs = pstmt.executeQuery();
 							int count=0;

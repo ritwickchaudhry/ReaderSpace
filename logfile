@@ -154,3 +154,6 @@ LOG:  autovacuum launcher started
 LOG:  database system is ready to accept connections
 FATAL:  database "navneet" does not exist
 FATAL:  database "navneet" does not exist
+ERROR:  insert or update on table "follow" violates foreign key constraint "follow_followee_fkey"
+DETAIL:  Key (followee)=(ritwickchaudhry1) is not present in table "reader".
+STATEMENT:  insert into follow values('tanmay','ritwickchaudhry1');
