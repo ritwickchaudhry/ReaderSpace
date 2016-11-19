@@ -113,6 +113,18 @@ public class GetDetails extends HttpServlet {
 								arr.put(rs.getString(1));
 							}
 							jsonObj.put("followee", arr);
+							
+							// Query to send the reading books
+							
+							query = "select book_id from reading where reader_id=? limit 3";
+							pstmt = conn.prepareStatement(query);
+							pstmt.setString(1, id);
+							rs = pstmt.executeQuery();
+							arr = new JSONArray();
+							while(rs.next()){
+								arr.put(rs.getString(1));
+							}
+							jsonObj.put("books", arr);
 						}
 						else if(type.equals("book")){
 							// ResultSet rs;
@@ -120,7 +132,7 @@ public class GetDetails extends HttpServlet {
 							// PreparedStatement p;
 							query = "SELECT Name, Description, Author, Number_Of_Pages from Book where Book_ID = ?";
 							pstmt = conn.prepareStatement(query);
-							id = "3";
+//							id = "3";
 							pstmt.setString(1, id);
 							rs = pstmt.executeQuery();
 							int count=0;

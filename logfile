@@ -157,3 +157,6 @@ FATAL:  database "navneet" does not exist
 ERROR:  insert or update on table "follow" violates foreign key constraint "follow_followee_fkey"
 DETAIL:  Key (followee)=(ritwickchaudhry1) is not present in table "reader".
 STATEMENT:  insert into follow values('tanmay','ritwickchaudhry1');
+ERROR:  insert or update on table "reading" violates foreign key constraint "reading_book_id_fkey"
+DETAIL:  Key (book_id)=(tanmay) is not present in table "book".
+STATEMENT:  insert into reading values('tanmay','2');
