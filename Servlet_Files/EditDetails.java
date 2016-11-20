@@ -220,10 +220,14 @@ public class EditDetails extends HttpServlet {
 			}
 
 			String conns1 = "";
+			String query2 = "delete from interests where reader_id=?";
+			pstmt = conn.prepareStatement(query2);
+			pstmt.setString(1, id);
+			pstmt.executeUpdate();
 			for(int i = 0;i < interestdata.length(); i++){
 				
 				if(interestdata.charAt(i) == ','){
-					String query1 = "insert into interestdata values (?,?)";
+					String query1 = "insert into interests values (?,?)";
 					pstmt = conn.prepareStatement(query1);
 					pstmt.setString(1, id);
 					pstmt.setString(2, conns1);
@@ -231,7 +235,7 @@ public class EditDetails extends HttpServlet {
 					conns1 = "";
 				}
 				else{
-					conns1+=contact.charAt(i);
+					conns1+=interestdata.charAt(i);
 				}
 				
 				
