@@ -55,11 +55,10 @@ public class UpdateBookRating extends HttpServlet {
 		//Local Variables
 		String id;
 		String bookID;
-		int rating;
+		int rating = 0;
 
 		id = request.getParameter("id");
 		bookID = request.getParameter("bookID");
-		rating = request.getParameter("rating");
 
 		System.out.println(id+" <- id, bookID -> " + bookID + " rating -> " + rating);
 		
@@ -83,12 +82,12 @@ public class UpdateBookRating extends HttpServlet {
 			pstmt.setString(2, bookID);
 			ResultSet rs = pstmt.executeQuery();
 			
-			int count;
+			int count = 0;
 
 			while(rs.next())
 			{
 				rating = rs.getString("rating");
-				Sysatem.out.println(rating);
+				System.out.println(rating);
 				count++;
 			}
 
@@ -104,7 +103,7 @@ public class UpdateBookRating extends HttpServlet {
 			{
 				System.out.println("Some Problem with duplicates in review");
 			}
-			
+
 			returnObject.put("status", true);
 		}
 		catch(Exception sqle){
@@ -136,6 +135,9 @@ public class UpdateBookRating extends HttpServlet {
 		String connString = ServletInfo.connString;
 		String username = ServletInfo.userName;
 		String password = ServletInfo.passWord;
+		JSONObject returnObject = new JSONObject();
+
+
 		
 		//Local Variables
 		String id;

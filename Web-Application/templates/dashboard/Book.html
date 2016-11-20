@@ -242,14 +242,16 @@
 							{
 								var info;
 								info = data["info"];
+								console.log(info);
 								if(info == "NoRatingFound")
 								{
 									//Do Nothing
+									// alert("Wrong");
 								}	
 								else
 								{
 									var rating;
-									rating  = info.subString(10);
+									rating  = info.substring(10);
 									alert(rating);
 								}
 							}
