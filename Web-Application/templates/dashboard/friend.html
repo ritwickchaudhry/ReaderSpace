@@ -413,7 +413,7 @@
 									var book_div_id = "book-suggest" + b1;
 									var book_div = document.getElementById(book_div_id);
 
-									book_div.getElementsByTagName('h5')[0].innerHTML = book_name;
+									book_div.getElementsByTagName('h5')[0].innerHTML = "<a onclick='openBookPage("+book_list[book_id]+");'>" + book_name +"</a>";
 									book_div.getElementsByTagName('h6')[0].innerHTML = book_author;
 
 									// Loading the images
