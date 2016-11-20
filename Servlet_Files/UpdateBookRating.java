@@ -86,7 +86,7 @@ public class UpdateBookRating extends HttpServlet {
 
 			while(rs.next())
 			{
-				rating = rs.getString("rating");
+				rating = rs.getInt("rating");
 				System.out.println(rating);
 				count++;
 			}
@@ -138,7 +138,7 @@ public class UpdateBookRating extends HttpServlet {
 		JSONObject returnObject = new JSONObject();
 
 
-		
+
 		//Local Variables
 		String id;
 		String bookID;
