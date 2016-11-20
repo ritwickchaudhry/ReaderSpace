@@ -106,19 +106,27 @@
 		// Called when follower/followee name is clicked
 		function openFriendPage(obj)
 		{
-			// console.log(obj.innerHTML);
-			// console.log(sessionStorage.getItem('id'));
-
+			console.log(obj.innerHTML);
 			if (obj.innerHTML == sessionStorage.getItem('id')) {
-				// console.log("SDANsdlan");
-				window.location.href = "Home.html";
+				window.location.href = "home.html";
 			}
-			else {
-				sessionStorage.setItem('friend_id',obj.innerHTML);
-				// console.log(sessionStorage.getItem('friend_id'));
-				window.location.href = "friend.html";
-			}
-			
+			sessionStorage.setItem('friend_id',obj.innerHTML);
+			window.location.href = "friend.html";
+		}
+
+		// Called when follower/followee name is clicked
+		function openFriendPageById(obj)
+		{
+			sessionStorage.setItem('friend_id',obj);
+			window.location.href = "friend.html";
+		}
+
+		// Called when book name is clicked
+		function openBookPage(obj)
+		{
+			console.log(obj);
+			sessionStorage.setItem('book_id', obj);
+			window.location.href = "Book.html";
 		}
 
 		// Update the follow button
@@ -175,7 +183,8 @@
 			// console.log("sfnasdknaskl");
 			if(event.keyCode == 13) {
 				event.preventDefault();
-				alert(ele.value);        
+				// alert(ele.value); 
+				console.log(ele.value);       
 			}
 		}
 
@@ -257,7 +266,7 @@
 
 					$.each(data,function(index,element){
 
-						var temp = element["type"] + " : ";
+						var temp = element["type"] + ",";
 						temp += element["id"] + ",";
 						temp += element["name"];
 
@@ -272,7 +281,23 @@
 					});
 					console.log(src);
 					$("#search").autocomplete({
-						source: src
+						source: src,
+				select: function (e, ui) {
+					// alert(e);
+					// console.log(ui["item"]["value"]);
+					var selectedItem = ui["item"]["value"];
+					var items = selectedItem.split(",");
+					// console.log(items[0]);
+					if(items[0]=="reader"){
+						openFriendPageById(items[1]);
+					}
+					else if(items[0]=="book"){
+						openBookPage(items[1]);
+					}
+					else{
+						
+					}
+				}
 					});
 
 				});
@@ -414,7 +439,7 @@
 
 							});
 
-						}
+}
 
 						// Update remaining info in page
 						document.getElementById("cover-name").innerHTML = name;
@@ -426,10 +451,10 @@
 					}
 
 				});
-			
-			}
-		});
-	</script>
+
+}
+});
+</script>
 
 </head>
 
