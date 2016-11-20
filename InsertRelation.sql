@@ -32,3 +32,5 @@ insert into genre values('3','Children');
 insert into genre values('4','Fiction');
 insert into genre values('4','Mystery');
 insert into genre values('4','Thriller');
+insert into already_read values('1','tanmay');
+insert into already_read values('3','tanmay');

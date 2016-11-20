@@ -125,6 +125,18 @@ public class GetDetails extends HttpServlet {
 								arr.put(rs.getString(1));
 							}
 							jsonObj.put("books", arr);
+							
+							// Query to send the reading books
+							
+							query = "select book_id from already_read where reader_id=? limit 3";
+							pstmt = conn.prepareStatement(query);
+							pstmt.setString(1, id);
+							rs = pstmt.executeQuery();
+							arr = new JSONArray();
+							while(rs.next()){
+								arr.put(rs.getString(1));
+							}
+							jsonObj.put("done-reading", arr);
 						}
 						else if(type.equals("book")){
 							// ResultSet rs;

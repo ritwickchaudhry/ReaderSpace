@@ -210,42 +210,126 @@
 				document.getElementById("id").value = x;
 				
 				// Friend Image
-				var image_profile_pic = new Image();
-				var friend_id = sessionStorage.getItem('friend_id');
-				var friend_pic_src = "http://10.130.10.35:8080/DBProject/UploadPhoto?id="+friend_id;
-				image_profile_pic.src = friend_pic_src;
-				image_profile_pic.onload = function()
-				{
-					document.getElementById("profile_pic").src=image_profile_pic.src;
+				// var image_profile_pic = new Image();
+				// var friend_id = sessionStorage.getItem('friend_id');
+				// var friend_pic_src = "http://10.130.10.35:8080/DBProject/UploadPhoto?id="+friend_id;
+				// image_profile_pic.src = friend_pic_src;
+				// image_profile_pic.onload = function()
+				// {
+				// 	document.getElementById("profile_pic").src=image_profile_pic.src;
+				// }
+				// image_profile_pic.onerror = function()
+				// {
+				// 	document.getElementById("profile_pic").src="images/user.jpg";
+				// }
+
+				///////////////Advanced Search for genre purpose////////////////////
+
+				$.get("http://10.130.10.35:8080/DBProject/AdvancedSearch", {id : sessionStorage.getItem('id'), type : "genre"},function(data,status) {
+
+				var src = new Array();
+				console.log(data["genre"]);
+				$.each(data["genre"],function(index,element){
+
+					var temp = element;
+					
+					var temp3 = element;
+					
+
+					var obj = {label:temp3,value: temp};
+					src.push(obj);
+					// src.push(temp);
+
+				});
+				console.log(src);
+				$("#searchgenre").autocomplete({
+					source: src,
+				select: function (e, ui) {
+					// alert(ui);
+					console.log(ui["item"]["value"]);
+					// var selectedItem = ui["item"]["value"];
+					// var items = selectedItem.split(",");
+					// // console.log(items[0]);
+					// if(items[0]=="reader"){
+					// 	openFriendPageById(items[1]);
+					// }
+					// else if(items[0]=="book"){
+					// 	openBookPage(items[1]);
+					// }
+					// else{	
+					// }
 				}
-				image_profile_pic.onerror = function()
-				{
-					document.getElementById("profile_pic").src="images/user.jpg";
+				});
+
+			});
+
+				///////////////Advanced Search for author purpose////////////////////
+
+				$.get("http://10.130.10.35:8080/DBProject/AdvancedSearch", {id : sessionStorage.getItem('id'), type : "author"},function(data,status) {
+
+				var src = new Array();
+				console.log(data["author"]);
+				$.each(data["author"],function(index,element){
+
+					var ss = element.split(",");
+
+					var temp = element;
+					
+					var temp3 = ss[1];
+					
+
+					var obj = {label:temp3,value: temp};
+					src.push(obj);
+					// src.push(temp);
+
+				});
+				console.log(src);
+				$("#searchauthor").autocomplete({
+					source: src,
+				select: function (e, ui) {
+					// alert(ui);
+					console.log(ui["item"]["value"]);
+					// var selectedItem = ui["item"]["value"];
+					// var items = selectedItem.split(",");
+					// // console.log(items[0]);
+					// if(items[0]=="reader"){
+					// 	openFriendPageById(items[1]);
+					// }
+					// else if(items[0]=="book"){
+					// 	openBookPage(items[1]);
+					// }
+					// else{	
+					// }
 				}
+				});
+
+			});
+
+
 
 				////////////// FOLLOW BUTTON ///////////////////
 
-				$.get("http://10.130.10.35:8080/DBProject/FollowBit", {id : sessionStorage.getItem('id'), friend_id : sessionStorage.getItem('friend_id')}, function(data,status) {
+				// $.get("http://10.130.10.35:8080/DBProject/FollowBit", {id : sessionStorage.getItem('id'), friend_id : sessionStorage.getItem('friend_id')}, function(data,status) {
 
-					console.log(data);
+				// 	console.log(data);
 
-					if (data["status"] == true) {
+				// 	if (data["status"] == true) {
 
-						var follow_btn = document.getElementById('cover-follow');
+				// 		var follow_btn = document.getElementById('cover-follow');
 						
-						if (data["isfriend"] == "1") {
-							follow_btn.innerHTML = "unfollow";
-						}
-						else {
-							follow_btn.innerHTML = "follow";
-						}
+				// 		if (data["isfriend"] == "1") {
+				// 			follow_btn.innerHTML = "unfollow";
+				// 		}
+				// 		else {
+				// 			follow_btn.innerHTML = "follow";
+				// 		}
 
-					}
-					else {
-						alert("Some internal error. Couldn't retrieve info");
-					}
+				// 	}
+				// 	else {
+				// 		alert("Some internal error. Couldn't retrieve info");
+				// 	}
 
-				});
+				// });
 
 
 				////////////// SEARCH BAR AT TOP ///////////////
@@ -319,113 +403,113 @@
 				//  });
 
 				// Loading followers, followees, books, name and intro
-				jQuery.ajaxSetup({async:false});
-				$.get("http://10.130.10.35:8080/DBProject/GetDetails", {id : sessionStorage.getItem('friend_id'), type : "reader"},function(data,status) {
+				// jQuery.ajaxSetup({async:false});
+				// $.get("http://10.130.10.35:8080/DBProject/GetDetails", {id : sessionStorage.getItem('friend_id'), type : "reader"},function(data,status) {
 
-					console.log('Entered GetDetails');
+				// 	console.log('Entered GetDetails');
 					
-					// Variables defined
-					var name;
-					var intro;
-					var follower_list;
-					var followee_list;
+				// 	// Variables defined
+				// 	var name;
+				// 	var intro;
+				// 	var follower_list;
+				// 	var followee_list;
 
-					// DOM tree variables
-					var follower_list_display = document.getElementById('follower-list_outer');
-					var follower_list_items = follower_list_display.childNodes;
-					var followee_list_display = document.getElementById('followee-list_outer');
-					var followee_list_items = followee_list_display.childNodes;
+				// 	// DOM tree variables
+				// 	var follower_list_display = document.getElementById('follower-list_outer');
+				// 	var follower_list_items = follower_list_display.childNodes;
+				// 	var followee_list_display = document.getElementById('followee-list_outer');
+				// 	var followee_list_items = followee_list_display.childNodes;
 					
-					if (data["status"] == true) {
+				// 	if (data["status"] == true) {
 
-						// Get info from servlet
-						name = data["name"];
-						intro = data["intro"];
+				// 		// Get info from servlet
+				// 		name = data["name"];
+				// 		intro = data["intro"];
 
-						// Extract followers and update
-						follower_list = data["follower"];
-						var f1 = 0;
-						for (var follower in follower_list) {
-							// console.log(follower_list[follower]);
+				// 		// Extract followers and update
+				// 		follower_list = data["follower"];
+				// 		var f1 = 0;
+				// 		for (var follower in follower_list) {
+				// 			// console.log(follower_list[follower]);
 							
-							while (follower_list_items[f1].nodeType != 1) {
-								f1 += 1;
-							}
+				// 			while (follower_list_items[f1].nodeType != 1) {
+				// 				f1 += 1;
+				// 			}
 							
-							follower_list_items[f1].innerHTML = "<p class=\"follower-list_name\"><a onclick='openFriendPage(this);'>" + follower_list[follower] +"</a></p>";
-							f1 += 1;
-						}
+				// 			follower_list_items[f1].innerHTML = "<p class=\"follower-list_name\"><a onclick='openFriendPage(this);'>" + follower_list[follower] +"</a></p>";
+				// 			f1 += 1;
+				// 		}
 
-						// Extract followees and update
-						followee_list = data["followee"];
-						var f2 = 0;
-						for (var followee in followee_list) {
-							// console.log(followee_list[followee]);
+				// 		// Extract followees and update
+				// 		followee_list = data["followee"];
+				// 		var f2 = 0;
+				// 		for (var followee in followee_list) {
+				// 			// console.log(followee_list[followee]);
 							
-							while (followee_list_items[f2].nodeType != 1) {
-								f2 += 1;
-							}
+				// 			while (followee_list_items[f2].nodeType != 1) {
+				// 				f2 += 1;
+				// 			}
 							
-							followee_list_items[f2].innerHTML = "<p class=\"followee-list_name\"><a onclick='openFriendPage(this);'>" + followee_list[followee] +"</a></p>";
-							f2 += 1;
-						}
+				// 			followee_list_items[f2].innerHTML = "<p class=\"followee-list_name\"><a onclick='openFriendPage(this);'>" + followee_list[followee] +"</a></p>";
+				// 			f2 += 1;
+				// 		}
 
-						// Extract reading books. (Servlet returns only book ids)
-						// Now, using book_id, get the details of the book
-						book_list = data["books"];
-						var b1 = 1;
-						for (var book_id in book_list) {
-							console.log(book_list[book_id]);
+				// 		// Extract reading books. (Servlet returns only book ids)
+				// 		// Now, using book_id, get the details of the book
+				// 		book_list = data["books"];
+				// 		var b1 = 1;
+				// 		for (var book_id in book_list) {
+				// 			console.log(book_list[book_id]);
 
-							$.get("http://10.130.10.35:8080/DBProject/GetDetails", {id : book_list[book_id], type : "book"},function(data,status) {
+				// 			$.get("http://10.130.10.35:8080/DBProject/GetDetails", {id : book_list[book_id], type : "book"},function(data,status) {
 
-								// console.log(data);
-								if (data["status"] == true) {
+				// 				// console.log(data);
+				// 				if (data["status"] == true) {
 
-									var book_name = data["Name"];
-									var book_author = data["Author"];
+				// 					var book_name = data["Name"];
+				// 					var book_author = data["Author"];
 
-									var book_div_id = "book-search" + b1;
-									var book_div = document.getElementById(book_div_id);
+				// 					var book_div_id = "book-search" + b1;
+				// 					var book_div = document.getElementById(book_div_id);
 
-									book_div.getElementsByTagName('h5')[0].innerHTML = book_name;
-									book_div.getElementsByTagName('h6')[0].innerHTML = book_author;
+				// 					book_div.getElementsByTagName('h5')[0].innerHTML = book_name;
+				// 					book_div.getElementsByTagName('h6')[0].innerHTML = book_author;
 
-									// Loading the images
-									var image = new Image();
-									var pic_src = "http://10.130.10.35:8080/DBProject/UploadBookPhoto?id="+book_list[book_id];
-									image.src= pic_src;
-									image.onload = function(){
-										book_div.getElementsByTagName('img')[0].src=image.src;
-									}
-									image.onerror = function()
-									{
-										book_div.getElementsByTagName('img')[0].src="images/Book.gif";
-									}
-
-
-								}
-								else {
-									alert("Can't retrieve book details");
-								}
+				// 					// Loading the images
+				// 					var image = new Image();
+				// 					var pic_src = "http://10.130.10.35:8080/DBProject/UploadBookPhoto?id="+book_list[book_id];
+				// 					image.src= pic_src;
+				// 					image.onload = function(){
+				// 						book_div.getElementsByTagName('img')[0].src=image.src;
+				// 					}
+				// 					image.onerror = function()
+				// 					{
+				// 						book_div.getElementsByTagName('img')[0].src="images/Book.gif";
+				// 					}
 
 
-								b1 += 1;
+				// 				}
+				// 				else {
+				// 					alert("Can't retrieve book details");
+				// 				}
 
-							});
 
-						}
+				// 				b1 += 1;
 
-						// Update remaining info in page
-						document.getElementById("cover-name").innerHTML = name;
-						document.getElementById("cover-intro").innerHTML = intro;
+				// 			});
+
+				// 		}
+
+				// 		// Update remaining info in page
+				// 		document.getElementById("cover-name").innerHTML = name;
+				// 		document.getElementById("cover-intro").innerHTML = intro;
 						
-					}
-					else {
-						alert("Can't retrieve details");
-					}
+					// }
+					// else {
+					// 	alert("Can't retrieve details");
+					// }
 
-				});
+				// });
 			
 			}
 		});
@@ -535,7 +619,8 @@
 					<!-- Search by genre division -->
 					<div class="book-search-genre">
 						<h4>By Genre: </h4>
-						
+						<input type="text" id="searchgenre" onkeydown="handle(this)">
+						<input type="text" id="searchauthor" onkeydown="handle(this)">
 					</div>
 
 					<!-- List of books -->
