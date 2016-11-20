@@ -252,7 +252,15 @@
 								{
 									var rating;
 									rating  = info.substring(10);
-									alert(rating);
+									// alert(rating);
+
+									// Set Rating
+
+									for(var i = 1; i <= rating; i++)
+									{
+										var starIndexString = "star-" + i;
+										document.getElementById(starIndexString).checked = true;
+									}
 								}
 							}
 							else
@@ -271,7 +279,7 @@
 			// Update the Rating on the click of stars
 			$("input[name='star']").change(function()
 				{
-					alert("Rating Changed");
+					// alert("Rating Changed");
 					var rating=0;
 
 					// Get Rating from the stars
@@ -294,7 +302,7 @@
 							// Do Nothing
 							if(data[status] == true)
 							{
-								alert("Rating Updated Successfully");
+								// alert("Rating Updated Successfully");
 							}
 						}
 					)
