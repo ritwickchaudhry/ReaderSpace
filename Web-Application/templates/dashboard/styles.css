@@ -310,22 +310,52 @@ _:-ms-input-placeholder, :root .demo-graph {
   padding-left: 60px;
 }
 
-.booklist-suggest {
+.book-search-heading {
+  padding-left: 5px;
+  padding-bottom: 1px;
+}
+
+.book-search-icon {
+  float: left;
+  padding-top: 5px;
+  padding-left: 5px;
+  font-size: 35px;
+}
+
+.book-search-heading h4 {
+  margin-top: 0px;
+  padding-top: 10px;
+  padding-left: 60px;
+}
+
+.book-search-genre {
   padding-left: 0px;
   padding-right: 0px;
 }
 
-.booklist-suggest h4 {
+.book-search-genre h4 {
+  margin-top: 6px;
+  margin-bottom: 6px;
+  padding-left: 30px;
+  font-size: 20px;
+}
+
+.booklist-search {
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+.booklist-search h4 {
   font-size: 32px;
 }
 
-.booklist-suggest h5, h6 {
+.booklist-search h5, h6 {
   text-align:center;
   margin-top: 8px;
   margin-bottom: 8px;
 }
 
-.book-suggest {
+.book-search {
   padding-right: 10px;
   padding-left: 10px;
   text-align: center;
