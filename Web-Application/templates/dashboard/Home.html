@@ -118,6 +118,14 @@
 			window.location.href = "friend.html";
 		}
 
+		// Called when book name is clicked
+		function openBookPage(obj)
+		{
+			console.log(obj);
+			sessionStorage.setItem('book_id', obj);
+			window.location.href = "Book.html";
+		}
+
 
 
 		function comeback()
@@ -305,7 +313,7 @@
 							var book_div_id = "book-suggest" + b1;
 							var book_div = document.getElementById(book_div_id);
 
-							book_div.getElementsByTagName('h5')[0].innerHTML = book_name;
+							book_div.getElementsByTagName('h5')[0].innerHTML = "<a onclick='openBookPage("+book_list[book_id]+");'>" + book_name +"</a>";
 							book_div.getElementsByTagName('h6')[0].innerHTML = book_author;
 
 							// Loading the images
@@ -319,8 +327,6 @@
 							{
 								book_div.getElementsByTagName('img')[0].src="images/Book.gif";
 							}
-
-
 						}
 						else {
 							alert("Can't retrieve book details");

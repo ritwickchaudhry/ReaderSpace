@@ -170,3 +170,6 @@ STATEMENT:  select * from bookk;
 ERROR:  relation "revie" does not exist at character 15
 STATEMENT:  select * from revie
 	w;
+ERROR:  function average(integer) does not exist at character 8
+HINT:  No function matches the given name and argument types. You might need to add explicit type casts.
+STATEMENT:  SELECT average(rating) as tot_rating, count(*) from review group by book_id having book_id = $1
