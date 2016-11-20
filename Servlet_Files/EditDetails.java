@@ -99,27 +99,15 @@ public class EditDetails extends HttpServlet {
 				returnObject.put("intro",result.getString("Introduction"));
 			}
 
-
-
-			// String conns = "";
-			// for(int i = 0;i < contact.length(); i++){
-				
-			// 	if(contact.charAt(i) == ','){
-			// 		String query1 = "insert into contact_number values (?,?)";
-			// 		pstmt = conn.prepareStatement(query1);
-			// 		pstmt.setString(1, id);
-			// 		pstmt.setString(2, conns);
-			// 		pstmt.executeUpdate();
-			// 		conns = "";
-			// 	}
-			// 	else{
-			// 		conns+=contact.charAt(i);
-			// 	}
-				
-				
-			// }
-			// returnObject.put("status", true);
-			// returnObject.put("info","Updated Successfully");
+			query = "select genre from interests where reader_id = ?";
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1,id);
+			result = pstmt.executeQuery();
+			JSONArray arr = new JSONArray();
+			while(result.next()){
+				arr.put(result.getString(1));
+			}
+			returnObject.put("genre", arr);
 		}
 		catch(Exception sqle){
 			
@@ -170,6 +158,7 @@ public class EditDetails extends HttpServlet {
 		gender = request.getParameter("gender");
 		id = request.getParameter("id");
 		contact = request.getParameter("contact");
+		interestdata = request.getParameter("interest");
 		System.out.println(id+"sadasd");
 		
 		// Set up output stream and type
@@ -227,6 +216,25 @@ public class EditDetails extends HttpServlet {
 				
 				
 			}
+
+			String conns1 = "";
+			for(int i = 0;i < interestdata.length(); i++){
+				
+				if(interestdata.charAt(i) == ','){
+					String query1 = "insert into interestdata values (?,?)";
+					pstmt = conn.prepareStatement(query1);
+					pstmt.setString(1, id);
+					pstmt.setString(2, conns1);
+					pstmt.executeUpdate();
+					conns1 = "";
+				}
+				else{
+					conns1+=contact.charAt(i);
+				}
+				
+				
+			}
+
 			returnObject.put("status", true);
 			returnObject.put("info","Updated Successfully");
 		}
