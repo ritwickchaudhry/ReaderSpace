@@ -310,6 +310,11 @@ _:-ms-input-placeholder, :root .demo-graph {
   padding-left: 60px;
 }
 
+.book-suggest img {
+  width: 100%;
+  height: 220px;
+}
+
 .book-search-heading {
   padding-left: 5px;
   padding-bottom: 1px;
@@ -326,6 +331,11 @@ _:-ms-input-placeholder, :root .demo-graph {
   margin-top: 0px;
   padding-top: 10px;
   padding-left: 60px;
+}
+
+.book-search img {
+  width: 100%;
+  height: 220px;
 }
 
 .book-search-genre {
