@@ -331,6 +331,7 @@ _:-ms-input-placeholder, :root .demo-graph {
   margin-top: 0px;
   padding-top: 10px;
   padding-left: 60px;
+  font-size: 30px;
 }
 
 .book-search img {
@@ -343,11 +344,12 @@ _:-ms-input-placeholder, :root .demo-graph {
   padding-right: 0px;
 }
 
-.book-search-genre h4 {
+.book-search-genre label {
   margin-top: 6px;
   margin-bottom: 6px;
   padding-left: 30px;
   font-size: 20px;
+  padding-right: 20px;
 }
 
 .booklist-search {
