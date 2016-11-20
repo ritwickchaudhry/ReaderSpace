@@ -120,6 +120,7 @@
 		// Called when follower/followee name is clicked
 		function openFriendPageById(obj)
 		{
+			console.log(obj);
 			if (obj == sessionStorage.getItem('id')) {
 				window.location.href = "Home.html";
 			}
@@ -303,12 +304,26 @@
 				for (var follower in follower_list) {
 					// console.log(follower_list[follower]);
 					
+					// Get details of this particular reader
+					$.get("http://10.130.10.35:8080/DBProject/GetDetails", {id : follower_list[follower], type : "reader"},function(data,status) {
+
+						// console.log(data);
+						if (data["status"] == true) {
+							follower_name = data["name"];
+						}
+						else {
+							alert("Can't retrieve book details");
+						}
+
+					});
+
 					while (follower_list_items[f1].nodeType != 1) {
 						f1 += 1;
 					}
-					
-					follower_list_items[f1].innerHTML = "<p class=\"follower-list_name\"><a onclick='openFriendPage(this);'>" + follower_list[follower] +"</a></p>";
+
+					follower_list_items[f1].innerHTML = "<p class=\"follower-list_name\"><a onclick=\"openFriendPageById('" + follower_list[follower] +"');\">" + follower_name +"</a></p>";
 					f1 += 1;
+
 				}
 
 				// Extract followees and update
@@ -317,12 +332,26 @@
 				for (var followee in followee_list) {
 					// console.log(followee_list[followee]);
 					
+					// Get details of this particular reader
+					$.get("http://10.130.10.35:8080/DBProject/GetDetails", {id : followee_list[followee], type : "reader"},function(data,status) {
+
+						// console.log(data);
+						if (data["status"] == true) {
+							followee_name = data["name"];
+						}
+						else {
+							alert("Can't retrieve book details");
+						}
+
+					});
+
 					while (followee_list_items[f2].nodeType != 1) {
 						f2 += 1;
 					}
-					
-					followee_list_items[f2].innerHTML = "<p class=\"followee-list_name\"><a onclick='openFriendPage(this);'>" + followee_list[followee] +"</a></p>";
+
+					followee_list_items[f2].innerHTML = "<p class=\"followee-list_name\"><a onclick=\"openFriendPageById('" + followee_list[followee] +"');\">" + followee_name +"</a></p>";
 					f2 += 1;
+
 				}
 
 				// Extract already read books. (Servlet returns only book ids)
@@ -350,7 +379,7 @@
 						b2 += 1;
 					}
 
-					donereading_list_items[b2].innerHTML = "<p class=\"followee-list_name\"><a onclick='openBookPage(" + donereading_list[read_book_id] +");'>" + read_book_name +"</a></p>";
+					donereading_list_items[b2].innerHTML = "<p class=\"followee-list_name\"><a onclick=\"openBookPage('" + donereading_list[read_book_id] +"');\">" + read_book_name +"</a></p>";
 					b2 += 1;
 				}
 
@@ -374,7 +403,7 @@
 							var book_div_id = "book-suggest" + b1;
 							var book_div = document.getElementById(book_div_id);
 
-							book_div.getElementsByTagName('h5')[0].innerHTML = "<a onclick='openBookPage("+book_list[book_id]+");'>" + book_name +"</a>";
+							book_div.getElementsByTagName('h5')[0].innerHTML = "<a onclick=\"openBookPage('"+book_list[book_id]+"');\">" + book_name +"</a>";
 							book_div.getElementsByTagName('h6')[0].innerHTML = book_author;
 
 							// Loading the images
@@ -434,7 +463,7 @@
 							var book_div_id = "book-suggested" + b3;
 							var book_div = document.getElementById(book_div_id);
 
-							book_div.getElementsByTagName('h5')[0].innerHTML = "<a onclick='openBookPage("+ suggested_books_list[suggested_book_id] +");'>" + book_name +"</a>";
+							book_div.getElementsByTagName('h5')[0].innerHTML = "<a onclick=\"openBookPage('"+ suggested_books_list[suggested_book_id] +"');\">" + book_name +"</a>";
 							book_div.getElementsByTagName('h6')[0].innerHTML = book_author;
 
 							// Loading the images
@@ -473,7 +502,7 @@
 
 				// console.log(data["suggested"]);
 				suggested_friend_list = data["suggested"];
-				var b4 = 0;
+				var f3 = 0;
 				var suggestreaders_list_display = document.getElementById('suggest-readers-list_outer');
 				var suggestreaders_list_items = suggestreaders_list_display.childNodes;
 
@@ -484,7 +513,7 @@
 
 						// console.log(data);
 						if (data["status"] == true) {
-							friend_name = data["Name"];
+							friend_name = data["name"];
 						}
 						else {
 							alert("Can't retrieve book details");
@@ -492,12 +521,12 @@
 
 					});
 
-					while (suggestreaders_list_items[b4].nodeType != 1) {
-						b4 += 1;
+					while (suggestreaders_list_items[f3].nodeType != 1) {
+						f3 += 1;
 					}
 
-					suggestreaders_list_items[b4].innerHTML = "<p class=\"followee-list_name\"><a onclick='openFriendPage(" + suggested_friend_list[suggested_friend_id] +");'>" + friend_name +"</a></p>";
-					b4 += 1;
+					suggestreaders_list_items[f3].innerHTML = "<p class=\"followee-list_name\"><a onclick=\"openFriendPageById('" + suggested_friend_list[suggested_friend_id] +"');\">" + friend_name +"</a></p>";
+					f3 += 1;
 
 				}
 			}
