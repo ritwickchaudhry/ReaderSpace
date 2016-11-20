@@ -169,6 +169,8 @@
 			form1.onsubmit="setTimeout(function () { window.location.reload(); }, 10)"
 			form1.target='';
 		}
+
+
 		function handle(ele) {
 			// console.log("sfnasdknaskl");
 			if(event.keyCode == 13) {
@@ -176,6 +178,8 @@
 				alert(ele.value);        
 			}
 		}
+
+
 		$(document).ready(function(){  
 
 			if(sessionStorage.getItem('id')==null)
@@ -220,6 +224,7 @@
 				}
 
 				////////////// FOLLOW BUTTON ///////////////////
+
 				$.get("http://10.130.10.35:8080/DBProject/FollowBit", {id : sessionStorage.getItem('id'), friend_id : sessionStorage.getItem('friend_id')}, function(data,status) {
 
 					console.log(data);
@@ -243,9 +248,8 @@
 				});
 
 
-
-
 				////////////// SEARCH BAR AT TOP ///////////////
+
 				$.get("http://10.130.10.35:8080/DBProject/GetAllSearch", {id : sessionStorage.getItem('id')},function(data,status) {
 
 					console.log('Entered GetAllCourse');
@@ -272,6 +276,8 @@
 					});
 
 				});
+
+				//////////////// LOGOUT /////////////////
 
 				$("#logout").click(function(){
 
