@@ -145,6 +145,29 @@ public class GetDetails extends HttpServlet {
 								jsonObj.put("NumberOfPages",rs.getString(4));
 								count++;
 							}
+
+
+							// Get overall rating
+							query = "SELECT average(rating) as tot_rating, count(*) from review group by book_id having book_id = ?";
+							pstmt = conn.prepareStatement(query);
+							pstmt.setString(1, bookID);
+							rs = pstmt.executeQuery();
+							
+							int counter = 0;
+							float totalRating = 0;
+							
+							while(rs.next())
+							{
+								totalRating = rs.getFloat(1);
+								counter = rs.getInt(2);
+							}
+
+							System.out.println(totalRating);
+							System.out.println(counter)
+
+							jsonObj.put("counter",counter);
+							jsonObj.put("totalRating", totalRating);
+
 							if(count > 1)
 							{
 								System.out.println("Panic : Book_ID redundancy");

@@ -87,6 +87,25 @@
 		  content: '\f006';
 		  font-family: FontAwesome;
 		}
+
+		.star-ratings-sprite {
+		  background: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/2605/star-rating-sprite.png") repeat-x;
+		  font-size: 0;
+		  height: 21px;
+		  line-height: 0;
+		  overflow: hidden;
+		  text-indent: -999em;
+		  width: 110px;
+		  margin: 0 auto;
+		}
+		.star-ratings-sprite-rating {
+		  background: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/2605/star-rating-sprite.png") repeat-x;
+		  background-position: 0 100%;
+		  float: left;
+		  height: 21px;
+		  display: block;
+		}
+
 		#view-source {
 			position: fixed;
 			display: block;
@@ -333,21 +352,41 @@
 				
 				var Name;
 				var Description;
-				
-				if (data["status"] == true) 
+				var author;
+				var numberOfPages;
+
+				if (data["status"] == true)
 				{
 
 					// Get info from servlet
 					Name = data["Name"];
 					Description = data["Description"];
+					author = data["Author"];
+					numberOfPages = data["NumberOfPages"];
 
-					// Update info in page
+					// Update Pics
 					document.getElementById("cover-name").innerHTML = Name;
 					document.getElementById("cover-intro").innerHTML = Description;
+
+					// Update author info
+					var authorNode = document.getElementById('author').getElementsByTagName('h2');
+					console.log(authorNode[0].innerHTML);
+					authorNode[0].innerHTML = author;
 					
-					// Set the Rating Here
 
+					// Update num pages info
+					var pageNode = document.getElementById('pages').getElementsByTagName('h2');
+					console.log(pageNode[0].innerHTML);
+					pageNode[0].innerHTML = "Number Of Pages : " + numberOfPages;
 
+					// Find Overall rating
+					var totalRating = 0.1;
+					var overallRatingNode = document.getElementById("totalrating");
+					// console.log(overallRatingNode.style.width);
+					// console.log(totalRating*100);
+					var actualPercentage = totalRating*100;
+					overallRatingNode.style.width = actualPercentage + "%";
+					console.log(overallRatingNode.style.width);
 				}
 				else 
 				{
@@ -437,6 +476,11 @@
 					<div class="cover-details">
 						<h3 id="cover-name">Tanmay Parekh</h3>
 						<p id="cover-intro">I love to read books. I am a big Potter fan. Mumbai is where I live. Blah blah blah</p>
+						<!-- <div class="star-ratings-css">
+						  <div class="star-ratings-css-top" style="width: 84%"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+						  <div class="star-ratings-css-bottom"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+						</div> -->
+						<div class="star-ratings-sprite"><span style="width:64%" class="star-ratings-sprite-rating" id="totalrating"></span></div>
 					</div>
 
 									<!-- <svg fill="currentColor" width="200px" height="200px" viewBox="0 0 1 1" class="demo-chart mdl-cell mdl-cell--4-col mdl-cell--3-col-desktop">
@@ -526,33 +570,25 @@
 										<div class="demo-updates mdl-card mdl-color--light-blue-100 mdl-shadow--2dp mdl-cell mdl-cell--4-col mdl-cell--4-col-tablet mdl-cell--12-col-desktop">
 
 											<div class="follower-list_heading">
-												<i class="friend-icon glyphicon glyphicon-hand-right"></i>
-												<h2 id="follower-list_head">Followers:</h2>
+												<i class="friend-icon glyphicon glyphicon-pencil"></i>
+												<div id="author"><h2 id="follower-list_head" name="AuthorName">Ritwick</h2></div>
 											</div>
 
-											<div class="follower-list">
-												<ul class="follower-list_outer">
-													<li>
-														<p class="follower-list_name">Navneet Agarwal</p>
-													</li>
-													<li>
-														<p class="follower-list_name">Ritwick Chaudhry</p>
-													</li>
-													<li>
-														<p class="follower-list_name">Saurabh Garg</p>
-													</li>
-												</ul>
+
+											<div class="follower-list_heading">
+												<i class="friend-icon glyphicon glyphicon-book"></i>
+												<div id="pages"><h2 id="follower-list_head" name="NumPages">Number of Pages : </h2></div>
 											</div>
 
-											<div class="mdl-card__actions mdl-card--border" id="follower_read-more">
+											<!-- <div class="mdl-card__actions mdl-card--border" id="follower_read-more">
 												<a href="#" class="mdl-button mdl-js-button mdl-js-ripple-effect">View More</a>
-											</div>
+											</div> -->
 												<!-- <div class="mdl-card__title mdl-card--expand mdl-color--teal-300"> -->
 												<!-- </div> -->
-											<!-- <div class="mdl-card__supporting-text mdl-color-text--grey-600">
+<!-- 											<div class="mdl-card__supporting-text mdl-color-text--grey-600">
 												Non dolore elit adipisicing ea reprehenderit consectetur culpa.
-											</div> -->
-											<!-- <div class="mdl-card__actions mdl-card--border">
+											</div>
+ --><!-- 											<div class="mdl-card__actions mdl-card--border">
 												<a href="#" class="mdl-button mdl-js-button mdl-js-ripple-effect">Read More</a>
 											</div> -->
 										</div>
@@ -564,7 +600,7 @@
 										<div class="demo-options mdl-card mdl-color--blue-grey-300 mdl-shadow--2dp mdl-cell mdl-cell--4-col mdl-cell--3-col-tablet mdl-cell--12-col-desktop">
 
 											<div class="follower-list-heading">
-												<i class="friend-icon glyphicon glyphicon-hand-right"></i>
+												<i class="friend-icon glyphicon glyphicon-stats"></i>
 												<h2 id="follower-list_head">Your Rating:</h2>
 											</div>
 
