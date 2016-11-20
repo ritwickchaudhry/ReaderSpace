@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -149,6 +150,7 @@ public class EditDetails extends HttpServlet {
 		String introduction;
 		String gender;
 		String contact;
+		String interestdata;
 		
 		name = request.getParameter("name");
 		date = request.getParameter("date_of_birth");

@@ -138,3 +138,11 @@ create table Genre
 	foreign key (Book_ID) references Book(Book_ID) on delete cascade,
 	primary key (Book_ID, Genre)
 );
+
+create table interests
+(
+	reader_id 	varchar(50),
+	genre 		varchar(50),
+	foreign key (reader_id) references Reader(reader_id) on delete cascade,
+	primary key (reader_id, genre)
+);

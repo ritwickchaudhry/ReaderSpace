@@ -1,0 +1,805 @@
+<!doctype html>
+<!--
+	Material Design Lite
+	Copyright 2015 Google Inc. All rights reserved.
+
+	Licensed under the Apache License, Version 2.0 (the "License");
+	you may not use this file except in compliance with the License.
+	You may obtain a copy of the License at
+
+			https://www.apache.org/licenses/LICENSE-2.0
+
+	Unless required by applicable law or agreed to in writing, software
+	distributed under the License is distributed on an "AS IS" BASIS,
+	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	See the License for the specific language governing permissions and
+	limitations under the License
+-->
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="description" content="A front-end template that helps you build fast, modern mobile web apps.">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>HOME</title>
+
+	<!-- Add to homescreen for Chrome on Android -->
+	<meta name="mobile-web-app-capable" content="yes">
+	<link rel="icon" sizes="192x192" href="images/android-desktop.png">
+
+	<!-- Add to homescreen for Safari on iOS -->
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="apple-mobile-web-app-title" content="Material Design Lite">
+	<link rel="apple-touch-icon-precomposed" href="images/ios-desktop.png">
+	<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<!-- <link rel="stylesheet" href="/resources/demos/style.css"> -->
+	
+	<!-- Tile icon for Win8 (144x144 + tile color) -->
+	<meta name="msapplication-TileImage" content="images/touch/ms-touch-icon-144x144-precomposed.png">
+	<meta name="msapplication-TileColor" content="#3372DF">
+
+	<link rel="shortcut icon" href="images/favicon.png">
+
+	<!-- SEO: If your mobile URL is different from the desktop URL, add a canonical link to the desktop page https://developers.google.com/webmasters/smartphone-sites/feature-phones -->
+		<!--
+		<link rel="canonical" href="http://www.example.com/">
+	-->
+
+	<link href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<link rel="stylesheet" href="material.min.css">
+	<link rel="stylesheet" href="styles.css">
+	<style>
+		#view-source {
+			position: fixed;
+			display: block;
+			right: 0;
+			bottom: 0;
+			margin-right: 40px;
+			margin-bottom: 40px;
+			z-index: 900;
+		}
+		.modal {
+			display: none; /* Hidden by default */
+			position: fixed; /* Stay in place */
+			z-index: 1; /* Sit on top */
+			padding-top: 100px; /* Location of the box */
+			left: 0;
+			top: 0;
+			width: 100%; /* Full width */
+			height: 100%; /* Full height */
+			overflow: auto; /* Enable scroll if needed */
+			background-color: rgb(0,0,0); /* Fallback color */
+			background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+		}
+
+		/* Modal Content */
+		.modal-content {
+			background-color: #fefefe;
+			margin: auto;
+			padding: 20px;
+			border: 1px solid #888;
+			width: 80%;
+		}
+
+		/* The Close Button */
+		.close {
+			color: #aaaaaa;
+			float: right;
+			font-size: 28px;
+			font-weight: bold;
+		}
+
+		.close:hover,
+		.close:focus {
+			color: #000;
+			text-decoration: none;
+			cursor: pointer;
+		}
+	</style>
+	<script src='https://code.jquery.com/jquery-1.12.4.js'></script>
+	<script src='https://code.jquery.com/ui/1.12.0/jquery-ui.js'></script>
+	<script>
+
+		// Called when follower/followee name is clicked
+		function openFriendPage(obj)
+		{
+			console.log(obj.innerHTML);
+			if (obj.innerHTML == sessionStorage.getItem('id')) {
+				window.location.href = "home.html";
+			}
+			sessionStorage.setItem('friend_id',obj.innerHTML);
+			window.location.href = "friend.html";
+		}
+
+		// Called when follower/followee name is clicked
+		function openFriendPageById(obj)
+		{
+			sessionStorage.setItem('friend_id',obj);
+			window.location.href = "friend.html";
+		}
+
+		// Called when book name is clicked
+		function openBookPage(obj)
+		{
+			console.log(obj);
+			sessionStorage.setItem('book_id', obj);
+			window.location.href = "Book.html";
+		}
+
+		// Update the follow button
+		function updateFollow(obj)
+		{
+			console.log(obj.innerHTML);
+
+			// Follow the person. INsert from schema
+			if ((obj.innerHTML).startsWith("follow")) {
+
+				$.post("http://10.130.10.35:8080/DBProject/FollowBit", {id : sessionStorage.getItem('id'), friend_id : sessionStorage.getItem('friend_id'), update : '1'}, function(data,status) {
+
+					if (data["status"] == true) {
+						obj.innerHTML = "unfollow";
+						location.reload();
+					}
+					else {
+						alert("Some internal error occured");
+					}
+					
+				});
+
+			}
+
+			// Unfollow the person. Delete from schema 
+			else {
+
+				$.post("http://10.130.10.35:8080/DBProject/FollowBit", {id : sessionStorage.getItem('id'), friend_id : sessionStorage.getItem('friend_id'), update : '0'}, function(data,status) {
+
+					if (data["status"] == true) {
+						obj.innerHTML = "follow";
+						location.reload();
+					}
+					else {
+						alert("Some internal error occured");
+					}
+
+				});
+
+			}
+		}
+
+		function comeback()
+		{
+			form1 = document.getElementById('form1');
+			form1.target='_blank';
+			form1.submit();
+			form1.onsubmit="setTimeout(function () { window.location.reload(); }, 10)"
+			form1.target='';
+		}
+
+
+		function handle(ele) {
+			// console.log("sfnasdknaskl");
+			if(event.keyCode == 13) {
+				event.preventDefault();
+				// alert(ele.value); 
+				console.log(ele.value);       
+			}
+		}
+
+
+		$(document).ready(function(){  
+
+			if(sessionStorage.getItem('id')==null)
+			{
+				alert("Session completed. Plz login again");
+				window.location.href = "../LoginRegistrationForm/index.html";
+			}
+			else
+			{
+
+				////////////// IMAGE LOADING //////////////
+
+				// User Image
+				var image = new Image();
+				var user_id = sessionStorage.getItem('id');
+				var user_pic_src = "http://10.130.10.35:8080/DBProject/UploadPhoto?id="+user_id;
+				image.src = user_pic_src;
+				image.onload = function()
+				{
+					document.getElementById("image_id").src=image.src;
+				}
+				image.onerror = function()
+				{
+					document.getElementById("image_id").src="images/user.jpg";
+				}
+
+				var x = sessionStorage.getItem('id');
+				document.getElementById("id").value = x;
+				
+				// Friend Image
+				var image_profile_pic = new Image();
+				var friend_id = sessionStorage.getItem('friend_id');
+				var friend_pic_src = "http://10.130.10.35:8080/DBProject/UploadPhoto?id="+friend_id;
+				image_profile_pic.src = friend_pic_src;
+				image_profile_pic.onload = function()
+				{
+					document.getElementById("profile_pic").src=image_profile_pic.src;
+				}
+				image_profile_pic.onerror = function()
+				{
+					document.getElementById("profile_pic").src="images/user.jpg";
+				}
+
+				////////////// FOLLOW BUTTON ///////////////////
+
+				$.get("http://10.130.10.35:8080/DBProject/FollowBit", {id : sessionStorage.getItem('id'), friend_id : sessionStorage.getItem('friend_id')}, function(data,status) {
+
+					console.log(data);
+
+					if (data["status"] == true) {
+
+						var follow_btn = document.getElementById('cover-follow');
+						
+						if (data["isfriend"] == "1") {
+							follow_btn.innerHTML = "unfollow";
+						}
+						else {
+							follow_btn.innerHTML = "follow";
+						}
+
+					}
+					else {
+						alert("Some internal error. Couldn't retrieve info");
+					}
+
+				});
+
+
+				////////////// SEARCH BAR AT TOP ///////////////
+
+				$.get("http://10.130.10.35:8080/DBProject/GetAllSearch", {id : sessionStorage.getItem('id')},function(data,status) {
+
+					console.log('Entered GetAllCourse');
+					var src = new Array();
+
+					$.each(data,function(index,element){
+
+						var temp = element["type"] + ",";
+						temp += element["id"] + ",";
+						temp += element["name"];
+
+						var temp3 = element["type"] + " : ";
+						temp3 += element["name"];
+
+
+						var obj = {label:temp3,value: temp};
+						src.push(obj);
+						// src.push(temp);
+
+					});
+					console.log(src);
+					$("#search").autocomplete({
+						source: src,
+				select: function (e, ui) {
+					// alert(e);
+					// console.log(ui["item"]["value"]);
+					var selectedItem = ui["item"]["value"];
+					var items = selectedItem.split(",");
+					// console.log(items[0]);
+					if(items[0]=="reader"){
+						openFriendPageById(items[1]);
+					}
+					else if(items[0]=="book"){
+						openBookPage(items[1]);
+					}
+					else{
+						
+					}
+				}
+					});
+
+				});
+
+				//////////////// LOGOUT /////////////////
+
+				$("#logout").click(function(){
+
+					$.get("http://10.130.10.35:8080/DBProject/Logout", function(data, status){
+						console.log(data["status"]);
+						if (data["status"] == true) {
+							window.location.href = "../LoginRegistrationForm/index.html";
+						}
+						else{
+							alert("Cannot logout");
+							window.location.href = "index.html";
+						}
+					});
+
+				});
+
+				$("#navlogout").click(function(){
+
+					$.get("http://10.130.10.35:8080/DBProject/Logout", function(data, status){
+						console.log(data["status"]);
+						if (data["status"] == true) {
+							window.location.href = "../LoginRegistrationForm/index.html";
+						}
+						else{
+							alert("Cannot logout");
+							window.location.href = "index.html";
+						}
+					});
+
+				});
+				
+				// $('#image_id').click(function(){
+				//     $('input[type=file]').click();
+				// });
+				// $('#upload_photo').click(function(){
+				//    // console.log($('#photo').val());
+				//    window.location.href = "upload.html";
+				//    // window.open('upload.html','Upload Photo','menubar=0, toolbar=0,location=0, directories=0, status=0,crollbars=yes,width=650,height=500');
+				//  });
+
+				// Loading followers, followees, books, name and intro
+				jQuery.ajaxSetup({async:false});
+				$.get("http://10.130.10.35:8080/DBProject/GetDetails", {id : sessionStorage.getItem('friend_id'), type : "reader"},function(data,status) {
+
+					console.log('Entered GetDetails');
+					
+					// Variables defined
+					var name;
+					var intro;
+					var follower_list;
+					var followee_list;
+
+					// DOM tree variables
+					var follower_list_display = document.getElementById('follower-list_outer');
+					var follower_list_items = follower_list_display.childNodes;
+					var followee_list_display = document.getElementById('followee-list_outer');
+					var followee_list_items = followee_list_display.childNodes;
+					
+					if (data["status"] == true) {
+
+						// Get info from servlet
+						name = data["name"];
+						intro = data["intro"];
+
+						// Extract followers and update
+						follower_list = data["follower"];
+						var f1 = 0;
+						for (var follower in follower_list) {
+							// console.log(follower_list[follower]);
+							
+							while (follower_list_items[f1].nodeType != 1) {
+								f1 += 1;
+							}
+							
+							follower_list_items[f1].innerHTML = "<p class=\"follower-list_name\"><a onclick='openFriendPage(this);'>" + follower_list[follower] +"</a></p>";
+							f1 += 1;
+						}
+
+						// Extract followees and update
+						followee_list = data["followee"];
+						var f2 = 0;
+						for (var followee in followee_list) {
+							// console.log(followee_list[followee]);
+							
+							while (followee_list_items[f2].nodeType != 1) {
+								f2 += 1;
+							}
+							
+							followee_list_items[f2].innerHTML = "<p class=\"followee-list_name\"><a onclick='openFriendPage(this);'>" + followee_list[followee] +"</a></p>";
+							f2 += 1;
+						}
+
+						// Extract reading books. (Servlet returns only book ids)
+						// Now, using book_id, get the details of the book
+						book_list = data["books"];
+						var b1 = 1;
+						for (var book_id in book_list) {
+							console.log(book_list[book_id]);
+
+							$.get("http://10.130.10.35:8080/DBProject/GetDetails", {id : book_list[book_id], type : "book"},function(data,status) {
+
+								// console.log(data);
+								if (data["status"] == true) {
+
+									var book_name = data["Name"];
+									var book_author = data["Author"];
+
+									var book_div_id = "book-suggest" + b1;
+									var book_div = document.getElementById(book_div_id);
+
+									book_div.getElementsByTagName('h5')[0].innerHTML = "<a onclick='openBookPage("+book_list[book_id]+");'>" + book_name +"</a>";
+									book_div.getElementsByTagName('h6')[0].innerHTML = book_author;
+
+									// Loading the images
+									var image = new Image();
+									var pic_src = "http://10.130.10.35:8080/DBProject/UploadBookPhoto?id="+book_list[book_id];
+									image.src= pic_src;
+									image.onload = function(){
+										book_div.getElementsByTagName('img')[0].src=image.src;
+									}
+									image.onerror = function()
+									{
+										book_div.getElementsByTagName('img')[0].src="images/Book.gif";
+									}
+
+
+								}
+								else {
+									alert("Can't retrieve book details");
+								}
+
+
+								b1 += 1;
+
+							});
+
+}
+
+						// Update remaining info in page
+						document.getElementById("cover-name").innerHTML = name;
+						document.getElementById("cover-intro").innerHTML = intro;
+						
+					}
+					else {
+						alert("Can't retrieve details");
+					}
+
+				});
+
+}
+});
+</script>
+
+</head>
+
+
+<body>
+
+	<div class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
+		<header class="demo-header mdl-layout__header mdl-color--grey-100 mdl-color-text--grey-600">
+			<div class="mdl-layout__header-row">
+				<span class="mdl-layout-title">Home</span>
+				<div class="mdl-layout-spacer"></div>
+				<div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
+					<label class="mdl-button mdl-js-button mdl-button--icon" for="search">
+						<i class="material-icons">search</i>
+					</label>
+					<div class="mdl-textfield__expandable-holder">
+						<div class="ui-widget">
+							<input class="mdl-textfield__input" type="text" id="search" onkeydown="handle(this)">
+						</div>
+						<label class="mdl-textfield__label" for="search">Enter your query...</label>
+					</div>
+				</div>
+				<button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" id="hdrbtn">
+					<i class="material-icons">more_vert</i>
+				</button>
+				<ul class="mdl-menu mdl-js-menu mdl-js-ripple-effect mdl-menu--bottom-right" for="hdrbtn">
+					<li class="mdl-menu__item">About</li>
+					<li class="mdl-menu__item">Contact</li>
+					<li class="mdl-menu__item">Legal information</li>
+					<li class="mdl-menu__item" id="logout">Logout</li>
+				</ul>
+			</div>
+		</header>
+		<div class="demo-drawer mdl-layout__drawer mdl-color--blue-grey-900 mdl-color-text--blue-grey-50">
+			<header class="demo-drawer-header">
+				<img id="image_id" class="demo-avatar" src="images/user.jpg">
+				<div class="demo-avatar-dropdown">
+					<span>hello@example.com</span>
+					<div class="mdl-layout-spacer"></div>
+					<button id="accbtn" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+						<i class="material-icons" role="presentation">arrow_drop_down</i>
+						<span class="visuallyhidden">Accounts</span>
+					</button>
+					<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="accbtn">
+						<li class="mdl-menu__item">hello@example.com</li>
+						<li class="mdl-menu__item">info@example.com</li>
+						<li class="mdl-menu__item"><i class="material-icons">add</i>Add another account...</li>
+					</ul>
+				</div>
+			</header>
+			<nav class="demo-navigation mdl-navigation mdl-color--blue-grey-800">
+				<a class="mdl-navigation__link" href="Home.html"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">home</i>Home</a>
+				<a class="mdl-navigation__link" href="../LoginRegistrationForm/edit-details.html"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">edit</i>Edit your details</a>
+				<a class="mdl-navigation__link" id="upload_photo"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">edit</i>Upload Photo</a>
+				<a class="mdl-navigation__link" id="navlogout"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">inbox</i>Logout</a>
+				<!-- <a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">delete</i>Trash</a>
+				<a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">report</i>Spam</a>
+				<a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">forum</i>Forums</a>
+				<a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">flag</i>Updates</a>
+				<a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">local_offer</i>Promos</a>
+				<a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">shopping_cart</i>Purchases</a>
+				<a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">people</i>Social</a> -->
+				<div class="mdl-layout-spacer"></div>
+				<a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">help_outline</i><span class="visuallyhidden">Help</span></a>
+			</nav><!-- <input type="file" style="visibility: hidden;" /> -->
+		</div>
+		
+
+		<main class="mdl-layout__content mdl-color--grey-100">
+
+
+			<!-- MAIN PAGE -->
+			<div class="mdl-grid demo-content">
+
+				<!-- UPPER BOX -->
+				<div class="demo-charts mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col">
+
+					<div class="profile-pic">
+						<img alt="Profile Picture" id="profile_pic" src="images/user.jpg" width="200px" height="200px">
+					</div>
+
+					<div class="cover-details">
+						<h3 id="cover-name">Name</h3>
+						<p id="cover-intro">Intro</p>
+					</div>
+
+					<div class="cover-follow">
+						<a class="cover-follow-button mdl-button mdl-js-button mdl-js-ripple-effect" id="cover-follow" onclick="updateFollow(this)">follow</a>
+					</div>
+
+				</div>
+
+				<!-- LOWER LEFT BLOCK -->
+
+				<div class="mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--8-col">
+
+					<!-- Heading -->
+					<div class="book-suggest-heading">
+						<i class="book-suggest-icon glyphicon glyphicon-bookmark"></i>
+						<h4>Recent books:</h4>
+					</div>
+
+					<!-- List of books -->
+					<div class="booklist-suggest mdl-grid">
+
+						<div class="book-suggest mdl-cell mdl-cell-4-col" id="book-suggest1">
+							<img src="images/Book.gif" width="100%">
+							<h5></h5>
+							<h6></h6>
+							<div class="rating">
+								<!-- <span>&#9733</span><span>&#9733</span><span>&#9733</span><span>&#9733</span><span>&#9734</span>
+								<p>4.3/5</p> -->
+							</div>
+						</div>
+
+						<div class="book-suggest mdl-cell mdl-cell--4-col" id="book-suggest2">
+							<img src="images/Book.gif" width="100%">  
+							<h5></h5>
+							<h6></h6>
+							<div class="rating">
+								<!-- <span>&#9733</span><span>&#9733</span><span>&#9733</span><span>&#9734</span><span>&#9734</span>
+								<p>3.2/5</p> -->
+							</div>
+						</div>
+
+						<div class="book-suggest mdl-cell mdl-cell--4-col" id="book-suggest3">
+							<img src="images/Book.gif" width="100%">  
+							<h5></h5>
+							<h6></h6>
+							<div class="rating">
+								<!-- <span>&#9733</span><span>&#9733</span><span>&#9733</span><span>&#9733</span><span>&#9733</span>
+								<p>4.7/5</p> -->
+							</div>
+						</div>
+
+					</div>
+
+					<!-- Read more block -->
+					<div class="mdl-card__actions mdl-card--border">
+						<a href="#" class="mdl-button mdl-js-button mdl-js-ripple-effect">See More Books</a>
+					</div>
+
+				</div>
+
+				<!-- RIGHT CARDS -->
+
+				<div class="demo-cards mdl-cell mdl-cell--4-col mdl-cell--8-col-tablet mdl-grid mdl-grid--no-spacing">
+
+					<!-- TOP RIGHT CARD -->
+					<div class="mdl-card mdl-color--light-blue-100 mdl-shadow--2dp mdl-cell mdl-cell--4-col mdl-cell--4-col-tablet mdl-cell--12-col-desktop">
+
+						<!-- Follower heading -->
+						<div class="follower-list_heading mdl-color--light-blue-200">
+							<i class="friend-icon glyphicon glyphicon-hand-right"></i>
+							<h2 id="follower-list_head">Followers:</h2>
+						</div>
+
+						<!-- Follower list -->
+						<div class="follower-list">
+							<ul class="follower-list_outer" id="follower-list_outer">
+								<li>
+									<p class="follower-list_name"></p>
+								</li>
+								<li>
+									<p class="follower-list_name"></p>
+								</li>
+								<li>
+									<p class="follower-list_name"></p>
+								</li>
+							</ul>
+						</div>
+
+						<!-- Read more block -->
+						<div class="mdl-card__actions mdl-card--border" id="follower_read-more">
+							<a href="#" class="mdl-button mdl-js-button mdl-js-ripple-effect">View More</a>
+						</div>
+
+					</div>
+
+					<!-- SEPARATOR -->
+					<div class="demo-separator mdl-cell--1-col"></div>
+
+					<!-- BOTTOM CARD -->
+					<div class="mdl-card mdl-color--light-blue-100 mdl-shadow--2dp mdl-cell mdl-cell--4-col mdl-cell--3-col-tablet mdl-cell--12-col-desktop">
+
+						<!-- Followee heading -->
+						<div class="followee-list_heading mdl-color--light-blue-200">
+							<i class="friend-icon glyphicon glyphicon-hand-left"></i>
+							<h2 id="followee-list_head">Followees:</h2>
+						</div>
+
+						<!-- Followee list -->
+						<div class="followee-list">
+							<ul class="followee-list_outer" id="followee-list_outer">
+								<li>
+									<p class="followee-list_name"></p>
+								</li>
+								<li>
+									<p class="followee-list_name"></p>
+								</li>
+								<li>
+									<p class="followee-list_name"></p>
+								</li>
+							</ul>
+						</div>
+
+						<!-- Read more block -->
+						<div class="mdl-card__actions mdl-card--border" id="follower_read-more">
+							<a href="#" class="mdl-button mdl-js-button mdl-js-ripple-effect">View More</a>
+						</div>
+
+					</div>
+
+				</div>
+
+			</div>
+
+		</main>
+	</div>
+
+
+
+
+
+
+
+	<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" style="position: fixed; left: -1000px; height: -1000px;">
+		<defs>
+			<mask id="piemask" maskContentUnits="objectBoundingBox">
+				<circle cx=0.5 cy=0.5 r=0.49 fill="white">
+					<circle cx=0.5 cy=0.5 r=0.40 fill="black">
+					</mask>
+					<g id="piechart">
+						<circle cx=0.5 cy=0.5 r=0.5>
+							<path d="M 0.5 0.5 0.5 0 A 0.5 0.5 0 0 1 0.95 0.28 z" stroke="none" fill="rgba(255, 255, 255, 0.75)">
+							</g>
+						</defs>
+					</svg>
+					<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 500 250" style="position: fixed; left: -1000px; height: -1000px;">
+						<defs>
+							<g id="chart">
+								<g id="Gridlines">
+									<line fill="#888888" stroke="#888888" stroke-miterlimit="10" x1="0" y1="27.3" x2="468.3" y2="27.3">
+										<line fill="#888888" stroke="#888888" stroke-miterlimit="10" x1="0" y1="66.7" x2="468.3" y2="66.7">
+											<line fill="#888888" stroke="#888888" stroke-miterlimit="10" x1="0" y1="105.3" x2="468.3" y2="105.3">
+												<line fill="#888888" stroke="#888888" stroke-miterlimit="10" x1="0" y1="144.7" x2="468.3" y2="144.7">
+													<line fill="#888888" stroke="#888888" stroke-miterlimit="10" x1="0" y1="184.3" x2="468.3" y2="184.3">
+													</g>
+													<g id="Numbers">
+														<text transform="matrix(1 0 0 1 485 29.3333)" fill="#888888" font-family="'Roboto'" font-size="9">500</text>
+														<text transform="matrix(1 0 0 1 485 69)" fill="#888888" font-family="'Roboto'" font-size="9">400</text>
+														<text transform="matrix(1 0 0 1 485 109.3333)" fill="#888888" font-family="'Roboto'" font-size="9">300</text>
+														<text transform="matrix(1 0 0 1 485 149)" fill="#888888" font-family="'Roboto'" font-size="9">200</text>
+														<text transform="matrix(1 0 0 1 485 188.3333)" fill="#888888" font-family="'Roboto'" font-size="9">100</text>
+														<text transform="matrix(1 0 0 1 0 249.0003)" fill="#888888" font-family="'Roboto'" font-size="9">1</text>
+														<text transform="matrix(1 0 0 1 78 249.0003)" fill="#888888" font-family="'Roboto'" font-size="9">2</text>
+														<text transform="matrix(1 0 0 1 154.6667 249.0003)" fill="#888888" font-family="'Roboto'" font-size="9">3</text>
+														<text transform="matrix(1 0 0 1 232.1667 249.0003)" fill="#888888" font-family="'Roboto'" font-size="9">4</text>
+														<text transform="matrix(1 0 0 1 309 249.0003)" fill="#888888" font-family="'Roboto'" font-size="9">5</text>
+														<text transform="matrix(1 0 0 1 386.6667 249.0003)" fill="#888888" font-family="'Roboto'" font-size="9">6</text>
+														<text transform="matrix(1 0 0 1 464.3333 249.0003)" fill="#888888" font-family="'Roboto'" font-size="9">7</text>
+													</g>
+													<g id="Layer_5">
+														<polygon opacity="0.36" stroke-miterlimit="10" points="0,223.3 48,138.5 154.7,169 211,88.5
+														294.5,80.5 380,165.2 437,75.5 469.5,223.3 	">
+													</g>
+													<g id="Layer_4">
+														<polygon stroke-miterlimit="10" points="469.3,222.7 1,222.7 48.7,166.7 155.7,188.3 212,132.7
+														296.7,128 380.7,184.3 436.7,125 	">
+													</g>
+												</g>
+											</defs>
+										</svg>
+										<script src="../../material.min.js"></script>
+										<!-- The Modal -->
+										<iframe name="formSending"></iframe>
+										<div id="myModal" class="modal">
+
+											<!-- Modal content -->
+											<div class="modal-content">
+												<span class="close" id="m_close">×</span>
+
+
+												<center>
+
+													<form method="post" action="http://10.130.10.35:8080/DBProject/UploadPhoto" enctype="multipart/form-data" id="form1" target="formSending">
+														<table border="0">
+															<tr>
+																<td>Photo: </td>
+																<td><input type="file" name="photo1" size="50"/></td>
+															</tr>
+															<tr>
+																<td colspan="2">
+																	<input type="submit" value="Save" id="savesubmit">
+																</td>	
+															</tr>
+														</table>
+														<input type="text" name="id" size="50" style="visibility: hidden;" id="id" onclick="comeback()" />
+													</form>
+												</center>
+
+
+											</div>
+
+										</div>
+
+										<!-- MODAL -->
+										<script>
+			// Get the modal
+			var modal = document.getElementById('myModal');
+
+	// Get the button that opens the modal
+	var btn = document.getElementById("upload_photo");
+
+	// Get the <span> element that closes the modal
+	var span = document.getElementsByClassName("close")[0];
+
+	// Get the button that saves the modal
+	var btn1 = document.getElementById("savesubmit");
+
+	// When the user clicks the button, open the modal
+	btn.onclick = function() {
+		modal.style.display = "block";
+	}
+
+	// When the user clicks on <span> (x), close the modal
+	span.onclick = function() {
+		modal.style.display = "none";
+	}
+
+	// When the user clicks save close the modal
+	btn1.onclick = function() {
+		modal.style.display = "none";
+		setTimeout(function(){
+			location.reload();
+		},1000);
+	}
+
+	// When the user clicks anywhere outside of the modal, close it
+	window.onclick = function(event) {
+		if (event.target == modal) {
+			modal.style.display = "none";
+		}
+	}
+
+</script>
+</body>
+</html>
