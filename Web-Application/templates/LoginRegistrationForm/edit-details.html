@@ -20,9 +20,24 @@
     <script src='https://code.jquery.com/ui/1.12.0/jquery-ui.js'></script>
     <script>
 
+        var genre_list = new Array();
+
+        function changeCheckbox(obj) {
+
+            if (obj.is(':checked') == true) {
+                genre_list.push(obj.attr('id'));
+            }
+            else {
+                var index = genre_list.indexOf(obj.attr('id'));
+                genre_list.splice(index,1);
+            }
+
+        }
+
         $(document).ready(function(){
 
-            // Load previous details
+            //////////// Load previous details ///////////////
+
             var id = sessionStorage.getItem('id');
             $.get("http://10.130.10.35:8080/DBProject/EditDetails",{id : sessionStorage.getItem('id')}, function(data,status) {
 
@@ -38,6 +53,17 @@
                         document.getElementById("city").value = data["city"];
                     if(data["intro"])
                         document.getElementById("intro").value = data["intro"];
+                    if(data["genre"]) {
+
+                        $.each(data["genre"],function(index,element) {
+
+                            var input_checkbox = document.getElementById(element);
+                            $(input_checkbox).prop('checked',true);
+                            genre_list.push(element);
+
+                        });
+
+                    }
                 }
                 else{
                     alert("Internal Error in retrieving previous details.");
@@ -45,6 +71,26 @@
                 }
 
             });
+
+            ///////////// CREATE AUTO-GENERATED LIST /////////////
+
+            var checkbox_div = document.getElementById('interests');
+            $.get("http://10.130.10.35:8080/DBProject/AdvancedSearch", {id : sessionStorage.getItem('id'), type : "genre"},function(data,status) {
+
+                var src = new Array();
+                var checkbox_code = "";
+                $.each(data["genre"],function(index,element){
+                    src.push(element);
+                    checkbox_code += "<input id='" + element + "' type=\"checkbox\" name=\"genres[]\" onclick=\"changeCheckbox($(this));\"/>"
+                    checkbox_code += "<label for='" + element + "' class=\"genre\" style=\"padding-left:10px\">" + element + "</label><br>" 
+                });
+
+                checkbox_div.innerHTML = checkbox_code;
+                console.log(src);
+                
+            });
+
+
 
             var totalContacts = 1;
 
@@ -80,6 +126,8 @@
 
             });
 
+            
+
             $("#getsave").click(function(){
                 console.log("name");
                 var x = $("#name").val();
@@ -88,7 +136,7 @@
                 var a = $("#city").val();
                 var b = $("#intro").val();
                 var c = sessionStorage.getItem('id');
-                if(x == null || y == null || z == null || b==null || z == undefined){
+                if(x == null || y == null || z == null || b==null || z == undefined || genre_list.length == 0){
                     alert("Enter the required details");
                     window.location.href = "edit-details.html";
                 }
@@ -105,7 +153,13 @@
                 }
                 console.log(contacts);
 
-                $.post("http://10.130.10.35:8080/DBProject/EditDetails",{ id : c, name : x, gender : y, date_of_birth : z, city : a, introduction : b, contact : contacts}, function(data, status){
+                // Construct the interests string
+                var genre_string = "";
+                for (genre_name in genre_list) {
+                    genre_string += genre_list[genre_name] + ",";
+                }
+
+                $.post("http://10.130.10.35:8080/DBProject/EditDetails",{ id : c, name : x, gender : y, date_of_birth : z, city : a, introduction : b, contact : contacts, interest : genre_string}, function(data, status){
                     console.log(data["status"]);
                     if (data["status"] == true) {
                         alert("Updates Successfully");
@@ -172,6 +226,12 @@
                                 <p style="padding-left:10pt">
                                     <button id="addcontact" type="button">+</button> Add another contact number
                                 </p>
+                            </p>
+                            <p>
+                                <label for="genre_text" class="genre_text"> Select all your interests</label>
+                                <p id="interests">
+
+                                </p>    
                             </p>
                            <p class="login button"> 
                             <input type="submit" value="Save"  id = "getsave"/> 

@@ -209,9 +209,8 @@
 
 				var obj = {label:temp3,value: temp};
 				src.push(obj);
-			// src.push(temp);
 
-		});
+			});
 
 			$("#search").autocomplete({
 				source: src,
@@ -411,6 +410,55 @@
 			}
 
 		});
+
+		$.get("http://10.130.10.35:8080/DBProject/Algobook", {id : sessionStorage.getItem('id')},function(data,status) {
+
+			// console.log(data["suggested"]);
+			suggested_books_list = data["suggested"];
+			var b3 = 1;
+
+			for (var suggested_book_id in suggested_books_list) {
+
+				// Get details of this particular book
+				$.get("http://10.130.10.35:8080/DBProject/GetDetails", {id : suggested_books_list[suggested_book_id], type : "book"},function(data,status) {
+
+					// console.log(data);
+					if (data["status"] == true) {
+
+						var book_name = data["Name"];
+						var book_author = data["Author"];
+
+						var book_div_id = "book-suggested" + b3;
+						var book_div = document.getElementById(book_div_id);
+
+						book_div.getElementsByTagName('h5')[0].innerHTML = "<a onclick='openBookPage("+ suggested_books_list[suggested_book_id] +");'>" + book_name +"</a>";
+						book_div.getElementsByTagName('h6')[0].innerHTML = book_author;
+
+						// Loading the images
+						var image = new Image();
+						var pic_src = "http://10.130.10.35:8080/DBProject/UploadBookPhoto?id=" + suggested_books_list[suggested_book_id];
+						image.src= pic_src;
+						image.onload = function(){
+							book_div.getElementsByTagName('img')[0].src=image.src;
+						}
+						image.onerror = function()
+						{
+							book_div.getElementsByTagName('img')[0].src="images/Book.gif";
+						}
+					}
+					else {
+						alert("Can't retrieve book details");
+					}
+
+
+					b3 += 1;
+
+				});
+
+			}
+
+		});
+
 }
 });
 </script>
@@ -573,7 +621,7 @@
 						<!-- List of books -->
 						<div class="booklist-suggest mdl-grid">
 
-							<div class="book-suggest mdl-cell mdl-cell-4-col" id="book-suggest1">
+							<div class="book-suggest mdl-cell mdl-cell-4-col" id="book-suggested1">
 								<img src="images/Book.gif" width="100%">
 								<h5 style="text-align:center"></h5>
 								<h6></h6>
@@ -583,7 +631,7 @@
 								</div>
 							</div>
 
-							<div class="book-suggest mdl-cell mdl-cell--4-col" id="book-suggest2">
+							<div class="book-suggest mdl-cell mdl-cell--4-col" id="book-suggested2">
 								<img src="images/Book.gif" width="100%">  
 								<h5 style="text-align:center"></h5>
 								<h6></h6>
@@ -593,7 +641,7 @@
 								</div>
 							</div>
 
-							<div class="book-suggest mdl-cell mdl-cell--4-col" id="book-suggest3">
+							<div class="book-suggest mdl-cell mdl-cell--4-col" id="book-suggested3">
 								<img src="images/Book.gif" width="100%">  
 								<h5 style="text-align:center"></h5>
 								<h6></h6>
