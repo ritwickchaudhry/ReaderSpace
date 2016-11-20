@@ -48,27 +48,20 @@ public class UpdateBookRating extends HttpServlet {
 		String connString = ServletInfo.connString;
 		String username = ServletInfo.userName;
 		String password = ServletInfo.passWord;
+		
 		JSONObject returnObject = new JSONObject();
 
 		
 		//Local Variables
 		String id;
-		String name;
-		String date;
-		String city;
-		String introduction;
-		String gender;
-		String contact;
-		
-		// name = request.getParameter("name");
-		// date = request.getParameter("date_of_birth");
-		// System.out.println(date);
-		// city = request.getParameter("city");
-		// introduction = request.getParameter("introduction");
-		// gender = request.getParameter("gender");
+		String bookID;
+		int rating;
+
 		id = request.getParameter("id");
-		// contact = request.getParameter("contact");
-		// System.out.println(id+"sadasd");
+		bookID = request.getParameter("bookID");
+		rating = request.getParameter("rating");
+
+		System.out.println(id+" <- id, bookID -> " + bookID + " rating -> " + rating);
 		
 		// Set up output stream and type
 		response.setContentType("application/json");
@@ -77,7 +70,6 @@ public class UpdateBookRating extends HttpServlet {
         response.setHeader("Access-Control-Max-Age", "3600");
         response.setHeader("Access-Control-Allow-Headers", "x-requested-with");
 		PrintWriter out = response.getWriter();
-		System.out.println("yahoo1");
 		
 		try ( 
 				// Trying to connect
@@ -85,42 +77,35 @@ public class UpdateBookRating extends HttpServlet {
 				Statement stmt = conn.createStatement();
 			)
 		{
-			String query = "select * from reader where reader_id = ?";
+			String query = "select * from review where reader_id=? and book_id = ?";
 			PreparedStatement pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, id);
-			ResultSet result = pstmt.executeQuery();
+			pstmt.setString(2, bookID);
+			ResultSet rs = pstmt.executeQuery();
+			
+			int count;
 
-			while (result.next()) {
-				System.out.println("yahoo1");
-				returnObject.put("status", true);
-				returnObject.put("name",result.getString("Name"));
-				returnObject.put("gender",result.getString("Gender"));
-				returnObject.put("dob",result.getDate("Date_Of_Birth"));
-				returnObject.put("city",result.getString("City"));
-				returnObject.put("intro",result.getString("Introduction"));
+			while(rs.next())
+			{
+				rating = rs.getString("rating");
+				Sysatem.out.println(rating);
+				count++;
 			}
 
-
-
-			// String conns = "";
-			// for(int i = 0;i < contact.length(); i++){
-				
-			// 	if(contact.charAt(i) == ','){
-			// 		String query1 = "insert into contact_number values (?,?)";
-			// 		pstmt = conn.prepareStatement(query1);
-			// 		pstmt.setString(1, id);
-			// 		pstmt.setString(2, conns);
-			// 		pstmt.executeUpdate();
-			// 		conns = "";
-			// 	}
-			// 	else{
-			// 		conns+=contact.charAt(i);
-			// 	}
-				
-				
-			// }
-			// returnObject.put("status", true);
-			// returnObject.put("info","Updated Successfully");
+			if(count == 0)
+			{
+				returnObject.put("info", "NoRatingFound");				
+			}
+			else if(count == 1)
+			{
+				returnObject.put("info", "GotRating "+rating);
+			}
+			else
+			{
+				System.out.println("Some Problem with duplicates in review");
+			}
+			
+			returnObject.put("status", true);
 		}
 		catch(Exception sqle){
 			
@@ -132,7 +117,7 @@ public class UpdateBookRating extends HttpServlet {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}
+		}	
 		// Flush out with the json object
 		out.print(returnObject);
 		out.flush();
@@ -151,8 +136,6 @@ public class UpdateBookRating extends HttpServlet {
 		String connString = ServletInfo.connString;
 		String username = ServletInfo.userName;
 		String password = ServletInfo.passWord;
-		JSONObject returnObject = new JSONObject();
-
 		
 		//Local Variables
 		String id;
@@ -207,12 +190,7 @@ public class UpdateBookRating extends HttpServlet {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}
-		// Flush out with the json object
-		out.print(returnObject);
-		out.flush();
-		out.close();
-		
+		}		
 	}
 
 }

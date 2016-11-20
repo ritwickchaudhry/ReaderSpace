@@ -232,6 +232,40 @@
 
 			});
 			
+			
+			function updateRating()
+			{
+				$.get("http://10.130.10.35:8080/DBProject/UpdateBookRating", {id : sessionStorage.getItem('id'), bookID : bookID},
+						function(data,status)
+						{
+							if(data["status"]==true)
+							{
+								var info;
+								info = data["info"];
+								if(info == "NoRatingFound")
+								{
+									//Do Nothing
+								}	
+								else
+								{
+									var rating;
+									rating  = info.subString(10);
+									alert(rating);
+								}
+							}
+							else
+							{
+								alert("Couldn't Retrieve Rating of Book");
+							}
+						}
+					)
+			}
+
+			updateRating();
+
+
+
+
 			// Update the Rating on the click of stars
 			$("input[name='star']").change(function()
 				{
