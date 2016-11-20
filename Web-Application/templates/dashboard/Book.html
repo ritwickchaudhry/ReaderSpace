@@ -325,6 +325,9 @@
 							}
 						}
 					)
+				
+					// Refresh so as to update the total overall rating of the book
+					location.reload();
 				}
 			);
 
@@ -380,11 +383,28 @@
 					pageNode[0].innerHTML = "Number Of Pages : " + numberOfPages;
 
 					// Find Overall rating
-					var totalRating = 0.1;
+					var totalRating = data["totalRating"];
+					var counter = data["counter"];
+
 					var overallRatingNode = document.getElementById("totalrating");
+					var numPplString = "Reviewed By ";
+					if(counter == 0)
+					{
+						numPplString += "No one :(";
+					}
+					else if(counter == 1)
+					{
+						numPplString += counter + " Person";
+					}
+					else
+					{
+						numPplString += counter + " People";
+					}
+					document.getElementById("numPpl").innerHTML = numPplString;
 					// console.log(overallRatingNode.style.width);
 					// console.log(totalRating*100);
-					var actualPercentage = totalRating*100;
+					var actualPercentage = (totalRating/5)*100;
+					console.log(counter);
 					overallRatingNode.style.width = actualPercentage + "%";
 					console.log(overallRatingNode.style.width);
 				}
@@ -481,6 +501,7 @@
 						  <div class="star-ratings-css-bottom"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
 						</div> -->
 						<div class="star-ratings-sprite"><span style="width:64%" class="star-ratings-sprite-rating" id="totalrating"></span></div>
+						<div style="text-align:center; width:100%"><h5 id="numPpl">Reviewed By : </h5></div>
 					</div>
 
 									<!-- <svg fill="currentColor" width="200px" height="200px" viewBox="0 0 1 1" class="demo-chart mdl-cell mdl-cell--4-col mdl-cell--3-col-desktop">

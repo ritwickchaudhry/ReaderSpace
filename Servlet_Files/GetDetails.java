@@ -148,9 +148,9 @@ public class GetDetails extends HttpServlet {
 
 
 							// Get overall rating
-							query = "SELECT average(rating) as tot_rating, count(*) from review group by book_id having book_id = ?";
+							query = "SELECT avg(rating) as tot_rating, count(*) from review group by book_id having book_id = ?";
 							pstmt = conn.prepareStatement(query);
-							pstmt.setString(1, bookID);
+							pstmt.setString(1, id);
 							rs = pstmt.executeQuery();
 							
 							int counter = 0;
@@ -163,7 +163,7 @@ public class GetDetails extends HttpServlet {
 							}
 
 							System.out.println(totalRating);
-							System.out.println(counter)
+							System.out.println(counter);
 
 							jsonObj.put("counter",counter);
 							jsonObj.put("totalRating", totalRating);
