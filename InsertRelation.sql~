@@ -29,6 +29,3 @@ insert into genre values('2','Classic');
 insert into genre values('3','Classic');
 insert into genre values('3','Fantasy');
 insert into genre values('3','Children');
-insert into genre values('4','Fiction');
-insert into genre values('4','Mystery');
-insert into genre values('4','Thriller');

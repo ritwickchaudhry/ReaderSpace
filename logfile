@@ -165,3 +165,8 @@ STATEMENT:  select * from book where id='3';
 ERROR:  column "bookid" does not exist at character 28
 HINT:  Perhaps you meant to reference the column "review.book_id".
 STATEMENT:  select * from review where bookID='4';
+ERROR:  relation "bookk" does not exist at character 15
+STATEMENT:  select * from bookk;
+ERROR:  relation "revie" does not exist at character 15
+STATEMENT:  select * from revie
+	w;
