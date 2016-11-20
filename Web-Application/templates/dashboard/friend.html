@@ -108,17 +108,26 @@
 		{
 			console.log(obj.innerHTML);
 			if (obj.innerHTML == sessionStorage.getItem('id')) {
-				window.location.href = "home.html";
+				window.location.href = "Home.html";
 			}
-			sessionStorage.setItem('friend_id',obj.innerHTML);
-			window.location.href = "friend.html";
+			else {
+				sessionStorage.setItem('friend_id',obj.innerHTML);
+				window.location.href = "friend.html";
+			}
+			
 		}
 
 		// Called when follower/followee name is clicked
 		function openFriendPageById(obj)
 		{
-			sessionStorage.setItem('friend_id',obj);
-			window.location.href = "friend.html";
+			if (obj == sessionStorage.getItem('id')) {
+				window.location.href = "Home.html";
+			}
+			else {
+				sessionStorage.setItem('friend_id',obj);
+				window.location.href = "friend.html";
+			}
+			
 		}
 
 		// Called when book name is clicked
@@ -395,6 +404,35 @@
 							f2 += 1;
 						}
 
+						// Extract already read books. (Servlet returns only book ids)
+						// Now, using book_id, get the details of the book
+						donereading_list = data["done-reading"];
+						var b2 = 0;
+						for (var read_book_id in donereading_list) {
+							// console.log(donereading_list[read_book_id]);
+
+							// Get details of this particular book
+							$.get("http://10.130.10.35:8080/DBProject/GetDetails", {id : donereading_list[read_book_id], type : "book"},function(data,status) {
+
+								// console.log(data);
+								if (data["status"] == true) {
+									read_book_name = data["Name"];
+								}
+								else {
+									alert("Can't retrieve book details");
+								}
+
+							});
+
+
+							while (donereading_list_items[b2].nodeType != 1) {
+								b2 += 1;
+							}
+
+							donereading_list_items[b2].innerHTML = "<p class=\"followee-list_name\"><a onclick='openBookPage(" + donereading_list[read_book_id] +");'>" + read_book_name +"</a></p>";
+							b2 += 1;
+						}
+
 						// Extract reading books. (Servlet returns only book ids)
 						// Now, using book_id, get the details of the book
 						book_list = data["books"];
@@ -562,7 +600,7 @@
 
 						<div class="book-suggest mdl-cell mdl-cell-4-col" id="book-suggest1">
 							<img src="images/Book.gif" width="100%">
-							<h5></h5>
+							<h5 style="text-align:center"></h5>
 							<h6></h6>
 							<div class="rating">
 								<!-- <span>&#9733</span><span>&#9733</span><span>&#9733</span><span>&#9733</span><span>&#9734</span>
@@ -572,7 +610,7 @@
 
 						<div class="book-suggest mdl-cell mdl-cell--4-col" id="book-suggest2">
 							<img src="images/Book.gif" width="100%">  
-							<h5></h5>
+							<h5 style="text-align:center"></h5>
 							<h6></h6>
 							<div class="rating">
 								<!-- <span>&#9733</span><span>&#9733</span><span>&#9733</span><span>&#9734</span><span>&#9734</span>
@@ -582,7 +620,7 @@
 
 						<div class="book-suggest mdl-cell mdl-cell--4-col" id="book-suggest3">
 							<img src="images/Book.gif" width="100%">  
-							<h5></h5>
+							<h5 style="text-align:center"></h5>
 							<h6></h6>
 							<div class="rating">
 								<!-- <span>&#9733</span><span>&#9733</span><span>&#9733</span><span>&#9733</span><span>&#9733</span>
@@ -637,7 +675,7 @@
 					<!-- SEPARATOR -->
 					<div class="demo-separator mdl-cell--1-col"></div>
 
-					<!-- BOTTOM CARD -->
+					<!-- MIDDLE CARD -->
 					<div class="mdl-card mdl-color--light-blue-100 mdl-shadow--2dp mdl-cell mdl-cell--4-col mdl-cell--3-col-tablet mdl-cell--12-col-desktop">
 
 						<!-- Followee heading -->
@@ -667,6 +705,41 @@
 						</div>
 
 					</div>
+
+					<!-- SEPARATOR -->
+					<div class="demo-separator mdl-cell--1-col"></div>
+
+					<!-- BOTTOM CARD -->
+					<div class="mdl-card mdl-color--light-blue-100 mdl-shadow--2dp mdl-cell mdl-cell--4-col mdl-cell--3-col-tablet mdl-cell--12-col-desktop">
+
+						<!-- Followee heading -->
+						<div class="followee-list_heading mdl-color--light-blue-200">
+							<i class="friend-icon glyphicon glyphicon-book"></i>
+							<h2 id="followee-list_head">Done Reading:</h2>
+						</div>
+
+						<!-- Followee list -->
+						<div class="followee-list">
+							<ul class="followee-list_outer" id="donereading-list_outer">
+								<li>
+									<p class="followee-list_name"></p>
+								</li>
+								<li>
+									<p class="followee-list_name"></p>
+								</li>
+								<li>
+									<p class="followee-list_name"></p>
+								</li>
+							</ul>
+						</div>
+
+						<!-- Read more block -->
+						<div class="mdl-card__actions mdl-card--border" id="follower_read-more">
+							<a href="#" class="mdl-button mdl-js-button mdl-js-ripple-effect">View More</a>
+						</div>
+
+					</div>
+
 
 				</div>
 

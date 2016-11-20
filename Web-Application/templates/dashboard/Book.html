@@ -326,22 +326,31 @@
 <script src='https://code.jquery.com/ui/1.12.0/jquery-ui.js'></script>
 <script>
 
-	// Called when follower/followee name is clicked
+		// Called when follower/followee name is clicked
 		function openFriendPage(obj)
 		{
 			console.log(obj.innerHTML);
 			if (obj.innerHTML == sessionStorage.getItem('id')) {
-				window.location.href = "home.html";
+				window.location.href = "Home.html";
 			}
-			sessionStorage.setItem('friend_id',obj.innerHTML);
-			window.location.href = "friend.html";
+			else {
+				sessionStorage.setItem('friend_id',obj.innerHTML);
+				window.location.href = "friend.html";
+			}
+			
 		}
 
 		// Called when follower/followee name is clicked
 		function openFriendPageById(obj)
 		{
-			sessionStorage.setItem('friend_id',obj);
-			window.location.href = "friend.html";
+			if (obj == sessionStorage.getItem('id')) {
+				window.location.href = "Home.html";
+			}
+			else {
+				sessionStorage.setItem('friend_id',obj);
+				window.location.href = "friend.html";
+			}
+			
 		}
 
 		// Called when book name is clicked
