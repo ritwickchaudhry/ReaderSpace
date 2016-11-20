@@ -410,56 +410,104 @@
 			}
 
 		});
-
+	
+		// Retrieve the suggested books from the servlet and display them accordingly
 		$.get("http://10.130.10.35:8080/DBProject/Algobook", {id : sessionStorage.getItem('id')},function(data,status) {
 
-			// console.log(data["suggested"]);
-			suggested_books_list = data["suggested"];
-			var b3 = 1;
+			if (data["status"] == true) {
 
-			for (var suggested_book_id in suggested_books_list) {
+				// console.log(data["suggested"]);
+				suggested_books_list = data["suggested"];
+				var b3 = 1;
 
-				// Get details of this particular book
-				$.get("http://10.130.10.35:8080/DBProject/GetDetails", {id : suggested_books_list[suggested_book_id], type : "book"},function(data,status) {
+				for (var suggested_book_id in suggested_books_list) {
 
-					// console.log(data);
-					if (data["status"] == true) {
+					// Get details of this particular book
+					$.get("http://10.130.10.35:8080/DBProject/GetDetails", {id : suggested_books_list[suggested_book_id], type : "book"},function(data,status) {
 
-						var book_name = data["Name"];
-						var book_author = data["Author"];
+						// console.log(data);
+						if (data["status"] == true) {
 
-						var book_div_id = "book-suggested" + b3;
-						var book_div = document.getElementById(book_div_id);
+							var book_name = data["Name"];
+							var book_author = data["Author"];
 
-						book_div.getElementsByTagName('h5')[0].innerHTML = "<a onclick='openBookPage("+ suggested_books_list[suggested_book_id] +");'>" + book_name +"</a>";
-						book_div.getElementsByTagName('h6')[0].innerHTML = book_author;
+							var book_div_id = "book-suggested" + b3;
+							var book_div = document.getElementById(book_div_id);
 
-						// Loading the images
-						var image = new Image();
-						var pic_src = "http://10.130.10.35:8080/DBProject/UploadBookPhoto?id=" + suggested_books_list[suggested_book_id];
-						image.src= pic_src;
-						image.onload = function(){
-							book_div.getElementsByTagName('img')[0].src=image.src;
+							book_div.getElementsByTagName('h5')[0].innerHTML = "<a onclick='openBookPage("+ suggested_books_list[suggested_book_id] +");'>" + book_name +"</a>";
+							book_div.getElementsByTagName('h6')[0].innerHTML = book_author;
+
+							// Loading the images
+							var image = new Image();
+							var pic_src = "http://10.130.10.35:8080/DBProject/UploadBookPhoto?id=" + suggested_books_list[suggested_book_id];
+							image.src= pic_src;
+							image.onload = function(){
+								book_div.getElementsByTagName('img')[0].src=image.src;
+							}
+							image.onerror = function()
+							{
+								book_div.getElementsByTagName('img')[0].src="images/Book.gif";
+							}
 						}
-						image.onerror = function()
-						{
-							book_div.getElementsByTagName('img')[0].src="images/Book.gif";
+						else {
+							alert("Can't retrieve book details");
 						}
-					}
-					else {
-						alert("Can't retrieve book details");
-					}
 
 
-					b3 += 1;
+						b3 += 1;
 
-				});
+					});
 
+				}
+			}
+			else {
+				alert("Some retrieval error");
 			}
 
 		});
 
-}
+		// Retrieve the list of suggested friends and display them accordingly
+		$.get("http://10.130.10.35:8080/DBProject/AlgoFriend", {id : sessionStorage.getItem('id')},function(data,status) {
+
+			if (data["status"] == true) {
+
+				// console.log(data["suggested"]);
+				suggested_friend_list = data["suggested"];
+				var b4 = 0;
+				var suggestreaders_list_display = document.getElementById('suggest-readers-list_outer');
+				var suggestreaders_list_items = suggestreaders_list_display.childNodes;
+
+				for (var suggested_friend_id in suggested_friend_list) {
+
+					// Get details of this particular book
+					$.get("http://10.130.10.35:8080/DBProject/GetDetails", {id : suggested_friend_list[suggested_friend_id], type : "reader"},function(data,status) {
+
+						// console.log(data);
+						if (data["status"] == true) {
+							friend_name = data["Name"];
+						}
+						else {
+							alert("Can't retrieve book details");
+						}
+
+					});
+
+					while (suggestreaders_list_items[b4].nodeType != 1) {
+						b4 += 1;
+					}
+
+					suggestreaders_list_items[b4].innerHTML = "<p class=\"followee-list_name\"><a onclick='openFriendPage(" + suggested_friend_list[suggested_friend_id] +");'>" + friend_name +"</a></p>";
+					b4 += 1;
+
+				}
+			}
+			else {
+				alert("Some retrieval error");
+			}
+
+		});
+
+	}
 });
 </script>
 </head>
