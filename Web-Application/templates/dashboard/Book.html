@@ -509,7 +509,7 @@
 								alert("Couldn't Retrieve Rating of Book");
 							}
 						}
-						)
+				)
 			}
 
 			updateRating();
@@ -719,8 +719,8 @@
 					</div>
 
 					<div class="cover-details">
-						<h3 id="cover-name">Tanmay Parekh</h3>
-						<p id="cover-intro">I love to read books. I am a big Potter fan. Mumbai is where I live. Blah blah blah</p>
+						<h3 id="cover-name">Book name</h3>
+						<p id="cover-intro">Book description</p>
 						<!-- <div class="star-ratings-css">
 						  <div class="star-ratings-css-top" style="width: 84%"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
 						  <div class="star-ratings-css-bottom"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
@@ -766,6 +766,7 @@
 										<link href='http://fonts.googleapis.com/css?family=Didact+Gothic' rel='stylesheet' type='text/css'>
 										<div class="wrap">
 											<div class="box box1 shadow1">
+
 												<h3>Shadow 1</h3>
 											</div>
 											<div class="box box2 shadow2">
@@ -848,13 +849,19 @@
 										<!-- FIRST CARD -->
 										<div class="demo-updates mdl-card mdl-color--light-blue-100 mdl-shadow--2dp mdl-cell mdl-cell--4-col mdl-cell--4-col-tablet mdl-cell--12-col-desktop">
 
-											<div class="follower-list_heading">
+											<!-- Follower heading -->
+											<div class="follower-list_heading mdl-color--light-blue-200">
+												<i class="friend-icon glyphicon glyphicon-th-list"></i>
+												<h2 id="follower-list_head">Details :</h2>
+											</div>
+
+											<div class="follower-list_heading" style="padding-left:10px; padding-top:5px;">
 												<i class="friend-icon glyphicon glyphicon-pencil"></i>
 												<div id="author"><h2 id="follower-list_head" name="AuthorName">Ritwick</h2></div>
 											</div>
 
 
-											<div class="follower-list_heading">
+											<div class="follower-list_heading" style="padding-left:10px">
 												<i class="friend-icon glyphicon glyphicon-book"></i>
 												<div id="pages"><h2 id="follower-list_head" name="NumPages">Number of Pages : </h2></div>
 											</div>
@@ -1139,10 +1146,55 @@
 					alert("Error in posting comment");
 				}
 			}
-			)
+			);
 
 		// Refresh so as to update the total overall rating of the book
 		location.reload();
+	}
+
+	function retrieveBookRating() {
+
+		$.get("http://10.130.10.35:8080/DBProject/UpdateBookRatingComment", {id : sessionStorage.getItem('id'), bookID : sessionStorage.getItem("book_id")},
+			function(data,status)
+			{
+				// Do Nothing
+				if(data["status"] == true)
+				{
+					
+					var info;
+					info = data["info"];
+					console.log(info);
+					if(info == "NoRatingFound")
+					{
+							//Do Nothing
+							// alert("Wrong");
+					}	
+					else
+					{
+						var rating;
+						rating  = info.substring(10);
+
+						// Set Rating
+
+						for(var i = 1; i <= rating; i++)
+						{
+							var starIndexString = "star-" + i;
+							document.getElementById(starIndexString).checked = true;
+						}
+
+					}
+
+					var comment = data["commentvalue"];
+					var commentArea = document.getElementById("commentsArea");
+					commentArea.value = comment;
+
+				}
+				else {
+					alert("Error in retrieving comment");
+				}
+			}
+		);
+
 	}
 
 
@@ -1160,6 +1212,7 @@
 
 	// When the user clicks the button, open the modal
 	btn.onclick = function() {
+		retrieveBookRating();
 		rateBookModal.style.display = "block";
 	}
 
