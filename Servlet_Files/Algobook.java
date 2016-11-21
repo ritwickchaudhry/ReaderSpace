@@ -86,12 +86,14 @@ public class Algobook extends HttpServlet {
 						+ " totalreaders(num) as (select count(distinct(reader_id)) from book_reader)"
 						+ " select booksinterested.book_id, num_interest*0.6+num_readers*1.0/totalreaders.num as threshold"
 						+ " from booksinterested, trending, totalreaders where booksinterested.book_id=trending.book_id "
-						+ " and not exists(select * from already_read where already_read.book_id=booksinterested.book_id)"
-						+ " and not exists (select * from reading where reading.book_id=booksinterested.book_id)"
+						+ " and not exists(select * from already_read where already_read.book_id=booksinterested.book_id and already_read.reader_id=?)"
+						+ " and not exists (select * from reading where reading.book_id=booksinterested.book_id and reading.reader_id=?)"
 						+ " order by threshold desc limit 3";
 				System.out.println(query);
 				pstmt = conn.prepareStatement(query);
 				pstmt.setString(1, id);
+				pstmt.setString(2, id);
+				pstmt.setString(3, id);
 				System.out.println("yahoo");
 				rs = pstmt.executeQuery();
 				JSONArray jsonArray = new JSONArray();
