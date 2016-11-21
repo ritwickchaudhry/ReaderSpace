@@ -77,8 +77,10 @@ public class Algobook extends HttpServlet {
 						+ "final1table(book1, book2, num, friend) as (select book1, book2, A.num*B.num,id from similarityindex A, similarityfriendindex B where id in (select reader_id from book_reader where book_id=book2)),"
 						+ "final2table(book1,book2,num,friend,rate) as (select book1, book2, num, friend, (select case when not exists(select * from review where reader_id=friend and book_id=book2) then 1 "
 						+ "else (select 1+(rating*1.0/5-0.5) from review where reader_id=friend and book_id=book2) end )  from final1table),"
-						+ "final3table(book2,rank) as (select book2, sum(num*rate) from final2table group by book2) "
-						+ "select * from final3table order by rank desc limit 3";
+						+ "final3table(book2,rank) as (select book2, sum(num*rate) from final2table group by book2),"
+						+ "remaining as ((select book_id from book) except (select * from mybooks)),"
+						+ "newremaining(book2, rank) as (select remaining.book_id, count(*)*0.1 from remaining, genre where remaining.book_id=genre.book_id group by remaining.book_id) "
+						+ "((select * from final3table) union (select book2, rank from newremaining where newremaining.book2 not in (select book2 from final3table))) order by rank desc limit 3";
 				System.out.println(query);
 				pstmt = conn.prepareStatement(query);
 				pstmt.setString(1, id);

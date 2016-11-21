@@ -56,6 +56,7 @@ public class UpdateBookRatingComment extends HttpServlet {
 		String id;
 		String bookID;
 		int rating = 0;
+		String comment = "";
 
 		id = request.getParameter("id");
 		bookID = request.getParameter("bookID");
@@ -87,6 +88,7 @@ public class UpdateBookRatingComment extends HttpServlet {
 			while(rs.next())
 			{
 				rating = rs.getInt("rating");
+				comment = rs.getString(3);
 				System.out.println(rating);
 				count++;
 			}
@@ -98,6 +100,7 @@ public class UpdateBookRatingComment extends HttpServlet {
 			else if(count == 1)
 			{
 				returnObject.put("info", "GotRating "+rating);
+				returnObject.put("commentvalue", comment);
 			}
 			else
 			{

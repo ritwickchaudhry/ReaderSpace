@@ -53,7 +53,6 @@ public class UploadBookPhoto extends HttpServlet {
 			response.setContentType("image/jpeg");
 			String bookID = request.getParameter("id");
 			PreparedStatement ps = conn.prepareStatement("SELECT Cover_pic_img FROM book WHERE Book_ID = ?");
-//			bookID = "4";
 			ps.setString(1, bookID);
 			ResultSet rs = ps.executeQuery();
 			byte[] imgBytes = null;
