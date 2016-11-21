@@ -807,6 +807,49 @@
 
 			});
 
+			// Retrieve the reading details
+			$.get("http://10.130.10.35:8080/DBProject/BookReadingDetails", {id : sessionStorage.getItem('id'), bookID : bookID}, function(data,status) {
+
+				console.log(data);
+
+				if (data["status"] == true) {
+
+					// Total readers
+					var total_readers = data["totalreaders"];
+					var total_readers_text = document.getElementById('readers_total');
+					total_readers_text.innerHTML = "Total - " + total_readers;
+
+					// Friend readers
+					var friend_readers = data["friendreaders"];
+					var friend_readers_text = document.getElementById('readers_friends');
+					friend_readers_text.innerHTML = "Your friends - " + total_readers;
+
+					// Reading status
+					var reading_status = data["type"];
+					var radio_button = $('input:radio[name=is_reading]');
+					if (reading_status == "none") {
+						if (radio_button.is(':checked') === false) {
+							radio_button.filter('[value=not_reading]').prop('checked',true);
+						}
+					}
+					else if (reading_status == "reading") {
+						if (radio_button.is(':checked') === false) {
+							radio_button.filter('[value=reading]').prop('checked',true);
+						}
+					}
+					else {
+						if (radio_button.is(':checked') === false) {
+							radio_button.filter('[value=done_reading]').prop('checked',true);
+						}
+					}
+
+				}
+				else {
+					alert("Reading details retrieval failed");
+				}
+
+			});
+
 			// Code to handle reading and rating options
 			$('input[type=radio][name=is_reading]').change(function() {
 
@@ -816,6 +859,19 @@
 					$("#rateBook").prop("disabled",true);
 					var rateButton = document.getElementById("rateBook");
 					rateButton.style.visibility = "hidden";
+
+					// Post to servlet
+					$.post("http://10.130.10.35:8080/DBProject/BookReadingDetails", {id : sessionStorage.getItem('id'), bookID : bookID, type : "none"}, function(data,status) {
+
+						if (data["status"] == true) {
+							console.log("Successfully posted");
+						}
+						else {
+							alert("Posting problems. Please retry");
+						}
+
+					});
+
 				}
 				// Enable rate
 				else {
@@ -823,6 +879,28 @@
 					$("#rateBook").prop("disabled",false);
 					var rateButton = document.getElementById("rateBook");
 					rateButton.style.visibility = "visible";
+
+					var reading_type;
+
+					if (this.value == "reading") {
+						reading_type = "reading";
+					}
+					else {
+						reading_type = "alreadyread";
+					}
+
+					// Post to servlet
+					$.post("http://10.130.10.35:8080/DBProject/BookReadingDetails", {id : sessionStorage.getItem('id'), bookID : bookID, type : reading_type}, function(data,status) {
+
+						if (data["status"] == true) {
+							console.log("Successfully posted");
+						}
+						else {
+							alert("Posting problems. Please retry");
+						}
+
+					});
+
 				}
 
 			});
@@ -1037,7 +1115,7 @@
 
 											<!-- Your actions -->
 											<div class="your_actions">
-												<p class="actions_radio"><input class="radio_button_reading" type="radio" name="is_reading" value="not_reading" checked> Not reading</p>
+												<p class="actions_radio"><input class="radio_button_reading" type="radio" name="is_reading" value="not_reading"> Not reading</p>
 												<p class="actions_radio"><input class="radio_button_reading" type="radio" name="is_reading" value="reading"> Reading
 												<p class="actions_radio"><input class="radio_button_reading" type="radio" name="is_reading" value="done_reading"> Already read
 												<br>
@@ -1060,8 +1138,8 @@
 
 											<!-- Display the numbers -->
 											<div class="friends_reading">
-												<p class="friends_reading_text">3 Friends</p>
-												<p class="friends_reading_text">23 Total</p>
+												<p class="friends_reading_text" id="readers_friends">3 Friends</p>
+												<p class="friends_reading_text" id="readers_total">23 Total</p>
 											</div>
 
 										</div>
