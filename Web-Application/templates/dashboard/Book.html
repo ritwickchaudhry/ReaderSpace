@@ -331,6 +331,34 @@
 			6px 6px 8px -4px rgba(255,255,0,0.75),
 			6px 6px 8px -4px rgba(0,0,255,2.75);
 		}
+
+
+		/* Tanmay defined */
+		.friends_reading_text {
+			font-size: 18px;
+			padding-left: 20px;
+			margin-top: 10px;
+			padding-top: 0px;
+		}
+
+		.your_actions {
+			padding-left: 20px;
+			margin-top: 10px;
+			padding-bottom: 5px;
+		}
+
+		.actions_radio {
+			padding-top: 5px;
+			padding-bottom: 5px;
+			margin-bottom: 0px;
+		}
+
+		#rateBook {
+			margin-top: 10px;
+			background-color: #90CAF9;
+			box-shadow: 1px 1px;
+		}
+
 	}
 </style>
 <script src='https://code.jquery.com/jquery-1.12.4.js'></script>
@@ -694,7 +722,7 @@
 				});
 
 				while (r < 3) {
-					var overallRatingNode = document.getElementById("totalrating" + 2).parentNode;
+					var overallRatingNode = document.getElementById("totalrating" + r).parentNode;
 					overallRatingNode.style.visibility = "hidden";
 					r += 1;
 				}
@@ -733,7 +761,7 @@
 				});
 
 				while (r < 5) {
-					var overallRatingNode = document.getElementById("totalrating" + 2).parentNode;
+					var overallRatingNode = document.getElementById("totalrating" + r).parentNode;
 					overallRatingNode.style.visibility = "hidden";
 					r += 1;
 				}
@@ -772,9 +800,29 @@
 				});
 
 				while (r < 7) {
-					var overallRatingNode = document.getElementById("totalrating" + 2).parentNode;
+					var overallRatingNode = document.getElementById("totalrating" + r).parentNode;
 					overallRatingNode.style.visibility = "hidden";
 					r += 1;
+				}
+
+			});
+
+			// Code to handle reading and rating options
+			$('input[type=radio][name=is_reading]').change(function() {
+
+				// Disable rate
+				if (this.value == 'not_reading') {
+					// console.log("not-asdad");
+					$("#rateBook").prop("disabled",true);
+					var rateButton = document.getElementById("rateBook");
+					rateButton.style.visibility = "hidden";
+				}
+				// Enable rate
+				else {
+					// console.log("adsand");
+					$("#rateBook").prop("disabled",false);
+					var rateButton = document.getElementById("rateBook");
+					rateButton.style.visibility = "visible";
 				}
 
 			});
@@ -869,7 +917,7 @@
 						</div> -->
 						<div class="star-ratings-sprite"><span style="width:64%" class="star-ratings-sprite-rating" id="totalrating"></span></div>
 						<div style="text-align:center; width:100%"><h5 id="numPpl">Reviewed By : </h5></div>
-						<aside><button id="rateBook">Review The Book</button></aside>
+						<aside></aside>
 					</div>
 
 									</div>
@@ -981,30 +1029,39 @@
 										<!-- SECOND CARD -->
 										<div class="mdl-card mdl-color--light-blue-100 mdl-shadow--2dp mdl-cell mdl-cell--4-col mdl-cell--3-col-tablet mdl-cell--12-col-desktop">
 
-											<!-- Followee heading -->
+											<!-- heading -->
 											<div class="followee-list_heading mdl-color--light-blue-200">
-												<i class="friend-icon glyphicon glyphicon-hand-left"></i>
-												<h2 id="followee-list_head">Followees:</h2>
+												<i class="friend-icon glyphicon glyphicon-thumbs-up"></i>
+												<h2 id="followee-list_head">Your actions: </h2>
 											</div>
 
-											<!-- Followee list -->
-											<div class="followee-list">
-												<ul class="followee-list_outer" id="followee-list_outer">
-													<li>
-														<p class="followee-list_name"></p>
-													</li>
-													<li>
-														<p class="followee-list_name"></p>
-													</li>
-													<li>
-														<p class="followee-list_name"></p>
-													</li>
-												</ul>
+											<!-- Your actions -->
+											<div class="your_actions">
+												<p class="actions_radio"><input class="radio_button_reading" type="radio" name="is_reading" value="not_reading" checked> Not reading</p>
+												<p class="actions_radio"><input class="radio_button_reading" type="radio" name="is_reading" value="reading"> Reading
+												<p class="actions_radio"><input class="radio_button_reading" type="radio" name="is_reading" value="done_reading"> Already read
+												<br>
+												<button id="rateBook" disabled="disabled" style="visibility:hidden">Review The Book</button>
 											</div>
 
-											<!-- Read more block -->
-											<div class="mdl-card__actions mdl-card--border" id="follower_read-more">
-												<a href="#" class="mdl-button mdl-js-button mdl-js-ripple-effect">View More</a>
+										</div>
+
+										<!-- SEPARATOR -->
+										<div class="demo-separator mdl-cell--1-col"></div>
+
+										<!-- THIRD CARD -->
+										<div class="mdl-card mdl-color--light-blue-100 mdl-shadow--2dp mdl-cell mdl-cell--4-col mdl-cell--3-col-tablet mdl-cell--12-col-desktop">
+
+											<!-- heading -->
+											<div class="followee-list_heading mdl-color--light-blue-200">
+												<i class="friend-icon glyphicon glyphicon-user"></i>
+												<h2 id="followee-list_head">Who's reading?</h2>
+											</div>
+
+											<!-- Display the numbers -->
+											<div class="friends_reading">
+												<p class="friends_reading_text">3 Friends</p>
+												<p class="friends_reading_text">23 Total</p>
 											</div>
 
 										</div>
