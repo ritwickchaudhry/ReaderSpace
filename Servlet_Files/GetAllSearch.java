@@ -85,27 +85,27 @@ public class GetAllSearch extends HttpServlet {
 					jsonArray.put(jsonObj);
 				}
 				
-				query = "select author_id as C1, name as C2 from author;";
-				ps = conn.prepareStatement(query);
-				rs = ps.executeQuery();
-				while(rs.next()){
-					JSONObject jsonObj = new JSONObject();
-					jsonObj.put("type","author");
-					jsonObj.put("id",rs.getString("C1"));
-					jsonObj.put("name",rs.getString("C2"));
-					jsonArray.put(jsonObj);
-				}
-				
-				query = "select publisher_id as C1, name as C2 from publisher;";
-				ps = conn.prepareStatement(query);
-				rs = ps.executeQuery();
-				while(rs.next()){
-					JSONObject jsonObj = new JSONObject();
-					jsonObj.put("type","publisher");
-					jsonObj.put("id",rs.getString("C1"));
-					jsonObj.put("name",rs.getString("C2"));
-					jsonArray.put(jsonObj);
-				}
+//				query = "select author_id as C1, name as C2 from author;";
+//				ps = conn.prepareStatement(query);
+//				rs = ps.executeQuery();
+//				while(rs.next()){
+//					JSONObject jsonObj = new JSONObject();
+//					jsonObj.put("type","author");
+//					jsonObj.put("id",rs.getString("C1"));
+//					jsonObj.put("name",rs.getString("C2"));
+//					jsonArray.put(jsonObj);
+//				}
+//				
+//				query = "select publisher_id as C1, name as C2 from publisher;";
+//				ps = conn.prepareStatement(query);
+//				rs = ps.executeQuery();
+//				while(rs.next()){
+//					JSONObject jsonObj = new JSONObject();
+//					jsonObj.put("type","publisher");
+//					jsonObj.put("id",rs.getString("C1"));
+//					jsonObj.put("name",rs.getString("C2"));
+//					jsonArray.put(jsonObj);
+//				}
 				
 				out.print(jsonArray);
 				out.flush();

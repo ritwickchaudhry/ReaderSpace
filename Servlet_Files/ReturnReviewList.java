@@ -89,7 +89,7 @@ public class ReturnReviewList extends HttpServlet {
 							+ "where book_id=? and "
 							+ "reader_id in "
 							+ "(select followee from follow where follow.follower=?)"
-							+ " order by rating desc limit 4";
+							+ " order by rating desc limit 2";
 					pstmt = conn.prepareStatement(query);
 					pstmt.setString(1, bookID);
 					pstmt.setString(2, id);
