@@ -514,44 +514,44 @@
 
 			updateRating();
 
+			// // Update the Rating on the click of stars
+			// function updateBookRating()
+			// {
+			// 		// alert("Rating Changed");
+			// 		var rating=0;
+
+			// 		// Get Rating from the stars
+			// 		if(document.getElementById("star-1").checked)
+			// 			rating=1;
+			// 		if(document.getElementById("star-2").checked)
+			// 			rating=2;
+			// 		if(document.getElementById("star-3").checked)
+			// 			rating=3;
+			// 		if(document.getElementById("star-4").checked)
+			// 			rating=4;
+			// 		if(document.getElementById("star-5").checked)
+			// 			rating=5;
+			// 		console.log(rating);
+			// 		// alert(rating);
 
 
+			// 		var comments = document.getElementById("commentsArea").val();
+			// 		console.log(comments);
 
-			// Update the Rating on the click of stars
-			$("input[name='star']").change(function()
-			{
-					// alert("Rating Changed");
-					var rating=0;
+			// 		$.post("http://10.130.10.35:8080/DBProject/UpdateBookRatingComment", {id : sessionStorage.getItem('id'), bookID : bookID, rating : rating, comment: comments},
+			// 			function(data,status)
+			// 			{
+			// 				// Do Nothing
+			// 				if(data[status] == true)
+			// 				{
+			// 					// alert("Rating Updated Successfully");
+			// 				}
+			// 			}
+			// 			)
 
-					// Get Rating from the stars
-					if(document.getElementById("star-1").checked)
-						rating=1;
-					if(document.getElementById("star-2").checked)
-						rating=2;
-					if(document.getElementById("star-3").checked)
-						rating=3;
-					if(document.getElementById("star-4").checked)
-						rating=4;
-					if(document.getElementById("star-5").checked)
-						rating=5;
-					console.log(rating);
-					// alert(rating);
-
-					$.post("http://10.130.10.35:8080/DBProject/UpdateBookRating", {id : sessionStorage.getItem('id'), bookID : bookID, rating : rating},
-						function(data,status)
-						{
-							// Do Nothing
-							if(data[status] == true)
-							{
-								// alert("Rating Updated Successfully");
-							}
-						}
-						)
-
-					// Refresh so as to update the total overall rating of the book
-					location.reload();
-				}
-				);
+			// 		// Refresh so as to update the total overall rating of the book
+			// 		location.reload();
+			// 	}
 
 
 			$("#logout").click(function(){
@@ -727,7 +727,125 @@
 						</div> -->
 						<div class="star-ratings-sprite"><span style="width:64%" class="star-ratings-sprite-rating" id="totalrating"></span></div>
 						<div style="text-align:center; width:100%"><h5 id="numPpl">Reviewed By : </h5></div>
+						<aside><button id="rateBook">Review The Book</button></aside>
 					</div>
+
+
+					<!-- MODAL -->
+					<div id="ratingModal" class="modal">
+						<div class="modal-content">
+						<span class="close" id="m_close">x</span>
+						<center>
+						<form>
+							<h2>Review the Book</h2>
+							<br>
+							<div class="stars">
+								<form action="">
+									<input class="star star-5" id="star-5" type="radio" name="star"/>
+									<label class="star star-5" for="star-5"></label>
+									<input class="star star-4" id="star-4" type="radio" name="star"/>
+									<label class="star star-4" for="star-4"></label>
+									<input class="star star-3" id="star-3" type="radio" name="star"/>
+									<label class="star star-3" for="star-3"></label>
+									<input class="star star-2" id="star-2" type="radio" name="star"/>
+									<label class="star star-2" for="star-2"></label>
+									<input class="star star-1" id="star-1" type="radio" name="star"/>
+									<label class="star star-1" for="star-1"></label>
+								</form>
+							</div>
+							<br>
+							<h4>Comments</h4>
+							<textarea id="commentsArea" name="paragraph_text" cols="50" rows="10" placeholder="Write a Comment"></textarea>
+							<br>
+							<button id="btn1" type="submit">Submit</button>
+						</form>
+						</center>
+						</div>
+					</div>
+
+					<script>
+						// Update the Rating on the click of stars
+						function updateBookRating()
+						{
+							// alert("Rating Changed");
+							var rating=0;
+
+							// Get Rating from the stars
+							if(document.getElementById("star-1").checked)
+								rating=1;
+							if(document.getElementById("star-2").checked)
+								rating=2;
+							if(document.getElementById("star-3").checked)
+								rating=3;
+							if(document.getElementById("star-4").checked)
+								rating=4;
+							if(document.getElementById("star-5").checked)
+								rating=5;
+							console.log(rating);
+							// alert(rating);
+
+
+							var comments = document.getElementById("commentsArea");
+							var comments = $(comments).val();
+							console.log("Comments : " + comments);
+
+							$.post("http://10.130.10.35:8080/DBProject/UpdateBookRatingComment", {id : sessionStorage.getItem('id'), bookID : sessionStorage.getItem("book_id"), rating : rating, comment: comments},
+								function(data,status)
+								{
+									// Do Nothing
+									if(data[status] == true)
+									{
+										// alert("Rating Updated Successfully");
+									}
+								}
+								)
+
+							// Refresh so as to update the total overall rating of the book
+							location.reload();
+						}
+
+
+						// Modal in the DOM
+						var rateBookModal = document.getElementById('ratingModal');
+
+						// Button that opens the modal
+						var btn = document.getElementById("rateBook");
+
+						// <span> element that closes the modal
+						var span = document.getElementsByClassName("close")[0];
+
+						// Button that saves the modal
+						var btn1 = document.getElementById("btn1");
+
+						// When the user clicks the button, open the modal
+						btn.onclick = function() {
+							rateBookModal.style.display = "block";
+						}
+
+						// When the user clicks on <span> (x), close the modal
+						span.onclick = function() {
+							rateBookModal.style.display = "none";
+						}
+
+						// When the user clicks save close the modal
+						btn1.onclick = function() {
+							rateBookModal.style.display = "none";
+							updateBookRating();
+							setTimeout(function(){
+								location.reload();
+							},1000);
+						}
+
+						// When the user clicks anywhere outside of the modal, close it
+						window.onclick = function(event) {
+							if (event.target == modal) {
+								rateBookModal.style.display = "none";
+							}
+						}
+
+					</script>
+
+
 
 									<!-- <svg fill="currentColor" width="200px" height="200px" viewBox="0 0 1 1" class="demo-chart mdl-cell mdl-cell--4-col mdl-cell--3-col-desktop">
 										<use xlink:href="#piechart" mask="url(#piemask)">
@@ -871,7 +989,7 @@
 										<div class="demo-separator mdl-cell--1-col"></div>
 
 										<!-- SECOND CARD -->
-										<div class="demo-options mdl-card mdl-color--blue-grey-300 mdl-shadow--2dp mdl-cell mdl-cell--4-col mdl-cell--3-col-tablet mdl-cell--12-col-desktop">
+<!-- 										<div class="demo-options mdl-card mdl-color--blue-grey-300 mdl-shadow--2dp mdl-cell mdl-cell--4-col mdl-cell--3-col-tablet mdl-cell--12-col-desktop">
 
 											<div class="follower-list-heading">
 												<i class="friend-icon glyphicon glyphicon-stats"></i>
@@ -894,7 +1012,7 @@
 													</form>
 												</div>
 											</div>
-
+ -->
 											<!-- <div class="mdl-card__actions mdl-card--border" id="follower_read-more">
 												<a href="#" class="mdl-button mdl-js-button mdl-js-ripple-effect">View More</a>
 											</div> -->
