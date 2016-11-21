@@ -160,19 +160,30 @@
 			margin-left:20px;
 		}
 		.box{
-			width:40%;
+			width:42%;
 			height:200px;
 			float:left;
 			background-color:white; 
 			margin:25px 15px;
 			border-radius:5px;
 		}
-		.box h3{
+		.box h4 {
+			padding-left: 10px;
+			font-size: 18px;
+			margin-top: 5px;
+			margin-bottom: 5px;
+		}
+		.box h5{
 			font-family: 'Didact Gothic', sans-serif;
 			font-weight:normal;
 			text-align:center;
 			padding-top:60px;
 			color:#fff;
+			font-size: 16px;
+		}
+		.box span{
+			padding-left: 10px;
+			margin-top: 0px;
 		}
 		.box1{
 			background-color: #EBA39E;
@@ -206,7 +217,7 @@
 		}
 		/*****************************************************************dashed border
 		****************************************************************/
-		.shadow1 h3, .shadow2 h3, .shadow3 h3, .shadow4 h3, .shadow5 h3, .shadow6 h3, .shadow7 h3, .shadow8 h3{
+		.shadow1 h5, .shadow2 h5, .shadow3 h5, .shadow4 h5, .shadow5 h5, .shadow6 h5, .shadow7 h5, .shadow8 h5{
 			width:87%;
 			height:100px;
 			margin-left:6%;
@@ -636,6 +647,137 @@
 				}
 				
 			});
+
+			// Retrieve the comments on book
+			jQuery.ajaxSetup({async:false});
+			$.get("http://10.130.10.35:8080/DBProject/ReturnReviewList", {id : sessionStorage.getItem('id'), bookID : bookID},function(data,status) {
+				
+				console.log(data);
+
+				var highestRating = data["highestrating"];
+				var lowestRating = data["lowestrating"];
+				var friendRating = data["friendrating"];
+
+				var r = 1;
+
+				// Display friend's rated comments
+				$.each(friendRating,function(index,element){
+
+					var review_div = document.getElementById("Review" + r);
+
+					var reviewer_id = element["readervalue"];
+
+					// Get details of this particular book
+					$.get("http://10.130.10.35:8080/DBProject/GetDetails", {id : reviewer_id, type : "reader"},function(data,status) {
+
+						// console.log(data);
+						if (data["status"] == true) {
+							reviewer_name = data["name"];
+						}
+						else {
+							alert("Can't retrieve book details");
+						}
+
+					});
+
+					review_div.getElementsByTagName('h4')[0].innerHTML = reviewer_name;
+
+					var review = element["commentvalue"];
+					review_div.getElementsByTagName('h5')[0].innerHTML = review;
+
+					var actualPercentage = element["ratingvalue"];
+					actualPercentage = actualPercentage * 20;
+					var overallRatingNode = document.getElementById("totalrating" + r);
+					overallRatingNode.style.width = actualPercentage + "%";
+
+					r += 1;
+				});
+
+				while (r < 3) {
+					var overallRatingNode = document.getElementById("totalrating" + 2).parentNode;
+					overallRatingNode.style.visibility = "hidden";
+					r += 1;
+				}
+
+				// Display highest rated comments
+				$.each(highestRating,function(index,element){
+
+					var review_div = document.getElementById("Review" + r);
+
+					var reviewer_id = element["readervalue"];
+
+					// Get details of this particular book
+					$.get("http://10.130.10.35:8080/DBProject/GetDetails", {id : reviewer_id, type : "reader"},function(data,status) {
+
+						// console.log(data);
+						if (data["status"] == true) {
+							reviewer_name = data["name"];
+						}
+						else {
+							alert("Can't retrieve book details");
+						}
+
+					});
+
+					review_div.getElementsByTagName('h4')[0].innerHTML = reviewer_name;
+
+					var review = element["commentvalue"];
+					review_div.getElementsByTagName('h5')[0].innerHTML = review;
+
+					var actualPercentage = element["ratingvalue"];
+					actualPercentage = actualPercentage * 20;
+					var overallRatingNode = document.getElementById("totalrating" + r);
+					overallRatingNode.style.width = actualPercentage + "%";
+
+					r += 1;
+				});
+
+				while (r < 5) {
+					var overallRatingNode = document.getElementById("totalrating" + 2).parentNode;
+					overallRatingNode.style.visibility = "hidden";
+					r += 1;
+				}
+
+				// Display lowest rated comments
+				$.each(lowestRating,function(index,element){
+
+					var review_div = document.getElementById("Review" + r);
+
+					var reviewer_id = element["readervalue"];
+
+					// Get details of this particular book
+					$.get("http://10.130.10.35:8080/DBProject/GetDetails", {id : reviewer_id, type : "reader"},function(data,status) {
+
+						// console.log(data);
+						if (data["status"] == true) {
+							reviewer_name = data["name"];
+						}
+						else {
+							alert("Can't retrieve book details");
+						}
+
+					});
+
+					review_div.getElementsByTagName('h4')[0].innerHTML = reviewer_name;
+
+					var review = element["commentvalue"];
+					review_div.getElementsByTagName('h5')[0].innerHTML = review;
+
+					var actualPercentage = element["ratingvalue"];
+					actualPercentage = actualPercentage * 20;
+					var overallRatingNode = document.getElementById("totalrating" + r);
+					overallRatingNode.style.width = actualPercentage + "%";
+
+					r += 1;
+				});
+
+				while (r < 7) {
+					var overallRatingNode = document.getElementById("totalrating" + 2).parentNode;
+					overallRatingNode.style.visibility = "hidden";
+					r += 1;
+				}
+
+			});
 }
 });
 </script>
@@ -730,30 +872,6 @@
 						<aside><button id="rateBook">Review The Book</button></aside>
 					</div>
 
-
-					
-
-
-									<!-- <svg fill="currentColor" width="200px" height="200px" viewBox="0 0 1 1" class="demo-chart mdl-cell mdl-cell--4-col mdl-cell--3-col-desktop">
-										<use xlink:href="#piechart" mask="url(#piemask)">
-											<text x="0.5" y="0.5" font-family="Roboto" font-size="0.3" fill="#888" text-anchor="middle" dy="0.1">82<tspan font-size="0.2" dy="-0.07">%</tspan></text>
-										</svg> -->
-
-									<!-- <svg fill="currentColor" width="200px" height="200px" viewBox="0 0 1 1" class="demo-chart mdl-cell mdl-cell--4-col mdl-cell--3-col-desktop">
-										<use xlink:href="#piechart" mask="url(#piemask)">
-											<text x="0.5" y="0.5" font-family="Roboto" font-size="0.3" fill="#888" text-anchor="middle" dy="0.1">82<tspan dy="-0.07" font-size="0.2">%</tspan></text>
-									</svg>
-									
-									<svg fill="currentColor" width="200px" height="200px" viewBox="0 0 1 1" class="demo-chart mdl-cell mdl-cell--4-col mdl-cell--3-col-desktop">
-										<use xlink:href="#piechart" mask="url(#piemask)">
-											<text x="0.5" y="0.5" font-family="Roboto" font-size="0.3" fill="#888" text-anchor="middle" dy="0.1">82<tspan dy="-0.07" font-size="0.2">%</tspan></text>
-									</svg>
-									
-									<svg fill="currentColor" width="200px" height="200px" viewBox="0 0 1 1" class="demo-chart mdl-cell mdl-cell--4-col mdl-cell--3-col-desktop">
-										<use xlink:href="#piechart" mask="url(#piemask)">
-											<text x="0.5" y="0.5" font-family="Roboto" font-size="0.3" fill="#888" text-anchor="middle" dy="0.1">82<tspan dy="-0.07" font-size="0.2">%</tspan></text>
-										</svg> -->
-
 									</div>
 
 									<!-- LOWER LEFT BLOCK -->
@@ -761,74 +879,63 @@
 									<div class="demo-graphs mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--8-col">
 
 										<div class="book-suggest-heading">
-											<h4>Reviews:</h4>
+											<i class="friend-icon glyphicon glyphicon-list-alt"></i>
+											<h4>REVIEWS :</h4>
 										</div>
 										<link href='http://fonts.googleapis.com/css?family=Didact+Gothic' rel='stylesheet' type='text/css'>
 										<div class="wrap">
-											<div class="box box1 shadow1">
-
-												<h3>Shadow 1</h3>
+											
+											<br><br>
+											<p style="font-size:20px">Friend's Reviews - </p>
+											<div class="box box1 shadow1" id="Review1">
+												<h4></h4>
+												<div class="star-ratings-sprite"><span style="width:0%" class="star-ratings-sprite-rating" id="totalrating1"></span></div>
+												<h5></h5>
 											</div>
-											<div class="box box2 shadow2">
-												<h3>Shadow 2</h3>
+											<div class="box box2 shadow2" id="Review2">
+												<h4></h4>
+												<div class="star-ratings-sprite"><span style="width:0%" class="star-ratings-sprite-rating" id="totalrating2"></span></div>
+												<h5></h5>
 											</div>
-											<div class="box box3 shadow3">
-												<h3>Shadow 3</h3>
-											</div>
-											<div class="box box4 shadow4">
-												<h3>Shadow 4</h3>
-											</div>
-											<div class="box box5 shadow5">
-												<h3>Shadow 5</h3>
-											</div>
-											<div class="box box6 shadow6">
-												<h3>Shadow 6</h3>
-											</div>
-											<div class="box box7 shadow7">
-												<h3>Shadow 7</h3>
-											</div>
-											<div class="box box8 shadow8">
-												<h3>Shadow 8</h3>
-											</div>  
-										</div>
-
-<!-- 
-										<div class="booklist-suggest mdl-grid">
-
-											<div class="book-suggest mdl-cell mdl-cell-4-col">
-												<img src="images/12345.png" width="100%">
-												<h5>Harry Potter</h5>
-												<h6>J.K. Rowling</h6>
-												<div class="rating">
-													<span>&#9733</span><span>&#9733</span><span>&#9733</span><span>&#9733</span><span>&#9734</span>
-													<p>4.3/5</p>
-												</div>
+											<!-- Read more block -->
+											<div class="mdl-card__actions mdl-card--border">
+												<a href="#" class="mdl-button mdl-js-button mdl-js-ripple-effect">Read More Reviews</a>
 											</div>
 
-											<div class="book-suggest mdl-cell mdl-cell--4-col">
-												<img src="images/12345.png" width="100%">  
-												<h5>Lord of the Rings</h5>
-												<h6>J. R. R. Tolkien</h6>
-												<div class="rating">
-													<span>&#9733</span><span>&#9733</span><span>&#9733</span><span>&#9734</span><span>&#9734</span>
-													<p>3.2/5</p>
-												</div>
+											<br><br>
+											<p style="font-size:20px">Best Reviews - </p>
+											<div class="box box3 shadow3" id="Review3">
+												<h4></h4>
+												<div class="star-ratings-sprite"><span style="width:0%" class="star-ratings-sprite-rating" id="totalrating3"></span></div>
+												<h5></h5>
+											</div>
+											<div class="box box4 shadow4" id="Review4">
+												<h4></h4>
+												<div class="star-ratings-sprite"><span style="width:0%" class="star-ratings-sprite-rating" id="totalrating4"></span></div>
+												<h5></h5>
+											</div>
+											<!-- Read more block -->
+											<div class="mdl-card__actions mdl-card--border">
+												<a href="#" class="mdl-button mdl-js-button mdl-js-ripple-effect">Read More Reviews</a>
+											</div>
+											
+											<br><br>
+											<p style="font-size:20px">Worst Reviews - </p>
+											<div class="box box5 shadow5" id="Review5">
+												<h4></h4>
+												<div class="star-ratings-sprite"><span style="width:0%" class="star-ratings-sprite-rating" id="totalrating5"></span></div>
+												<h5></h5>
+											</div>
+											<div class="box box6 shadow6" id="Review6">
+												<h4></h4>
+												<div class="star-ratings-sprite"><span style="width:0%" class="star-ratings-sprite-rating" id="totalrating6"></span></div>
+												<h5></h5>
+											</div>
+											<!-- Read more block -->
+											<div class="mdl-card__actions mdl-card--border">
+												<a href="#" class="mdl-button mdl-js-button mdl-js-ripple-effect">Read More Reviews</a>
 											</div>
 
-											<div class="book-suggest mdl-cell mdl-cell--4-col">
-												<img src="images/12345.png" width="100%">  
-												<h5>Game of Thrones</h5>
-												<h6>G. R. R. Martin</h6>
-												<div class="rating">
-													<span>&#9733</span><span>&#9733</span><span>&#9733</span><span>&#9733</span><span>&#9733</span>
-													<p>4.7/5</p>
-												</div>
-											</div>
-
-										</div> -->
-
-										<div class="mdl-card__actions mdl-card--border">
-											<a href="#" class="mdl-button mdl-js-button mdl-js-ripple-effect">See More Books</a>
 										</div>
 
 										<!-- SEPARATOR -->
@@ -866,86 +973,45 @@
 												<div id="pages"><h2 id="follower-list_head" name="NumPages">Number of Pages : </h2></div>
 											</div>
 
-											<!-- <div class="mdl-card__actions mdl-card--border" id="follower_read-more">
-												<a href="#" class="mdl-button mdl-js-button mdl-js-ripple-effect">View More</a>
-											</div> -->
-											<!-- <div class="mdl-card__title mdl-card--expand mdl-color--teal-300"> -->
-											<!-- </div> -->
-<!-- 											<div class="mdl-card__supporting-text mdl-color-text--grey-600">
-												Non dolore elit adipisicing ea reprehenderit consectetur culpa.
-											</div>
- --><!-- 											<div class="mdl-card__actions mdl-card--border">
-												<a href="#" class="mdl-button mdl-js-button mdl-js-ripple-effect">Read More</a>
-											</div> -->
 										</div>
 
 										<!-- SEPARATOR -->
 										<div class="demo-separator mdl-cell--1-col"></div>
 
 										<!-- SECOND CARD -->
-<!-- 										<div class="demo-options mdl-card mdl-color--blue-grey-300 mdl-shadow--2dp mdl-cell mdl-cell--4-col mdl-cell--3-col-tablet mdl-cell--12-col-desktop">
+										<div class="mdl-card mdl-color--light-blue-100 mdl-shadow--2dp mdl-cell mdl-cell--4-col mdl-cell--3-col-tablet mdl-cell--12-col-desktop">
 
-											<div class="follower-list-heading">
-												<i class="friend-icon glyphicon glyphicon-stats"></i>
-												<h2 id="follower-list_head">Your Rating:</h2>
+											<!-- Followee heading -->
+											<div class="followee-list_heading mdl-color--light-blue-200">
+												<i class="friend-icon glyphicon glyphicon-hand-left"></i>
+												<h2 id="followee-list_head">Followees:</h2>
 											</div>
 
-											<div class="follower-list">
-												<div class="stars">
-													<form action="">
-														<input class="star star-5" id="star-5" type="radio" name="star"/>
-														<label class="star star-5" for="star-5"></label>
-														<input class="star star-4" id="star-4" type="radio" name="star"/>
-														<label class="star star-4" for="star-4"></label>
-														<input class="star star-3" id="star-3" type="radio" name="star"/>
-														<label class="star star-3" for="star-3"></label>
-														<input class="star star-2" id="star-2" type="radio" name="star"/>
-														<label class="star star-2" for="star-2"></label>
-														<input class="star star-1" id="star-1" type="radio" name="star"/>
-														<label class="star star-1" for="star-1"></label>
-													</form>
-												</div>
-											</div>
- -->
-											<!-- <div class="mdl-card__actions mdl-card--border" id="follower_read-more">
-												<a href="#" class="mdl-button mdl-js-button mdl-js-ripple-effect">View More</a>
-											</div> -->
-											<!-- <div class="mdl-card__supporting-text mdl-color-text--blue-grey-50">
-												<h3>View options</h3>
-												<ul>
+											<!-- Followee list -->
+											<div class="followee-list">
+												<ul class="followee-list_outer" id="followee-list_outer">
 													<li>
-														<label for="chkbox1" class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect">
-															<input type="checkbox" id="chkbox1" class="mdl-checkbox__input">
-															<span class="mdl-checkbox__label">Click per object</span>
-														</label>
+														<p class="followee-list_name"></p>
 													</li>
 													<li>
-														<label for="chkbox2" class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect">
-															<input type="checkbox" id="chkbox2" class="mdl-checkbox__input">
-															<span class="mdl-checkbox__label">Views per object</span>
-														</label>
+														<p class="followee-list_name"></p>
 													</li>
 													<li>
-														<label for="chkbox3" class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect">
-															<input type="checkbox" id="chkbox3" class="mdl-checkbox__input">
-															<span class="mdl-checkbox__label">Objects selected</span>
-														</label>
-													</li>
-													<li>
-														<label for="chkbox4" class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect">
-															<input type="checkbox" id="chkbox4" class="mdl-checkbox__input">
-															<span class="mdl-checkbox__label">Objects viewed</span>
-														</label>
+														<p class="followee-list_name"></p>
 													</li>
 												</ul>
 											</div>
 
-											<div class="mdl-card__actions mdl-card--border">
-												<a href="#" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-color-text--blue-grey-50">Change location</a>
-												<div class="mdl-layout-spacer"></div>
-												<i class="material-icons">location_on</i>
+											<!-- Read more block -->
+											<div class="mdl-card__actions mdl-card--border" id="follower_read-more">
+												<a href="#" class="mdl-button mdl-js-button mdl-js-ripple-effect">View More</a>
 											</div>
-										-->
+
+										</div>
+
+										<!-- SEPARATOR -->
+										<div class="demo-separator mdl-cell--1-col"></div>
+
 									</div>
 
 								</div>
