@@ -297,7 +297,10 @@
 				// Get info from servlet
 				name = data["name"];
 				intro = data["intro"];
-
+				// For the name on left side
+				document.getElementById("namespace").innerHTML = name;
+				// Save it for further use
+				sessionStorage.setItem("username", name);
 				// Extract followers and update
 				follower_list = data["follower"];
 				var f1 = 0;
@@ -402,7 +405,6 @@
 
 							var book_div_id = "book-suggest" + b1;
 							var book_div = document.getElementById(book_div_id);
-
 							book_div.getElementsByTagName('h5')[0].innerHTML = "<a onclick=\"openBookPage('"+book_list[book_id]+"');\">" + book_name +"</a>";
 							book_div.getElementsByTagName('h6')[0].innerHTML = book_author;
 
@@ -427,7 +429,7 @@
 
 					});
 
-				}
+}
 
 				// Update remaining info in page
 				document.getElementById("cover-name").innerHTML = name;
@@ -439,7 +441,7 @@
 			}
 
 		});
-	
+
 		// Retrieve the suggested books from the servlet and display them accordingly
 		$.get("http://10.130.10.35:8080/DBProject/Algobook", {id : sessionStorage.getItem('id')},function(data,status) {
 
@@ -487,13 +489,13 @@
 
 					});
 
-				}
-			}
-			else {
-				alert("Some retrieval error");
-			}
+}
+}
+else {
+	alert("Some retrieval error");
+}
 
-		});
+});
 
 		// Retrieve the list of suggested friends and display them accordingly
 		$.get("http://10.130.10.35:8080/DBProject/AlgoFriend", {id : sessionStorage.getItem('id')},function(data,status) {
@@ -536,7 +538,7 @@
 
 		});
 
-	}
+}
 });
 </script>
 </head>
@@ -573,22 +575,23 @@
 			<header class="demo-drawer-header">
 				<img id="image_id" class="demo-avatar" src="images/user.jpg">
 				<div class="demo-avatar-dropdown">
-					<span>hello@example.com</span>
+					<span id="namespace">hello@example.com</span>
 					<div class="mdl-layout-spacer"></div>
-					<button id="accbtn" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+					<!-- <button id="accbtn" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
 						<i class="material-icons" role="presentation">arrow_drop_down</i>
 						<span class="visuallyhidden">Accounts</span>
-					</button>
-					<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="accbtn">
+					</button> -->
+					<!-- <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="accbtn">
 						<li class="mdl-menu__item">hello@example.com</li>
 						<li class="mdl-menu__item">info@example.com</li>
 						<li class="mdl-menu__item"><i class="material-icons">add</i>Add another account...</li>
-					</ul>
+					</ul> -->
 				</div>
 			</header>
 			<nav class="demo-navigation mdl-navigation mdl-color--blue-grey-800">
 				<a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">home</i>Home</a>
 				<a class="mdl-navigation__link" href="../LoginRegistrationForm/edit-details.html"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">edit</i>Edit your details</a>
+				<a class="mdl-navigation__link" href="search.html"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">search</i>Advanced Search</a>
 				<a class="mdl-navigation__link" id="upload_photo"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">edit</i>Upload Photo</a>
 				<a class="mdl-navigation__link" id="navlogout"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">inbox</i>Logout</a>
 				<!-- <a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">delete</i>Trash</a>
