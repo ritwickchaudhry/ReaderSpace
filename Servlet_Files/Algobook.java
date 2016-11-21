@@ -69,26 +69,16 @@ public class Algobook extends HttpServlet {
 				String query;
 				PreparedStatement pstmt;
 				ResultSet rs;
-				query = "with booksbyinterest(book_id, num_interest) as ("
-						+ "select genre.book_id, count(*) as num_interest"
-						+ " from interests,genre"
-						+ " where interests.reader_id=? and interests.genre=genre.genre"
-						+ " group by genre.book_id), "
-						+ " booksinterested(book_id, num_interest) as ("
-						+ " (select book_id, 0 as num_interest from ((select book_id from book) except (select book_id from booksbyinterest)) as temp)"
-						+ " union"
-						+ " (select * from booksbyinterest)"
-						+ " ),"
-						+ " trending(book_id, num_readers) as ((select book_id, count(*) as num_readers from "
-						+ " book_reader group by book_id)"
-						+ " union"
-						+ " (select book_id, 0 from ((select book_id from book) except (select book_id from book_reader)) as temp1)),"
-						+ " totalreaders(num) as (select count(distinct(reader_id)) from book_reader)"
-						+ " select booksinterested.book_id, num_interest*0.6+num_readers*1.0/totalreaders.num as threshold"
-						+ " from booksinterested, trending, totalreaders where booksinterested.book_id=trending.book_id "
-						+ " and not exists(select * from already_read where already_read.book_id=booksinterested.book_id and already_read.reader_id=?)"
-						+ " and not exists (select * from reading where reading.book_id=booksinterested.book_id and reading.reader_id=?)"
-						+ " order by threshold desc limit 3";
+				query = "with mybooks as (select book_id from book_reader where reader_id=?), "
+						+ "friends as (select followee from follow where follower=?),"
+						+ "books_of_friends as (select distinct book_id from book_reader where reader_id in (select * from friends) and book_id not in (select * from mybooks)),"
+						+ "similarityindex(book1, book2, num) as (select mybooks.book_id,books_of_friends.book_id,(select count(*) from genre A, genre B where A.book_id=mybooks.book_id and B.book_id=books_of_friends.book_id and A.genre=B.genre) from mybooks, books_of_friends),"
+						+ "similarityfriendindex(id, num) as (select friends.followee, count(*) from interests A, interests B, friends where A.reader_id=? and B.reader_id=friends.followee and A.genre=B.genre group by friends.followee),"
+						+ "final1table(book1, book2, num, friend) as (select book1, book2, A.num*B.num,id from similarityindex A, similarityfriendindex B where id in (select reader_id from book_reader where book_id=book2)),"
+						+ "final2table(book1,book2,num,friend,rate) as (select book1, book2, num, friend, (select case when not exists(select * from review where reader_id=friend and book_id=book2) then 1 "
+						+ "else (select 1+(rating*1.0/5-0.5) from review where reader_id=friend and book_id=book2) end )  from final1table),"
+						+ "final3table(book2,rank) as (select book2, sum(num*rate) from final2table group by book2) "
+						+ "select * from final3table order by rank desc limit 3";
 				System.out.println(query);
 				pstmt = conn.prepareStatement(query);
 				pstmt.setString(1, id);
