@@ -121,46 +121,6 @@
 			
 		}
 
-		// Update the follow button
-		function updateFollow(obj)
-		{
-			console.log(obj.innerHTML);
-
-			// Follow the person. INsert from schema
-			if ((obj.innerHTML).startsWith("follow")) {
-
-				$.post("http://10.130.10.35:8080/DBProject/FollowBit", {id : sessionStorage.getItem('id'), friend_id : sessionStorage.getItem('friend_id'), update : '1'}, function(data,status) {
-
-					if (data["status"] == true) {
-						obj.innerHTML = "unfollow";
-						location.reload();
-					}
-					else {
-						alert("Some internal error occured");
-					}
-					
-				});
-
-			}
-
-			// Unfollow the person. Delete from schema 
-			else {
-
-				$.post("http://10.130.10.35:8080/DBProject/FollowBit", {id : sessionStorage.getItem('id'), friend_id : sessionStorage.getItem('friend_id'), update : '0'}, function(data,status) {
-
-					if (data["status"] == true) {
-						obj.innerHTML = "follow";
-						location.reload();
-					}
-					else {
-						alert("Some internal error occured");
-					}
-
-				});
-
-			}
-		}
-
 		function comeback()
 		{
 			form1 = document.getElementById('form1');
