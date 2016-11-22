@@ -66,7 +66,6 @@ public class AlgoFriend extends HttpServlet {
 			String query;
 			PreparedStatement pstmt;
 			ResultSet rs;
-			id="ritwickchaudhry";
 			
 			query = "create temporary table newreachable"
 					+ "(dst varchar(50), level double precision);"
