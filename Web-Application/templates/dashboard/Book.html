@@ -177,7 +177,7 @@
 			font-family: 'Didact Gothic', sans-serif;
 			font-weight:normal;
 			text-align:center;
-			padding-top:60px;
+			padding-top:5px;
 			color:#fff;
 			font-size: 16px;
 		}
@@ -676,179 +676,207 @@
 				
 			});
 
-			// Retrieve the comments on book
-			jQuery.ajaxSetup({async:false});
-			$.get("http://10.130.10.35:8080/DBProject/ReturnReviewList", {id : sessionStorage.getItem('id'), bookID : bookID},function(data,status) {
-				
-				console.log(data);
+			function updateComments() {
 
-				var highestRating = data["highestrating"];
-				var lowestRating = data["lowestrating"];
-				var friendRating = data["friendrating"];
+				// Retrieve the comments on book
+				jQuery.ajaxSetup({async:false});
+				$.get("http://10.130.10.35:8080/DBProject/ReturnReviewList", {id : sessionStorage.getItem('id'), bookID : bookID},function(data,status) {
+					
+					console.log(data);
 
-				var r = 1;
+					var highestRating = data["highestrating"];
+					var lowestRating = data["lowestrating"];
+					var friendRating = data["friendrating"];
 
-				// Display friend's rated comments
-				$.each(friendRating,function(index,element){
+					var r = 1;
 
-					var review_div = document.getElementById("Review" + r);
+					// Display friend's rated comments
+					$.each(friendRating,function(index,element){
 
-					var reviewer_id = element["readervalue"];
+						var review_div = document.getElementById("Review" + r);
 
-					// Get details of this particular book
-					$.get("http://10.130.10.35:8080/DBProject/GetDetails", {id : reviewer_id, type : "reader"},function(data,status) {
+						var reviewer_id = element["readervalue"];
 
-						// console.log(data);
-						if (data["status"] == true) {
-							reviewer_name = data["name"];
-						}
-						else {
-							alert("Can't retrieve book details");
-						}
+						// Get details of this particular book
+						$.get("http://10.130.10.35:8080/DBProject/GetDetails", {id : reviewer_id, type : "reader"},function(data,status) {
 
+							// console.log(data);
+							if (data["status"] == true) {
+								reviewer_name = data["name"];
+							}
+							else {
+								alert("Can't retrieve book details");
+							}
+
+						});
+
+						review_div.getElementsByTagName('h4')[0].innerHTML = reviewer_name;
+
+						var review = element["commentvalue"];
+						review_div.getElementsByTagName('h5')[0].innerHTML = review;
+
+						var actualPercentage = element["ratingvalue"];
+						actualPercentage = actualPercentage * 20;
+						var overallRatingNode = document.getElementById("totalrating" + r);
+						overallRatingNode.style.width = actualPercentage + "%";
+
+						r += 1;
 					});
 
-					review_div.getElementsByTagName('h4')[0].innerHTML = reviewer_name;
-
-					var review = element["commentvalue"];
-					review_div.getElementsByTagName('h5')[0].innerHTML = review;
-
-					var actualPercentage = element["ratingvalue"];
-					actualPercentage = actualPercentage * 20;
-					var overallRatingNode = document.getElementById("totalrating" + r);
-					overallRatingNode.style.width = actualPercentage + "%";
-
-					r += 1;
-				});
-
-				while (r < 3) {
-					var overallRatingNode = document.getElementById("totalrating" + r).parentNode;
-					overallRatingNode.style.visibility = "hidden";
-					r += 1;
-				}
-
-				// Display highest rated comments
-				$.each(highestRating,function(index,element){
-
-					var review_div = document.getElementById("Review" + r);
-
-					var reviewer_id = element["readervalue"];
-
-					// Get details of this particular book
-					$.get("http://10.130.10.35:8080/DBProject/GetDetails", {id : reviewer_id, type : "reader"},function(data,status) {
-
-						// console.log(data);
-						if (data["status"] == true) {
-							reviewer_name = data["name"];
-						}
-						else {
-							alert("Can't retrieve book details");
-						}
-
-					});
-
-					review_div.getElementsByTagName('h4')[0].innerHTML = reviewer_name;
-
-					var review = element["commentvalue"];
-					review_div.getElementsByTagName('h5')[0].innerHTML = review;
-
-					var actualPercentage = element["ratingvalue"];
-					actualPercentage = actualPercentage * 20;
-					var overallRatingNode = document.getElementById("totalrating" + r);
-					overallRatingNode.style.width = actualPercentage + "%";
-
-					r += 1;
-				});
-
-				while (r < 5) {
-					var overallRatingNode = document.getElementById("totalrating" + r).parentNode;
-					overallRatingNode.style.visibility = "hidden";
-					r += 1;
-				}
-
-				// Display lowest rated comments
-				$.each(lowestRating,function(index,element){
-
-					var review_div = document.getElementById("Review" + r);
-
-					var reviewer_id = element["readervalue"];
-
-					// Get details of this particular book
-					$.get("http://10.130.10.35:8080/DBProject/GetDetails", {id : reviewer_id, type : "reader"},function(data,status) {
-
-						// console.log(data);
-						if (data["status"] == true) {
-							reviewer_name = data["name"];
-						}
-						else {
-							alert("Can't retrieve book details");
-						}
-
-					});
-
-					review_div.getElementsByTagName('h4')[0].innerHTML = reviewer_name;
-
-					var review = element["commentvalue"];
-					review_div.getElementsByTagName('h5')[0].innerHTML = review;
-
-					var actualPercentage = element["ratingvalue"];
-					actualPercentage = actualPercentage * 20;
-					var overallRatingNode = document.getElementById("totalrating" + r);
-					overallRatingNode.style.width = actualPercentage + "%";
-
-					r += 1;
-				});
-
-				while (r < 7) {
-					var overallRatingNode = document.getElementById("totalrating" + r).parentNode;
-					overallRatingNode.style.visibility = "hidden";
-					r += 1;
-				}
-
-			});
-
-			// Retrieve the reading details
-			$.get("http://10.130.10.35:8080/DBProject/BookReadingDetails", {id : sessionStorage.getItem('id'), bookID : bookID}, function(data,status) {
-
-				console.log(data);
-
-				if (data["status"] == true) {
-
-					// Total readers
-					var total_readers = data["totalreaders"];
-					var total_readers_text = document.getElementById('readers_total');
-					total_readers_text.innerHTML = "Total - " + total_readers;
-
-					// Friend readers
-					var friend_readers = data["friendreaders"];
-					var friend_readers_text = document.getElementById('readers_friends');
-					friend_readers_text.innerHTML = "Your friends - " + total_readers;
-
-					// Reading status
-					var reading_status = data["type"];
-					var radio_button = $('input:radio[name=is_reading]');
-					if (reading_status == "none") {
-						if (radio_button.is(':checked') === false) {
-							radio_button.filter('[value=not_reading]').prop('checked',true);
-						}
+					while (r < 3) {
+						var overallRatingNode = document.getElementById("totalrating" + r).parentNode;
+						overallRatingNode.style.visibility = "hidden";
+						r += 1;
 					}
-					else if (reading_status == "reading") {
-						if (radio_button.is(':checked') === false) {
-							radio_button.filter('[value=reading]').prop('checked',true);
+
+					// Display highest rated comments
+					$.each(highestRating,function(index,element){
+
+						var review_div = document.getElementById("Review" + r);
+
+						var reviewer_id = element["readervalue"];
+
+						// Get details of this particular book
+						$.get("http://10.130.10.35:8080/DBProject/GetDetails", {id : reviewer_id, type : "reader"},function(data,status) {
+
+							// console.log(data);
+							if (data["status"] == true) {
+								reviewer_name = data["name"];
+							}
+							else {
+								alert("Can't retrieve book details");
+							}
+
+						});
+
+						review_div.getElementsByTagName('h4')[0].innerHTML = reviewer_name;
+
+						var review = element["commentvalue"];
+						review_div.getElementsByTagName('h5')[0].innerHTML = review;
+
+						var actualPercentage = element["ratingvalue"];
+						actualPercentage = actualPercentage * 20;
+						var overallRatingNode = document.getElementById("totalrating" + r);
+						overallRatingNode.style.width = actualPercentage + "%";
+
+						r += 1;
+					});
+
+					while (r < 5) {
+						var overallRatingNode = document.getElementById("totalrating" + r).parentNode;
+						overallRatingNode.style.visibility = "hidden";
+						r += 1;
+					}
+
+					// Display lowest rated comments
+					$.each(lowestRating,function(index,element){
+
+						var review_div = document.getElementById("Review" + r);
+
+						var reviewer_id = element["readervalue"];
+
+						// Get details of this particular book
+						$.get("http://10.130.10.35:8080/DBProject/GetDetails", {id : reviewer_id, type : "reader"},function(data,status) {
+
+							// console.log(data);
+							if (data["status"] == true) {
+								reviewer_name = data["name"];
+							}
+							else {
+								alert("Can't retrieve book details");
+							}
+
+						});
+
+						review_div.getElementsByTagName('h4')[0].innerHTML = reviewer_name;
+
+						var review = element["commentvalue"];
+						review_div.getElementsByTagName('h5')[0].innerHTML = review;
+
+						var actualPercentage = element["ratingvalue"];
+						actualPercentage = actualPercentage * 20;
+						var overallRatingNode = document.getElementById("totalrating" + r);
+						overallRatingNode.style.width = actualPercentage + "%";
+
+						r += 1;
+					});
+
+					while (r < 7) {
+						var overallRatingNode = document.getElementById("totalrating" + r).parentNode;
+						overallRatingNode.style.visibility = "hidden";
+						r += 1;
+					}
+
+				});
+
+			}
+
+			updateComments();
+
+			function updateReading() {
+
+				// Retrieve the reading details
+				jQuery.ajaxSetup({async:false});
+				$.get("http://10.130.10.35:8080/DBProject/BookReadingDetails", {id : sessionStorage.getItem('id'), bookID : bookID}, function(data,status) {
+
+					console.log(data);
+
+					if (data["status"] == true) {
+
+						// Total readers
+						var total_readers = data["totalreaders"];
+						var total_readers_text = document.getElementById('readers_total');
+						total_readers_text.innerHTML = "Total - " + total_readers;
+
+						// Friend readers
+						var friend_readers = data["friendreaders"];
+						var friend_readers_text = document.getElementById('readers_friends');
+						friend_readers_text.innerHTML = "Your friends - " + friend_readers;
+
+						// Reading status
+						var reading_status = data["type"];
+						var radio_button = $('input:radio[name=is_reading]');
+						if (reading_status == "none") {
+							
+							if (radio_button.is(':checked') === false) {
+								radio_button.filter('[value=not_reading]').prop('checked',true);
+							}
+						
+							$("#rateBook").prop("disabled",true);
+							var rateButton = document.getElementById("rateBook");
+							rateButton.style.visibility = "hidden";
 						}
+						else if (reading_status == "reading") {
+							
+							if (radio_button.is(':checked') === false) {
+								radio_button.filter('[value=reading]').prop('checked',true);
+							}
+
+							$("#rateBook").prop("disabled",false);
+							var rateButton = document.getElementById("rateBook");
+							rateButton.style.visibility = "visible";
+						}
+						else {
+
+							if (radio_button.is(':checked') === false) {
+								radio_button.filter('[value=done_reading]').prop('checked',true);
+							}
+
+							$("#rateBook").prop("disabled",false);
+							var rateButton = document.getElementById("rateBook");
+							rateButton.style.visibility = "visible";
+						}
+
 					}
 					else {
-						if (radio_button.is(':checked') === false) {
-							radio_button.filter('[value=done_reading]').prop('checked',true);
-						}
+						alert("Reading details retrieval failed");
 					}
 
-				}
-				else {
-					alert("Reading details retrieval failed");
-				}
+				});
 
-			});
+			}
+
+			updateReading();
 
 			// Code to handle reading and rating options
 			$('input[type=radio][name=is_reading]').change(function() {
@@ -903,6 +931,9 @@
 
 				}
 
+				updateReading();
+				location.reload();
+
 			});
 }
 });
@@ -930,9 +961,9 @@
 					<i class="material-icons">more_vert</i>
 				</button>
 				<ul class="mdl-menu mdl-js-menu mdl-js-ripple-effect mdl-menu--bottom-right" for="hdrbtn">
-					<li class="mdl-menu__item">About</li>
+					<!-- <li class="mdl-menu__item">About</li>
 					<li class="mdl-menu__item">Contact</li>
-					<li class="mdl-menu__item">Legal information</li>
+					<li class="mdl-menu__item">Legal information</li> -->
 					<li class="mdl-menu__item" id="logout">Logout</li>
 				</ul>
 			</div>
@@ -1119,7 +1150,7 @@
 												<p class="actions_radio"><input class="radio_button_reading" type="radio" name="is_reading" value="reading"> Reading
 												<p class="actions_radio"><input class="radio_button_reading" type="radio" name="is_reading" value="done_reading"> Already read
 												<br>
-												<button id="rateBook" disabled="disabled" style="visibility:hidden">Review The Book</button>
+												<button id="rateBook">Review The Book</button>
 											</div>
 
 										</div>
@@ -1210,7 +1241,7 @@
 
 															<!-- Modal content -->
 															<div class="modal-content">
-																<span class="close" id="m_close">×</span>
+																<span class="close" id="m_close_1">×</span>
 
 
 																<center>
@@ -1236,32 +1267,32 @@
 
 														</div>
 
-														<!-- MODAL -->
-														<script>
-			// Get the modal
-			var modal = document.getElementById('myModal');
+	<!-- MODAL -->
+	<script>
+	// Get the modal
+	var modal = document.getElementById('myModal');
 
 	// Get the button that opens the modal
-	var btn = document.getElementById("upload_photo");
+	var uploadPhotoBtn = document.getElementById("upload_photo");
 
 	// Get the <span> element that closes the modal
-	var span = document.getElementsByClassName("close")[0];
+	var uploadPhotoSpan = document.getElementById("m_close_1");
 
 	// Get the button that saves the modal
-	var btn1 = document.getElementById("savesubmit");
+	var uploadPhotoBtn1 = document.getElementById("savesubmit");
 
 	// When the user clicks the button, open the modal
-	btn.onclick = function() {
+	uploadPhotoBtn.onclick = function() {
 		modal.style.display = "block";
 	}
 
 	// When the user clicks on <span> (x), close the modal
-	span.onclick = function() {
+	uploadPhotoSpan.onclick = function() {
 		modal.style.display = "none";
 	}
 
 	// When the user clicks save close the modal
-	btn1.onclick = function() {
+	uploadPhotoBtn1.onclick = function() {
 		modal.style.display = "none";
 		setTimeout(function(){
 			location.reload();
@@ -1269,18 +1300,20 @@
 	}
 
 	// When the user clicks anywhere outside of the modal, close it
-	window.onclick = function(event) {
-		if (event.target == modal) {
-			modal.style.display = "none";
-		}
-	}
+	// window.onclick = function(event) {
+	// 	console.log("Entered Close on clicking outside");
+	// 	if (event.target == modal) {
+	// 		modal.style.display = "none";
+	// 	}
+	// }
+	
 
 </script>
 
 <!-- MODAL -->
 <div id="ratingModal" class="modal">
 	<div class="modal-content">
-	<span class="close" id="m_close">x</span>
+	<span class="close" id="m_close_2">x</span>
 	<center>
 	<form>
 		<h2>Review the Book</h2>
@@ -1364,11 +1397,14 @@
 					
 					var info;
 					info = data["info"];
-					console.log(info);
+					// console.log(info);
 					if(info == "NoRatingFound")
 					{
 							//Do Nothing
 							// alert("Wrong");
+						var commentArea = document.getElementById("commentsArea");
+						commentArea.value = "";
+
 					}	
 					else
 					{
@@ -1383,12 +1419,12 @@
 							document.getElementById(starIndexString).checked = true;
 						}
 
+						var comment = data["commentvalue"];
+						var commentArea = document.getElementById("commentsArea");
+						commentArea.value = comment;
+
 					}
-
-					var comment = data["commentvalue"];
-					var commentArea = document.getElementById("commentsArea");
-					commentArea.value = comment;
-
+					
 				}
 				else {
 					alert("Error in retrieving comment");
@@ -1406,7 +1442,7 @@
 	var btn = document.getElementById("rateBook");
 
 	// <span> element that closes the modal
-	var span = document.getElementsByClassName("close")[0];
+	var span = document.getElementById("m_close_2");
 
 	// Button that saves the modal
 	var btn1 = document.getElementById("btn1");
@@ -1434,6 +1470,7 @@
 
 	// When the user clicks anywhere outside of the modal, close it
 	window.onclick = function(event) {
+		console.log("Here");
 		if (event.target == rateBookModal) {
 			rateBookModal.style.display = "none";
 		}
