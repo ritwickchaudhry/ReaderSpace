@@ -202,6 +202,17 @@ public class BookReadingDetails extends HttpServlet {
 					pstmt.setString(1, bookID);
 					pstmt.setString(2, id);
 					pstmt.executeUpdate();
+					
+					query = "delete from book_reader where book_id=? and reader_id=?";
+					pstmt = conn.prepareStatement(query);
+					pstmt.setString(1, bookID);
+					pstmt.setString(2, id);
+					pstmt.executeUpdate();
+					query = "insert into book_reader values (?,?)";
+					pstmt = conn.prepareStatement(query);
+					pstmt.setString(1, bookID);
+					pstmt.setString(2, id);
+					pstmt.executeUpdate();
 				}
 				else if(type.equals("alreadyread")){
 					query = "delete from reading where book_id=? and reader_id=?";
@@ -215,6 +226,17 @@ public class BookReadingDetails extends HttpServlet {
 					pstmt.setString(2, id);
 					pstmt.executeUpdate();
 					query = "insert into already_read values (?,?)";
+					pstmt = conn.prepareStatement(query);
+					pstmt.setString(1, bookID);
+					pstmt.setString(2, id);
+					pstmt.executeUpdate();
+					
+					query = "delete from book_reader where book_id=? and reader_id=?";
+					pstmt = conn.prepareStatement(query);
+					pstmt.setString(1, bookID);
+					pstmt.setString(2, id);
+					pstmt.executeUpdate();
+					query = "insert into book_reader values (?,?)";
 					pstmt = conn.prepareStatement(query);
 					pstmt.setString(1, bookID);
 					pstmt.setString(2, id);
