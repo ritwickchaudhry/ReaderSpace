@@ -192,6 +192,11 @@ public class BookReadingDetails extends HttpServlet {
 					pstmt.executeUpdate();
 				}
 				else if(type.equals("reading")){
+					query = "delete from already_read where book_id=? and reader_id=?";
+					pstmt = conn.prepareStatement(query);
+					pstmt.setString(1, bookID);
+					pstmt.setString(2, id);
+					pstmt.executeUpdate();
 					query = "delete from reading where book_id=? and reader_id=?";
 					pstmt = conn.prepareStatement(query);
 					pstmt.setString(1, bookID);
