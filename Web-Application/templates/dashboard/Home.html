@@ -237,6 +237,13 @@
 
 			$.get("http://10.130.10.35:8080/DBProject/Logout", function(data, status){
 				console.log(data["status"]);
+				var i1 = sessionStorage.length;
+				while(i1--) {
+					var key = sessionStorage.key(i1);
+					if(key) {
+						sessionStorage.removeItem(key);
+					}  
+				}
 				if (data["status"] == true) {
 					window.location.href = "../LoginRegistrationForm/index.html";
 				}
@@ -251,6 +258,13 @@
 
 			$.get("http://10.130.10.35:8080/DBProject/Logout", function(data, status){
 				console.log(data["status"]);
+				var i1 = sessionStorage.length;
+				while(i1--) {
+					var key = sessionStorage.key(i1);
+					if(key) {
+						sessionStorage.removeItem(key);
+					}  
+				}
 				if (data["status"] == true) {
 					window.location.href = "../LoginRegistrationForm/index.html";
 				}
