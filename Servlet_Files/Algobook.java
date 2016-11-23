@@ -79,13 +79,14 @@ public class Algobook extends HttpServlet {
 						+ "else (select 1+(rating*1.0/5-0.5) from review where reader_id=friend and book_id=book2) end )  from final1table),"
 						+ "final3table(book2,rank) as (select book2, sum(num*rate) from final2table group by book2),"
 						+ "remaining as ((select book_id from book) except (select * from mybooks)),"
-						+ "newremaining(book2, rank) as (select remaining.book_id, count(*)*0.1 from remaining, genre where remaining.book_id=genre.book_id group by remaining.book_id) "
+						+ "newremaining(book2, rank) as (select remaining.book_id, count(*)*0.1 from remaining, genre A, interests where remaining.book_id=A.book_id and A.genre=interests.genre and interests.reader_id=? group by remaining.book_id)  "
 						+ "((select * from final3table) union (select book2, rank from newremaining where newremaining.book2 not in (select book2 from final3table))) order by rank desc limit 3";
 				System.out.println(query);
 				pstmt = conn.prepareStatement(query);
 				pstmt.setString(1, id);
 				pstmt.setString(2, id);
 				pstmt.setString(3, id);
+				pstmt.setString(4, id);
 				System.out.println("yahoo");
 				rs = pstmt.executeQuery();
 				JSONArray jsonArray = new JSONArray();

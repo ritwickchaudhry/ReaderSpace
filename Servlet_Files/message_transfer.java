@@ -19,16 +19,16 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * Servlet implementation class AlgoFriend
+ * Servlet implementation class message_transfer
  */
-@WebServlet("/AlgoFriend")
-public class AlgoFriend extends HttpServlet {
+@WebServlet("/message_transfer")
+public class message_transfer extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public AlgoFriend() {
+    public message_transfer() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -48,6 +48,8 @@ public class AlgoFriend extends HttpServlet {
 		String type;
 		
 		id = request.getParameter("id");
+		System.out.println(id);
+//		type = request.getParameter("type");
 		
 		// Set up output stream and type
 		response.setContentType("application/json");
@@ -63,85 +65,44 @@ public class AlgoFriend extends HttpServlet {
 				Statement stmt = conn.createStatement();
 			)
 			{
-			String query;
-			PreparedStatement pstmt;
-			ResultSet rs;
 			
-			query = "create temporary table newreachable"
-					+ "(dst varchar(50), level double precision);"
-					+ "create temporary table newnewreachable"
-					+ "(dst varchar(50), level double precision);"
-					+ "create temporary table visited"
-					+ "(dst varchar(50));"
-					+ "create temporary table weights "
-					+ "(dst varchar(50), wts double precision);"
-					+ "insert into newreachable "
-					+ "SELECT followee, 1.0 "
-					+ "from follow "
-					+ "where follower=?;"
-					+ "insert into visited "
-					+ "values(?);";
-			pstmt = conn.prepareStatement(query);
-			pstmt.setString(1,id);
-			pstmt.setString(2,id);
-			pstmt.executeUpdate();
-			ResultSet rset;
-			while(true)
-			{
-				query = "insert into weights "
-						+ "select dst, (1*1.0/level) "
-						+ "from newreachable;"
-						+ "delete from newnewreachable;"
-						+ "insert into newnewreachable "
-						+ "select distinct dst,level from newreachable "
-						+ "where dst not in "
-						+ "(select * from visited);"
-						+ "insert into visited "
-						+ "select distinct dst from newreachable "
-						+ "except "
-						+ "select * from visited;"
-						+ "delete from newreachable;"
-						+ "insert into newreachable "
-						+ "select follow.followee as dst, level + 1.0 "
-						+ "from newnewreachable, follow "
-						+ "where newnewreachable.dst = follow.follower;";
-						
-						
-				stmt.executeUpdate(query);
-				
-				query = "select * from newreachable;";
-				
-				
-				rset = stmt.executeQuery(query);
-				int count=0;
-//				System.out.println("-------------");
-				while(rset.next())
-				{
-//					System.out.println(rset.getString(1)+" "+rset.getFloat(2));
-					count++;	
-				}
-//				System.out.println(count + "-----------------------\n");
-				if(count == 0)
-					break;
-			}
-			System.out.println("Exited While\n");
-			query = "select dst,sum(wts) as finalWt "
-					+ "from weights where dst not in (select followee from follow where follower=?) "
-					+ "and dst <> ? "
-					+ "group by dst "
-					+ "order by finalWt desc limit 3";
+				String query;
+				PreparedStatement pstmt;
+				ResultSet rs;
+				query = "with booksbyinterest(book_id, num_interest) as ("
+						+ "select genre.book_id, count(*) as num_interest"
+						+ " from interests,genre"
+						+ " where interests.reader_id=? and interests.genre=genre.genre"
+						+ " group by genre.book_id), "
+						+ " booksinterested(book_id, num_interest) as ("
+						+ " (select book_id, 0 as num_interest from ((select book_id from book) except (select book_id from booksbyinterest)) as temp)"
+						+ " union"
+						+ " (select * from booksbyinterest)"
+						+ " ),"
+						+ " trending(book_id, num_readers) as ((select book_id, count(*) as num_readers from "
+						+ " book_reader group by book_id)"
+						+ " union"
+						+ " (select book_id, 0 from ((select book_id from book) except (select book_id from book_reader)) as temp1)),"
+						+ " totalreaders(num) as (select count(distinct(reader_id)) from book_reader)"
+						+ " select booksinterested.book_id, num_interest*0.6+num_readers*1.0/totalreaders.num as threshold"
+						+ " from booksinterested, trending, totalreaders where booksinterested.book_id=trending.book_id "
+						+ " and not exists(select * from already_read where already_read.book_id=booksinterested.book_id)"
+						+ " and not exists (select * from reading where reading.book_id=booksinterested.book_id)"
+						+ " order by threshold desc limit 3";
+				System.out.println(query);
 				pstmt = conn.prepareStatement(query);
 				pstmt.setString(1, id);
-				pstmt.setString(2, id);
 				System.out.println("yahoo");
 				rs = pstmt.executeQuery();
 				JSONArray jsonArray = new JSONArray();
 				while(rs.next()){
+					
 					jsonArray.put(rs.getString(1));
+					
+//						returnObject.put(jsonObj);
 				}
 				jsonObj.put("suggested",jsonArray);
 				jsonObj.put("status", true);
-				
 			}
 		catch(Exception sqle){
 			System.out.println("Exception :" +sqle);

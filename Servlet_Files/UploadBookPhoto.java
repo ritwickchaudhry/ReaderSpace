@@ -108,7 +108,7 @@ public class UploadBookPhoto extends HttpServlet {
 	            String query = "Update Book set Cover_Pic_name=?,Cover_Pic_img=? where Book_ID=?";
 	            PreparedStatement pstmt = conn.prepareStatement(query);
 	            pstmt.setString(1, filePart.getName());
-	            pstmt.setString(3,"3");
+	            pstmt.setString(3,"8");
 	            pstmt.setBinaryStream(2,inputStream,filePart.getSize());
 	            pstmt.executeUpdate();      
 	        }
