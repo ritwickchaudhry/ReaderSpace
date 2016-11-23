@@ -173,3 +173,39 @@ STATEMENT:  select * from revie
 ERROR:  function average(integer) does not exist at character 8
 HINT:  No function matches the given name and argument types. You might need to add explicit type casts.
 STATEMENT:  SELECT average(rating) as tot_rating, count(*) from review group by book_id having book_id = $1
+LOG:  database system was interrupted; last known up at 2016-11-22 16:22:38 IST
+FATAL:  the database system is starting up
+FATAL:  the database system is starting up
+FATAL:  the database system is starting up
+FATAL:  the database system is starting up
+FATAL:  the database system is starting up
+FATAL:  the database system is starting up
+FATAL:  the database system is starting up
+FATAL:  the database system is starting up
+LOG:  database system was not properly shut down; automatic recovery in progress
+LOG:  invalid record length at 0/54D1938
+LOG:  redo is not required
+LOG:  MultiXact member wraparound protections are now enabled
+LOG:  autovacuum launcher started
+LOG:  database system is ready to accept connections
+ERROR:  duplicate key value violates unique constraint "book_pkey"
+DETAIL:  Key (book_id)=(6) already exists.
+STATEMENT:  insert into book values('6','The DA Vinci Code','Robert Langdons journey ','Dan Brown',559,NULL,NULL);
+ERROR:  syntax error at or near "s" at character 62
+STATEMENT:  insert into book values('7','Khushwantmana','The first of it's kind.','Kushwant Singh',124,NULL,NULL);
+	';
+	);
+ERROR:  duplicate key value violates unique constraint "book_pkey"
+DETAIL:  Key (book_id)=(7) already exists.
+STATEMENT:  insert into book values('7','Khushwantmana','Kushwant Singh with his life incidences','Kushwant Singh',124,NULL,NULL);
+ERROR:  syntax error at or near "'8'" at character 19
+STATEMENT:  insert into genre('8','Fiction');
+ERROR:  duplicate key value violates unique constraint "interests_pkey"
+DETAIL:  Key (reader_id, genre)=(sanat, Fiction) already exists.
+STATEMENT:  insert into interests values ($1,$2)
+ERROR:  duplicate key value violates unique constraint "interests_pkey"
+DETAIL:  Key (reader_id, genre)=(sanat, Fiction) already exists.
+STATEMENT:  insert into interests values ($1,$2)
+ERROR:  duplicate key value violates unique constraint "interests_pkey"
+DETAIL:  Key (reader_id, genre)=(sanat, Fiction) already exists.
+STATEMENT:  insert into interests values ($1,$2)

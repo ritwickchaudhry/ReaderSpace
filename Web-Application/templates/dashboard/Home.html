@@ -293,6 +293,10 @@
 			if (data["status"] == true) {
 
 				// Get info from servlet
+				if (!data["name"]) {
+					alert("Please enter your details first!");
+				}
+
 				name = data["name"];
 				intro = data["intro"];
 				// For the name on left side
